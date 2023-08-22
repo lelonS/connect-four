@@ -29,8 +29,12 @@ class Board {
   }
 
   makeMove(col) {
+    if (col < 0 || col >= this.colCount) {
+      return false;
+    }
     this.board[col].push(this.turn);
     this.nextTurn();
+    return true;
   }
 
   render() {

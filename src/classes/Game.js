@@ -2,15 +2,12 @@ class Game {
   constructor() {
     this.board = new Board();
     this.playerCount = this.board.playerCount;
-    this.createPlayers();
-    this.waitForMove();
+    this.start();
 
     this.expectedPlrName = 0;
-
-    // console.log('Players:', this.players);
   }
 
-  createPlayers() {
+  start() {
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
       const player = new Player('Player ' + (i + 1));
@@ -30,17 +27,21 @@ class Game {
       } else {
         console.log('All players named.');
         console.log('Players:', this.players);
+        this.waitForMove();
       }
     }
   }
 
   waitForMove() {
     this.board.render();
-    console.log('Waiting for move... ' + this.players[this.board.turn].name);
+    console.log('Use "game.move(0-6) ' + this.players[this.board.turn].name);
   }
+
   move(col) {
-    console.log('Making move in column', col);
-    this.board.makeMove(col);
-    this.waitForMove();
+    const success = this.board.makeMove(col);
+    if (success) {
+      console.log('Making move in column', col);
+      this.waitForMove();
+    }
   }
 }
