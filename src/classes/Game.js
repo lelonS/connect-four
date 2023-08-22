@@ -4,7 +4,8 @@ class Game {
     this.playerCount = this.board.playerCount;
     this.start();
 
-    this.expectedPlrName = 0;
+    // Numbers below playerCount are used for naming player with that index.
+    this.expectedInput = 0;
   }
 
   start() {
@@ -14,27 +15,27 @@ class Game {
       this.players.push(player);
     }
 
-    console.log('Use "game.inputName(name)" to set player names.');
+    console.log('Use "game.input(name)" to set player names.');
     console.log('Player 1:');
   }
 
   inputName(name) {
-    if (this.expectedPlrName < this.playerCount) {
-      this.players[this.expectedPlrName].name = name
-      this.expectedPlrName++;
-      if (this.expectedPlrName < this.playerCount) {
-        console.log('Player ' + (this.expectedPlrName + 1) + ':');
-      } else {
-        console.log('All players named.');
-        console.log('Players:', this.players);
-        this.waitForMove();
-      }
+    this.players[this.expectedInput].name = name
+    console.log('Player ' + name + ' added.');
+
+    this.expectedInput++;
+    if (this.expectedInput < this.playerCount) {
+      console.log('Player ' + (this.expectedInput + 1) + ':');
+    } else {
+      console.log('All players named.');
+      console.log('Players:', this.players);
+      this.waitForMove();
     }
   }
 
   waitForMove() {
     this.board.render();
-    console.log('Use "game.move(0-6) ' + this.players[this.board.turn].name);
+    console.log('Use "game.input(0-6) ' + this.players[this.board.turn].name + '\'s turn.');
   }
 
   move(col) {
@@ -42,6 +43,14 @@ class Game {
     if (success) {
       console.log('Making move in column', col);
       this.waitForMove();
+    }
+  }
+
+  input(userInput) {
+    if (this.expectedInput < this.playerCount) {
+      this.inputName(userInput);
+    } else {
+      this.move(userInput);
     }
   }
 }
