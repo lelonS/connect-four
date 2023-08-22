@@ -1,7 +1,9 @@
 class Game {
   constructor() {
-    this.playerCount = 2;
+    this.board = new Board();
+    this.playerCount = this.board.playerCount;
     this.createPlayers();
+    this.waitForMove();
 
     console.log('Players:', this.players);
   }
@@ -13,5 +15,15 @@ class Game {
       player.setNameFromInput(i + 1);
       this.players.push(player);
     }
+  }
+
+  waitForMove() {
+    this.board.render();
+    console.log('Waiting for move... ' + this.players[this.board.turn].name);
+  }
+  move(col) {
+    console.log('Making move in column', col);
+    this.board.makeMove(col);
+    this.waitForMove();
   }
 }
