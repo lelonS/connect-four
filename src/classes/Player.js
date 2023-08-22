@@ -5,8 +5,6 @@ class Player {
 
   setNameFromInput(plrNumber) {
     const name = prompt('Enter name for Player ' + plrNumber + ':');
-    this.name = name;
+    this.name = name ? name : 'Player ' + plrNumber;
   }
 }
-
-
