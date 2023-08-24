@@ -40,6 +40,9 @@ class Game {
   }
 
   move(col) {
+    // Check if input is a number.
+    if (typeof col !== 'number') { return; }
+
     const success = this.board.makeMove(col);
     if (success) {
       console.log('Making move in column', col);
