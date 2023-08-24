@@ -15,7 +15,7 @@ class Game {
       this.players.push(player);
     }
 
-    console.log('Use "game.input(name)" to set player names.');
+    console.log('Use "game.input(\'name\')" to set player names.');
     console.log('Player 1:');
   }
 
@@ -35,7 +35,7 @@ class Game {
 
   waitForMove() {
     this.board.writeToConsole();
-    console.log(`Use "game.input(0-6) ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
+    console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
   }
 
   move(col) {
