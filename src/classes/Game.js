@@ -34,8 +34,8 @@ class Game {
   }
 
   waitForMove() {
-    this.board.render();
-    console.log('Use "game.input(0-6) ' + this.players[this.board.turn].name + '\'s turn.');
+    this.board.writeToConsole();
+    console.log(`Use "game.input(0-6) ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
   }
 
   move(col) {

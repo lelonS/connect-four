@@ -37,7 +37,7 @@ class Board {
     return true;
   }
 
-  render() {
+  writeToConsole() {
     let output = '';
     for (let row = this.rowCount - 1; row >= 0; row--) {
       for (let col = 0; col < this.colCount; col++) {
