@@ -6,11 +6,11 @@ const GameStates = Object.freeze({
 });
 
 class Board {
-  constructor() {
-    this.playerCount = 2;
-    this.colCount = 7;
-    this.rowCount = 6;
+  get playerCount() { return 2; }
+  get colCount() { return 7; }
+  get rowCount() { return 6; }
 
+  constructor() {
     this.gameState = GameStates.Playing;
     this.turn = 0;
 
