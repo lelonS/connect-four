@@ -12,7 +12,7 @@ class Game {
   start() {
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('Player ' + (i + 1));
+      const player = new Player('player');
       this.players.push(player);
     }
 
@@ -21,6 +21,11 @@ class Game {
   }
 
   inputName(name) {
+    if (!Player.isValidName(name)) {
+      console.log('Invalid name. Only alphabetical values');
+      return;
+    }
+
     this.players[this.expectedInput].name = name
     console.log('Player ' + name + ' added.');
 
