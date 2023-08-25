@@ -40,21 +40,13 @@ class Board {
       if (col < 0 || col >= this.colCount) {
           return false;
       }
-      if(this.isFull) {
-        this.gameState = GameStates.Draw;
-        console.log('game is drawed!');
-        return false;
-      }
-      if(this.board[col].length === this.rowCount) {
-        console.log('column is full!');
-        return false;
-      }
-      
       this.board[col].push(this.turn);
-     
-    
-      this.nextTurn();
-      
+      if (this.isFull) {
+          this.gameState = GameStates.Draw;
+          console.log('game is drawed!');
+      } else {
+          this.nextTurn();
+      }
       return true;
   }
 
@@ -69,13 +61,4 @@ class Board {
       }
       console.log(output);
   }
-  testDraw() {
-    for(let i = 0 ; i < game.board.colCount; i++) {
-        for(let j = 0 ; j < game.board.rowCount;j++) {
-            this.makeMove(i);
-        }
-    }
-    // since the board is full now it should print a draw
-    this.makeMove(1);
-}
 }
