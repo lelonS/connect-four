@@ -73,12 +73,12 @@ class Board {
     let count = 0;
 
     for (let i = 1; i < this.winCount; i++) {
-      const c = col + i * colDir;
-      const r = row + i * rowDir;
+      const colCheck = col + i * colDir;
+      const rowCheck = row + i * rowDir;
       // Check if out of bounds
-      if (c < 0 || c >= this.colCount || r < 0 || r >= this.rowCount) { break; }
+      if (colCheck < 0 || colCheck >= this.colCount || rowCheck < 0 || rowCheck >= this.rowCount) { break; }
       // Check if cell is the same player, if not don't count and stop
-      const cell = this.board[c][r];
+      const cell = this.board[colCheck][rowCheck];
       if (cell !== player) { break; }
       count++;
     }
