@@ -2,10 +2,13 @@ class Game {
   get playerCount() { return this.board.playerCount; }
 
   constructor() {
+    this.reset();
+  }
+
+  reset() {
     this.board = new Board();
     // Numbers below playerCount are used for naming player with that index.
     this.expectedInput = 0;
-
     this.start();
   }
 
@@ -41,13 +44,20 @@ class Game {
 
   waitForMove() {
     this.board.writeToConsole();
+
+    // Write result to console
     if (this.board.gameState === GameStates.Draw) {
       console.log('Draw!');
     } else if (this.board.gameState === GameStates.Win) {
       const winnerIndex = this.board.winner;
       console.log(`Winner ${this.players[winnerIndex].name}! (${winnerIndex})`);
-    } else {
+    }
+
+    if (this.board.gameState === GameStates.Playing) {
       console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
+    } else {
+      // Game is not playing
+      console.log('Game over. Use "game.reset()" to start a new game.');
     }
   }
 
