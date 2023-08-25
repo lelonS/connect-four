@@ -53,6 +53,9 @@ class Game {
       console.log('Making move in column', col);
       if (this.board.gameState === GameStates.Draw) {
         console.log('Draw!');
+      } else if (this.board.gameState === GameStates.Win) {
+        const winnerIndex = this.board.winner;
+        console.log(`Winner ${this.players[winnerIndex].name}! (${winnerIndex})`);
       } else {
         this.waitForMove();
       }

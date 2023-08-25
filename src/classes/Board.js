@@ -52,7 +52,7 @@ class Board {
     // Make move
     this.board[col].push(this.turn);
 
-    // Check win
+    // Check result
     const lastRow = this.board[col].length - 1;
     if (this.checkWinAt(col, lastRow)) {
       this.gameState = GameStates.Win;
@@ -61,6 +61,7 @@ class Board {
       this.gameState = GameStates.Draw;
     }
 
+    // Next turn
     this.nextTurn();
     return true;
   }
