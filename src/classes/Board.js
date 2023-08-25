@@ -1,4 +1,3 @@
-
 const GameStates = Object.freeze({
   Playing: 'playing',
   Win: 'win',
@@ -17,6 +16,15 @@ class Board {
   get colCount() { return 7; }
   get rowCount() { return 6; }
   get winCount() { return 4; }
+
+  get checkDraw() {
+    for (let i = 0; i < this.colCount; i++) {
+      if (this.board[i].length < this.rowCount) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   constructor() {
     this.gameState = GameStates.Playing;
@@ -49,6 +57,8 @@ class Board {
     if (this.checkWinAt(col, lastRow)) {
       this.gameState = GameStates.Win;
       this.winner = this.turn;
+    } else if (this.checkDraw) {
+      this.gameState = GameStates.Draw;
     }
 
     this.nextTurn();
