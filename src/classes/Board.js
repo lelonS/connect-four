@@ -28,10 +28,27 @@ class Board {
     this.turn = (this.turn + 1) % this.playerCount;
   }
 
-  makeMove(col) {
-    if (col < 0 || col >= this.colCount) {
+  isValidMove(col) {
+    if (this.gameState !== GameStates.Playing) {
+      console.log("The game is over.");
       return false;
     }
+
+    if (col < 0 || col >= this.colCount) {
+      console.log("Invalid column.");
+      return false;
+    }
+
+    if (this.board[col].length >= this.rowCount) {
+      console.log("Column is full.");
+      return false;
+    }
+
+    return true;
+  }
+
+  makeMove(col) {
+    if (!this.isValidMove(col)) { return false; }
     this.board[col].push(this.turn);
     this.nextTurn();
     return true;
