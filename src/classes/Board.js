@@ -5,10 +5,18 @@ const GameStates = Object.freeze({
   Draw: 'draw'
 });
 
+const Directions = Object.freeze({
+  UpRight: { colDir: 1, rowDir: 1 },
+  Right: { colDir: 1, rowDir: 0 },
+  DownRight: { colDir: 1, rowDir: -1 },
+  Down: { colDir: 0, rowDir: -1 }
+});
+
 class Board {
   get playerCount() { return 2; }
   get colCount() { return 7; }
   get rowCount() { return 6; }
+  get winCount() { return 4; }
 
   constructor() {
     this.gameState = GameStates.Playing;
@@ -33,8 +41,43 @@ class Board {
       return false;
     }
     this.board[col].push(this.turn);
+    this.checkWinAt(col, this.board[col].length - 1);
     this.nextTurn();
     return true;
+  }
+
+  #countInDirection(col, row, colDir, rowDir) {
+    const player = this.board[col][row];
+    if (player === undefined) { return 0; }
+
+    let count = 0;
+
+    for (let i = 1; i < this.winCount; i++) {
+      const c = col + i * colDir;
+      const r = row + i * rowDir;
+      // Check if out of bounds
+      if (c < 0 || c >= this.colCount || r < 0 || r >= this.rowCount) { break; }
+      // Check if cell is the same player, if not don't count and stop
+      const cell = this.board[c][r];
+      if (cell !== player) { break; }
+      count++;
+    }
+    return count;
+  }
+
+  checkWinAt(col, row) {
+    const directions = [Directions.UpRight, Directions.Right, Directions.DownRight, Directions.Down];
+
+    for (const { colDir, rowDir } of directions) {
+      const count = this.#countInDirection(col, row, colDir, rowDir);
+      const countOpposite = this.#countInDirection(col, row, -colDir, -rowDir);
+      if (count + countOpposite + 1 >= this.winCount) {
+        console.log('win for ' + this.board[col][row]);
+        return true;
+      }
+    }
+    console.log('no win');
+    return false;
   }
 
   writeToConsole() {
