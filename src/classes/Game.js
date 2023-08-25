@@ -51,7 +51,11 @@ class Game {
     const success = this.board.makeMove(col);
     if (success) {
       console.log('Making move in column', col);
-      this.waitForMove();
+      if (this.board.gameState === GameStates.Draw) {
+        console.log('Draw!');
+      } else {
+        this.waitForMove();
+      }
     }
   }
 
