@@ -21,6 +21,7 @@ class Board {
   constructor() {
     this.gameState = GameStates.Playing;
     this.turn = 0;
+    this.winner = null;
 
     this.createEmptyBoard();
   }
@@ -40,8 +41,16 @@ class Board {
     if (col < 0 || col >= this.colCount) {
       return false;
     }
+    // Make move
     this.board[col].push(this.turn);
-    this.checkWinAt(col, this.board[col].length - 1);
+
+    // Check win
+    const lastRow = this.board[col].length - 1;
+    if (this.checkWinAt(col, lastRow)) {
+      this.gameState = GameStates.Win;
+      this.winner = this.turn;
+    }
+
     this.nextTurn();
     return true;
   }
@@ -72,11 +81,9 @@ class Board {
       const count = this.#countInDirection(col, row, colDir, rowDir);
       const countOpposite = this.#countInDirection(col, row, -colDir, -rowDir);
       if (count + countOpposite + 1 >= this.winCount) {
-        console.log('win for ' + this.board[col][row]);
         return true;
       }
     }
-    console.log('no win');
     return false;
   }
 
