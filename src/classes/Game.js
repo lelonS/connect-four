@@ -41,13 +41,19 @@ class Game {
 
   waitForMove() {
     this.board.writeToConsole();
-    console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
+    if (this.board.gameState === GameStates.Draw) {
+      console.log('Draw!');
+    } else if (this.board.gameState === GameStates.Win) {
+      const winnerIndex = this.board.winner;
+      console.log(`Winner ${this.players[winnerIndex].name}! (${winnerIndex})`);
+    } else {
+      console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
+    }
   }
 
   move(col) {
     // Check if input is a number.
     if (typeof col !== 'number') { return; }
-
     const success = this.board.makeMove(col);
     if (success) {
       console.log('Making move in column', col);
