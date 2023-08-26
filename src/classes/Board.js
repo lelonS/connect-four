@@ -17,15 +17,6 @@ class Board {
   get rowCount() { return 6; }
   get winCount() { return 4; }
 
-  get checkDraw() {
-    for (let i = 0; i < this.colCount; i++) {
-      if (this.board[i].length < this.rowCount) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   constructor() {
     this.gameState = GameStates.Playing;
     this.turn = 0;
@@ -73,12 +64,21 @@ class Board {
     if (this.checkWinAt(col, lastRow)) {
       this.gameState = GameStates.Win;
       this.winner = this.turn;
-    } else if (this.checkDraw) {
+    } else if (this.checkDraw()) {
       this.gameState = GameStates.Draw;
     }
 
     // Next turn
     this.nextTurn();
+    return true;
+  }
+
+  checkDraw() {
+    for (let i = 0; i < this.colCount; i++) {
+      if (this.board[i].length < this.rowCount) {
+        return false;
+      }
+    }
     return true;
   }
 
