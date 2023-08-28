@@ -13,7 +13,7 @@ class Game {
   }
 
   start() {
-    const symbols = ['🔴', '🟡']
+    const symbols = ['🔴', '🔵']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
       const player = new Player('player', symbols[i]);
@@ -22,6 +22,28 @@ class Game {
 
     console.log('Use "game.input(\'name\')" to set player names.');
     console.log('Player 1:');
+  }
+
+  renderBoard() {
+    const emptyCell = '⚪';
+    let output = '';
+    // Add board to output
+    for (let row = this.board.rowCount - 1; row >= 0; row--) {
+      for (let col = 0; col < this.board.colCount; col++) {
+        const playerIndex = this.board.board[col][row];
+        const symbol = playerIndex === undefined ? emptyCell : this.players[playerIndex].symbol;
+        output += symbol;
+      }
+      output += '\n';
+    }
+
+    // Add column numbers to output
+    const numbers = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣'];
+    for (let col = 0; col < this.board.colCount; col++) {
+      output += numbers[col];
+    }
+
+    console.log(output);
   }
 
   inputName(name) {
@@ -44,7 +66,7 @@ class Game {
   }
 
   waitForMove() {
-    this.board.writeToConsole();
+    this.renderBoard();
 
     // Write result to console
     if (this.board.gameState === GameStates.Draw) {

@@ -113,16 +113,4 @@ class Board {
     }
     return false;
   }
-
-  writeToConsole() {
-    let output = '';
-    for (let row = this.rowCount - 1; row >= 0; row--) {
-      for (let col = 0; col < this.colCount; col++) {
-        const cell = this.board[col][row];
-        output += cell === undefined ? '_' : cell;
-      }
-      output += '\n';
-    }
-    console.log(output);
-  }
 }
