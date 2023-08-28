@@ -13,9 +13,10 @@ class Game {
   }
 
   start() {
+    const symbols = ['🔴', '🟡']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('player');
+      const player = new Player('player', symbols[i]);
       this.players.push(player);
     }
 
@@ -30,7 +31,7 @@ class Game {
     }
 
     this.players[this.expectedInput].name = name
-    console.log('Player ' + name + ' added.');
+    console.log('Player ' + this.players[this.expectedInput].toString() + ' added.');
 
     this.expectedInput++;
     if (this.expectedInput < this.playerCount) {
@@ -50,11 +51,11 @@ class Game {
       console.log('Draw!');
     } else if (this.board.gameState === GameStates.Win) {
       const winnerIndex = this.board.winner;
-      console.log(`Winner ${this.players[winnerIndex].name}! (${winnerIndex})`);
+      console.log(`Winner ${this.players[winnerIndex].toString()}!`);
     }
 
     if (this.board.gameState === GameStates.Playing) {
-      console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].name}\'s turn (${this.board.turn})`);
+      console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].toString()}\'s turn`);
     } else {
       // Game is not playing
       console.log('Game over. Use "game.reset()" to start a new game.');
