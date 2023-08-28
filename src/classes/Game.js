@@ -30,8 +30,8 @@ class Game {
     // Add board to output
     for (let row = this.board.rowCount - 1; row >= 0; row--) {
       for (let col = 0; col < this.board.colCount; col++) {
-        const playerIndex = this.board.board[col][row];
-        const symbol = playerIndex === undefined ? emptyCell : this.players[playerIndex].symbol;
+        const playerIndex = this.board.getCell(col, row);
+        const symbol = playerIndex === null ? emptyCell : this.players[playerIndex].symbol;
         output += symbol;
       }
       output += '\n';

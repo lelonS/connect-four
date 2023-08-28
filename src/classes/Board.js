@@ -32,6 +32,16 @@ class Board {
     }
   }
 
+  getCell(col, row) {
+    // Check if out of bounds
+    if (col < 0 || col >= this.colCount || row < 0 || row >= this.rowCount) {
+      return null;
+    }
+    const cell = this.board[col][row];
+    // If cell is undefined (empty), return null. Otherwise return the cell (player index).
+    return cell === undefined ? null : cell;
+  }
+
   nextTurn() {
     this.turn = (this.turn + 1) % this.playerCount;
   }
@@ -57,6 +67,7 @@ class Board {
 
   makeMove(col) {
     if (!this.isValidMove(col)) { return false; }
+
     this.board[col].push(this.turn);
 
     // Check result
@@ -74,8 +85,8 @@ class Board {
   }
 
   checkDraw() {
-    for (let i = 0; i < this.colCount; i++) {
-      if (this.board[i].length < this.rowCount) {
+    for (let col = 0; col < this.colCount; col++) {
+      if (this.board[col].length < this.rowCount) {
         return false;
       }
     }
@@ -83,18 +94,16 @@ class Board {
   }
 
   #countInDirection(col, row, colDir, rowDir) {
-    const player = this.board[col][row];
-    if (player === undefined) { return 0; }
+    const player = this.getCell(col, row);
+    if (player === null) { return 0; }
 
     let count = 0;
 
     for (let i = 1; i < this.winCount; i++) {
       const colCheck = col + i * colDir;
       const rowCheck = row + i * rowDir;
-      // Check if out of bounds
-      if (colCheck < 0 || colCheck >= this.colCount || rowCheck < 0 || rowCheck >= this.rowCount) { break; }
       // Check if cell is the same player, if not don't count and stop
-      const cell = this.board[colCheck][rowCheck];
+      const cell = this.getCell(colCheck, rowCheck);
       if (cell !== player) { break; }
       count++;
     }
