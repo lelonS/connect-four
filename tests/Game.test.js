@@ -28,3 +28,16 @@ test('Reset method starts a new game', () => {
     expect(player).toBeInstanceOf(Player);
   }
 });
+
+test('Start method initializes players', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.start();
+  expect(game.players.length).toBe(game.playerCount);
+  expect(game.players[0]).toBeInstanceOf(Player);
+  expect(game.players[1]).toBeInstanceOf(Player);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput).toEqual([
+    ['Use "game.input(\'name\')" to set player names.'],
+    ['Player 1:']]);
+});
