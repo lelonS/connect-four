@@ -4,13 +4,6 @@ const GameStates = Object.freeze({
   Draw: 'draw'
 });
 
-const Directions = Object.freeze({
-  UpRight: { colDir: 1, rowDir: 1 },
-  Right: { colDir: 1, rowDir: 0 },
-  DownRight: { colDir: 1, rowDir: -1 },
-  Down: { colDir: 0, rowDir: -1 }
-});
-
 class Board {
   get playerCount() { return 2; }
   get colCount() { return 7; }
@@ -111,9 +104,9 @@ class Board {
   }
 
   checkWinAt(col, row) {
-    const directions = [Directions.UpRight, Directions.Right, Directions.DownRight, Directions.Down];
+    const directions = [[1, 1], [1, 0], [1, -1], [0, -1]]; // ↗ → ↘ ↓
 
-    for (const { colDir, rowDir } of directions) {
+    for (const [colDir, rowDir] of directions) {
       const count = this.#countInDirection(col, row, colDir, rowDir);
       const countOpposite = this.#countInDirection(col, row, -colDir, -rowDir);
       if (count + countOpposite + 1 >= this.winCount) {
