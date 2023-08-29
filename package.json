@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/lelonS/connect-four/issues"
   },
-  "homepage": "https://github.com/lelonS/connect-four#readme"
+  "homepage": "https://github.com/lelonS/connect-four#readme",
+  "dependencies": {
+    "jest": "^29.6.4"
+  }
 }
