@@ -69,14 +69,14 @@ class Game {
     this.renderBoard();
 
     // Write result to console
-    if (this.board.gameState === GameStates.Draw) {
+    if (this.board.gameState === Board.GameStates.Draw) {
       console.log('Draw!');
-    } else if (this.board.gameState === GameStates.Win) {
+    } else if (this.board.gameState === Board.GameStates.Win) {
       const winnerIndex = this.board.winner;
       console.log(`Winner ${this.players[winnerIndex].toString()}!`);
     }
 
-    if (this.board.gameState === GameStates.Playing) {
+    if (this.board.gameState === Board.GameStates.Playing) {
       console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].toString()}\'s turn`);
     } else {
       // Game is not playing

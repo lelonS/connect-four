@@ -1,17 +1,17 @@
-const GameStates = Object.freeze({
-  Playing: 'playing',
-  Win: 'win',
-  Draw: 'draw'
-});
-
 class Board {
+  static GameStates = Object.freeze({
+    Playing: 'playing',
+    Win: 'win',
+    Draw: 'draw'
+  });
+
   get playerCount() { return 2; }
   get colCount() { return 7; }
   get rowCount() { return 6; }
   get winCount() { return 4; }
 
   constructor() {
-    this.gameState = GameStates.Playing;
+    this.gameState = Board.GameStates.Playing;
     this.turn = 0;
     this.winner = null;
 
@@ -40,7 +40,7 @@ class Board {
   }
 
   isValidMove(col) {
-    if (this.gameState !== GameStates.Playing) {
+    if (this.gameState !== Board.GameStates.Playing) {
       console.log("The game is over.");
       return false;
     }
@@ -66,10 +66,10 @@ class Board {
     // Check result
     const lastRow = this.board[col].length - 1;
     if (this.checkWinAt(col, lastRow)) {
-      this.gameState = GameStates.Win;
+      this.gameState = Board.GameStates.Win;
       this.winner = this.turn;
     } else if (this.checkDraw()) {
-      this.gameState = GameStates.Draw;
+      this.gameState = Board.GameStates.Draw;
     }
 
     // Next turn
