@@ -101,3 +101,55 @@ test('isValidMove() returns false if column is full', () => {
   board.board[0] = [0, 1, 0, 1, 0, 1];
   expect(board.isValidMove(0)).toBe(false);
 });
+
+// Test makeMove()
+test('makeMove() makes move, switches turn, and returns true', () => {
+  const board = new Board();
+  expect(board.makeMove(0)).toBe(true);
+  expect(board.board[0]).toEqual([0]);
+  expect(board.turn).toBe(1);
+  expect(board.gameState).toBe(Board.GameStates.Playing);
+});
+
+test('makeMove() returns false if move is invalid or illegal', () => {
+  const board = new Board();
+  expect(board.makeMove(-1)).toBe(false);
+  expect(board.makeMove(7)).toBe(false);
+  // Invalid move should not change turn
+  expect(board.turn).toBe(0);
+
+  // Fill column 0
+  board.board[0] = [0, 1, 0, 1, 0, 1];
+  expect(board.makeMove(0)).toBe(false);
+  // Column is full, so turn and board should not change
+  expect(board.turn).toBe(0);
+  expect(board.board[0]).toEqual([0, 1, 0, 1, 0, 1]);
+
+  // Set game state to Win
+  board.gameState = Board.GameStates.Win;
+  // Try to make move after game is over in empty column
+  expect(board.makeMove(1)).toBe(false);
+});
+
+test('makeMove() sets gameState to Draw if board is full', () => {
+  const board = new Board();
+  board.board = fullBoardDraw.slice();
+  // Remove last player from column 0 to make it empty
+  board.turn = board.board[0].pop();
+  // Make move should return true
+  expect(board.makeMove(0)).toBe(true);
+  // Make move changes gameState to Draw
+  expect(board.gameState).toBe(Board.GameStates.Draw);
+});
+
+test('makeMove() sets gameState to Win and sets winner if move results in win', () => {
+  const board = new Board();
+  // Fill column 0 with three player 0 in a row
+  board.board[0] = [0, 0, 0];
+  // Make move should return true
+  expect(board.makeMove(0)).toBe(true);
+  // Make move changes gameState to Win
+  expect(board.gameState).toBe(Board.GameStates.Win);
+  // Make move sets winner to player 0
+  expect(board.winner).toBe(0);
+});
