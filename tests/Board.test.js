@@ -69,3 +69,35 @@ test('nextTurn() increments turn', () => {
   board.nextTurn(); // From 1 to 0
   expect(board.turn).toBe(0);
 });
+
+// Test isValidMove()
+test('isValidMove() returns true if move is valid', () => {
+  const board = new Board();
+  expect(board.isValidMove(6)).toBe(true);
+  // Fill column 0 but leave 1 space
+  board.board[0] = [0, 1, 0, 1, 0];
+  expect(board.isValidMove(0)).toBe(true);
+});
+
+test('isValidMove() returns false if game is over', () => {
+  const board = new Board();
+  // Set game state to Draw
+  board.gameState = Board.GameStates.Draw;
+  expect(board.isValidMove(0)).toBe(false);
+  // Set game state to Win
+  board.gameState = Board.GameStates.Win;
+  expect(board.isValidMove(0)).toBe(false);
+});
+
+test('isValidMove() returns false if column is out of bounds', () => {
+  const board = new Board();
+  expect(board.isValidMove(-1)).toBe(false);
+  expect(board.isValidMove(7)).toBe(false);
+});
+
+test('isValidMove() returns false if column is full', () => {
+  const board = new Board();
+  // Fill column 0
+  board.board[0] = [0, 1, 0, 1, 0, 1];
+  expect(board.isValidMove(0)).toBe(false);
+});
