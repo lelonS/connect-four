@@ -59,3 +59,13 @@ test('getCell() returns player index for non-empty cells', () => {
   expect(board.getCell(0, 0)).toBe(0);
   expect(board.getCell(6, 5)).toBe(1);
 });
+
+// Test nextTurn()
+test('nextTurn() increments turn', () => {
+  const board = new Board();
+  expect(board.turn).toBe(0);
+  board.nextTurn(); // From 0 to 1
+  expect(board.turn).toBe(1);
+  board.nextTurn(); // From 1 to 0
+  expect(board.turn).toBe(0);
+});
