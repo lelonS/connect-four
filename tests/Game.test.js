@@ -41,3 +41,22 @@ test('Start method initializes players', () => {
     ['Use "game.input(\'name\')" to set player names.'],
     ['Player 1:']]);
 });
+
+test('RenderBoard method outputs the board', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.start();
+  game.board.board[0][0] = 0; // Set a sample value on the board
+  game.renderBoard();
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput).toEqual(
+    [['Use "game.input(\'name\')" to set player names.'],
+    ['Player 1:'],
+    [`⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+🔴⚪⚪⚪⚪⚪⚪
+0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]]);
+});
