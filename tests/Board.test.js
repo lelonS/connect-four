@@ -1,25 +1,5 @@
 require('./load-all-classes.js');
-
-const emptyBoard = [[], [], [], [], [], [], []];
-const fullBoardDraw = [
-  [0, 1, 0, 1, 0, 1],
-  [0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0],
-  [1, 0, 1, 0, 1, 0],
-  [1, 0, 1, 0, 1, 0],
-  [0, 1, 0, 1, 0, 1],
-  [0, 1, 0, 1, 0, 1]
-];
-// lastMoveWinBoard, turn = 1, col = 6
-const lastMoveWinBoard = [
-  [0, 1, 0, 1, 0, 1],
-  [0, 1, 0, 1, 0, 1],
-  [0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0],
-  [0, 0, 0, 1, 0, 0],
-  [0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 1, 1]
-]
+const BoardPositions = require('./BoardPositions.js');
 
 // Test initial board state
 test('Initial board variables are correct', () => {
@@ -34,15 +14,15 @@ test('Initial board variables are correct', () => {
   expect(board.turn).toBe(0);
   expect(board.winner).toBe(null);
   // Check board array
-  expect(board.board).toEqual(emptyBoard);
+  expect(board.board).toEqual(BoardPositions.empty.board);
 });
 
 // Test createEmptyBoard()
 test('createEmptyBoard() creates an empty board', () => {
   const board = new Board();
-  board.board = fullBoardDraw;
+  board.board = BoardPositions.fullDraw.board;
   board.createEmptyBoard();
-  expect(board.board).toEqual(emptyBoard);
+  expect(board.board).toEqual(BoardPositions.empty.board);
 });
 
 // Test getCell()
@@ -65,7 +45,7 @@ test('getCell() returns null for empty cells', () => {
 
 test('getCell() returns player index for non-empty cells', () => {
   const board = new Board();
-  board.board = fullBoardDraw;
+  board.board = BoardPositions.fullDraw.board;
   expect(board.getCell(0, 0)).toBe(0);
   expect(board.getCell(6, 5)).toBe(1);
 });
@@ -143,7 +123,7 @@ test('makeMove() returns false if move is invalid or illegal', () => {
 
 test('makeMove() sets gameState to Draw if board is full', () => {
   const board = new Board();
-  board.board = fullBoardDraw.slice();
+  board.board = BoardPositions.fullDraw.board;
   // Remove last player from column 0 to make it empty
   board.turn = board.board[0].pop();
   // Make move should return true
@@ -166,8 +146,8 @@ test('makeMove() sets gameState to Win and sets winner if move results in win', 
 
 test('makeMove() sets gameState to Win (not draw) if last move on full board results in win', () => {
   const board = new Board();
-  board.board = lastMoveWinBoard;
-  board.turn = 1;
+  board.board = BoardPositions.lastMoveCol6Win.board;
+  board.turn = BoardPositions.lastMoveCol6Win.turn;
   // Make move should return true
   expect(board.makeMove(6)).toBe(true);
   // Make move changes gameState to Win
@@ -177,7 +157,7 @@ test('makeMove() sets gameState to Win (not draw) if last move on full board res
 // Test checkDraw()
 test('checkDraw() returns true if board is full', () => {
   const board = new Board();
-  board.board = fullBoardDraw;
+  board.board = BoardPositions.fullDraw.board;
   expect(board.checkDraw()).toBe(true);
 });
 
@@ -185,7 +165,7 @@ test('checkDraw() returns false if board is not full', () => {
   const board = new Board();
   expect(board.checkDraw()).toBe(false);
   // Fill board except for 1 space
-  board.board = fullBoardDraw.slice();
+  board.board = BoardPositions.fullDraw.board;
   board.board[0].pop();
   expect(board.checkDraw()).toBe(false);
 });
