@@ -153,3 +153,20 @@ test('makeMove() sets gameState to Win and sets winner if move results in win', 
   // Make move sets winner to player 0
   expect(board.winner).toBe(0);
 });
+
+// Test checkDraw()
+test('checkDraw() returns true if board is full', () => {
+  const board = new Board();
+  board.board = fullBoardDraw;
+  expect(board.checkDraw()).toBe(true);
+});
+
+test('checkDraw() returns false if board is not full', () => {
+  const board = new Board();
+  expect(board.checkDraw()).toBe(false);
+  // Fill board except for 1 space
+  board.board = fullBoardDraw.slice();
+  board.board[0].pop();
+  expect(board.checkDraw()).toBe(false);
+});
+
