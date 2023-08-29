@@ -1,7 +1,15 @@
 require('./load-all-classes.js');
 
 const emptyBoard = [[], [], [], [], [], [], []];
-
+const fullBoardDraw = [
+  [0, 1, 0, 1, 0, 1],
+  [0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 0],
+  [1, 0, 1, 0, 1, 0],
+  [1, 0, 1, 0, 1, 0],
+  [0, 1, 0, 1, 0, 1],
+  [0, 1, 0, 1, 0, 1]
+];
 
 test('Initial board variables are correct', () => {
   const board = new Board();
@@ -18,4 +26,9 @@ test('Initial board variables are correct', () => {
   expect(board.board).toEqual(emptyBoard);
 });
 
-
+test('createEmptyBoard() creates an empty board', () => {
+  const board = new Board();
+  board.board = fullBoardDraw;
+  board.createEmptyBoard();
+  expect(board.board).toEqual(emptyBoard);
+});
