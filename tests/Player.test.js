@@ -10,6 +10,7 @@ test('isValidName test', () => {
   expect(Player.isValidName('123test')).toBe(false);
   expect(Player.isValidName('@@@#######test')).toBe(false);
   expect(Player.isValidName('test')).toBe(true);
+  expect(Player.isValidName('  testtt')).toBe(false);
 })
 
 test('player toString', () => {
