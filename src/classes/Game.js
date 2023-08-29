@@ -13,10 +13,10 @@ class Game {
   }
 
   start() {
-    const symbols = ['🔴', '🔵']
+    const colors = ['🔴', '🔵']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('player', symbols[i]);
+      const player = new Player('player', colors[i]);
       this.players.push(player);
     }
 
@@ -31,8 +31,8 @@ class Game {
     for (let row = this.board.rowCount - 1; row >= 0; row--) {
       for (let col = 0; col < this.board.colCount; col++) {
         const playerIndex = this.board.getCell(col, row);
-        const symbol = playerIndex === null ? emptyCell : this.players[playerIndex].symbol;
-        output += symbol;
+        const cellColor = playerIndex === null ? emptyCell : this.players[playerIndex].color;
+        output += cellColor;
       }
       output += '\n';
     }

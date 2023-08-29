@@ -8,9 +8,9 @@ class Player {
   }
 
   #name;
-  constructor(name, symbol) {
+  constructor(name, color) {
     this.name = name;
-    this.symbol = symbol;
+    this.color = color;
   }
 
   get name() { return this.#name; }
@@ -23,6 +23,6 @@ class Player {
   }
 
   toString() {
-    return this.name + ' (' + this.symbol + ')';
+    return this.name + ' (' + this.color + ')';
   }
 }
