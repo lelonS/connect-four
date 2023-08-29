@@ -23,3 +23,14 @@ test('setName', () => {
   player.name = 'someOtherName';
   expect(player.name).toBe('someOtherName');
 })
+
+test('test no name', () => {
+  const t = () => new Player();
+  expect(t).toThrow()
+})
+
+test('change name error throw', () => {
+  const player = new Player('test');
+  const t = () => player.name = '    123';
+  expect(t).toThrow();
+});
