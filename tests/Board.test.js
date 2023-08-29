@@ -10,6 +10,16 @@ const fullBoardDraw = [
   [0, 1, 0, 1, 0, 1],
   [0, 1, 0, 1, 0, 1]
 ];
+// lastMoveWinBoard, turn = 1, col = 6
+const lastMoveWinBoard = [
+  [0, 1, 0, 1, 0, 1],
+  [0, 1, 0, 1, 0, 1],
+  [0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 0],
+  [0, 0, 0, 1, 0, 0],
+  [0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 1, 1]
+]
 
 // Test initial board state
 test('Initial board variables are correct', () => {
@@ -152,6 +162,16 @@ test('makeMove() sets gameState to Win and sets winner if move results in win', 
   expect(board.gameState).toBe(Board.GameStates.Win);
   // Make move sets winner to player 0
   expect(board.winner).toBe(0);
+});
+
+test('makeMove() sets gameState to Win (not draw) if last move on full board results in win', () => {
+  const board = new Board();
+  board.board = lastMoveWinBoard;
+  board.turn = 1;
+  // Make move should return true
+  expect(board.makeMove(6)).toBe(true);
+  // Make move changes gameState to Win
+  expect(board.gameState).toBe(Board.GameStates.Win);
 });
 
 // Test checkDraw()
