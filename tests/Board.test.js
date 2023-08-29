@@ -170,3 +170,29 @@ test('checkDraw() returns false if board is not full', () => {
   expect(board.checkDraw()).toBe(false);
 });
 
+// Test checkWinAt()
+// Test win positions from BoardPositions.js.
+// This makes sure a win from both player1 and player2 is detected.
+// And all directions are tested. (Horizontal, vertical, diagonal downright, diagonal upright)
+// And boundary conditions are tested (win at edge of board)
+test.each(BoardPositions.winPositions)
+  ('Test win position $name', ({ winnerCoords, board }) => {
+    const boardInstance = new Board();
+    boardInstance.board = board;
+    for ([col, row] of winnerCoords) {
+      expect(boardInstance.checkWinAt(col, row)).toBe(true);
+    }
+  });
+
+test('checkWinAt() returns false if no win', () => {
+  const board = new Board();
+  expect(board.checkWinAt(0, 0)).toBe(false);
+  // Fill board with no win (2 in a row and 3 in a row)
+  board.board = BoardPositions.fullDraw.board;
+  // Check all cells (should be no win)
+  for (let col = 0; col < board.colCount; col++) {
+    for (let row = 0; row < board.rowCount; row++) {
+      expect(board.checkWinAt(col, row)).toBe(false);
+    }
+  }
+});
