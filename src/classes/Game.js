@@ -60,7 +60,7 @@ class Game {
       console.log('Player ' + (this.expectedInput + 1) + ':');
     } else {
       console.log('All players named.');
-      console.log('Players:', this.players);
+      // console.log('Players:', this.players);
       this.waitForMove();
     }
   }
