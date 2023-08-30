@@ -168,3 +168,15 @@ test('waitForMove method displays correct message for draw', () => {
   expect(logOutput[1]).toEqual(['Draw!'])
   expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.'])
 });
+
+test('input method handles input correctly', () => {
+  const game = new Game();
+  const spyName = jest.spyOn(game, 'inputName');
+  const spyMove = jest.spyOn(game, 'move');
+  game.input('Albin');
+  game.input('Leon');
+  expect(spyName).toHaveBeenCalledTimes(2);
+  expect(spyMove).not.toHaveBeenCalled();
+  game.input(2);
+  expect(spyMove).toHaveBeenCalled();
+});
