@@ -17,7 +17,7 @@ class Player {
 
   set name(name) {
     if (!Player.isValidName(name)) {
-      throw new Error('Invalid player name: ' + name);
+      throw new Error('Invalid player name: "' + name + '"');
     }
     this.#name = name;
   }
