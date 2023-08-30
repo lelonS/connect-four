@@ -176,7 +176,7 @@ test('checkDraw() returns false if board is not full', () => {
 // And all directions are tested. (Horizontal, vertical, diagonal downright, diagonal upright)
 // And boundary conditions are tested (win at edge of board)
 test.each(BoardPositions.winPositions)
-  ('Test win position $name', ({ winnerCoords, board }) => {
+  ('checkWinAt() returns true if win, position: $name', ({ winnerCoords, board }) => {
     const boardInstance = new Board();
     boardInstance.board = board;
     for ([col, row] of winnerCoords) {
