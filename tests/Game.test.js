@@ -60,3 +60,35 @@ test('RenderBoard method outputs the board', () => {
 🔴⚪⚪⚪⚪⚪⚪
 0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]]);
 });
+
+test('inputName method handles invalid names', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.inputName('27');
+  expect(game.players[0].name).not.toBe('27');
+  expect(game.expectedInput).toBe(0);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(['Invalid name. Only alphabetical values'])
+});
+
+test('inputName method adds player', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.inputName('Albin');
+  expect(game.players[0].name).toBe('Albin');
+  expect(game.expectedInput).toBe(1);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(['Player Albin (🔴) added.'])
+});
+
+test('inputName method adds players and proceeds', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.inputName('Albin');
+  game.inputName('Leon');
+  expect(game.players[0].name).toBe('Albin');
+  expect(game.players[1].name).toBe('Leon');
+  expect(game.expectedInput).toBe(2);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[3]).toEqual(['All players named.'])
+});
