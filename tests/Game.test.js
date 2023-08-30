@@ -89,3 +89,29 @@ test('inputName method adds players and proceeds', () => {
   const logOutput = getConsoleLogOutput();
   expect(logOutput[3]).toEqual(['All players named.'])
 });
+
+test('Move method handles out of bounds column', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.move(10);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(['Invalid column.'])
+});
+
+test('Move method hanldes string input', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.move('27');
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput).toEqual([])
+});
+
+test('Move method makes a move and proceeds', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.move(0);
+  expect(game.board.board[0][0]).toBe(0);
+  expect(game.board.turn).toBe(1);
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(['Making move in column', 0])
+});
