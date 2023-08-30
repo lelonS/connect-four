@@ -65,7 +65,7 @@ test('inputName method handles invalid names', () => {
   expect(game.players[0].name).not.toBe('27');
   expect(game.expectedInput).toBe(0);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Invalid name. Only alphabetical values'])
+  expect(logOutput[0]).toEqual(['Invalid name. Only alphabetical values']);
 });
 
 test('inputName method adds player', () => {
@@ -75,7 +75,7 @@ test('inputName method adds player', () => {
   expect(game.players[0].name).toBe('Albin');
   expect(game.expectedInput).toBe(1);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Player Albin (🔴) added.'])
+  expect(logOutput[0]).toEqual(['Player Albin (🔴) added.']);
 });
 
 test('inputName method adds players and proceeds', () => {
@@ -87,7 +87,7 @@ test('inputName method adds players and proceeds', () => {
   expect(game.players[1].name).toBe('Leon');
   expect(game.expectedInput).toBe(2);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[3]).toEqual(['All players named.'])
+  expect(logOutput[3]).toEqual(['All players named.']);
 });
 
 test('Move method handles out of bounds column', () => {
@@ -95,7 +95,7 @@ test('Move method handles out of bounds column', () => {
   resetConsoleLogOutput();
   game.move(10);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Invalid column.'])
+  expect(logOutput[0]).toEqual(['Invalid column.']);
 });
 
 test('Move method hanldes string input', () => {
@@ -103,7 +103,7 @@ test('Move method hanldes string input', () => {
   resetConsoleLogOutput();
   game.move('27');
   const logOutput = getConsoleLogOutput();
-  expect(logOutput).toEqual([])
+  expect(logOutput).toEqual([]);
 });
 
 test('Move method makes a move and proceeds', () => {
@@ -113,7 +113,7 @@ test('Move method makes a move and proceeds', () => {
   expect(game.board.board[0][0]).toBe(0);
   expect(game.board.turn).toBe(1);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Making move in column', 0])
+  expect(logOutput[0]).toEqual(['Making move in column', 0]);
 });
 
 test('waitForMove method displays correct message when playing', () => {
@@ -129,7 +129,7 @@ test('waitForMove method displays correct message when playing', () => {
 ⚪⚪⚪⚪⚪⚪⚪
 ⚪⚪⚪⚪⚪⚪⚪
 0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
-  expect(logOutput[1]).toEqual(['Use "game.input(0-6)" player (🔴)\'s turn'])
+  expect(logOutput[1]).toEqual(['Use "game.input(0-6)" player (🔴)\'s turn']);
 });
 
 test('waitForMove method displays correct message for win', () => {
@@ -147,8 +147,8 @@ test('waitForMove method displays correct message for win', () => {
 ⚪⚪⚪⚪⚪⚪⚪
 ⚪⚪⚪⚪⚪⚪⚪
 0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
-  expect(logOutput[1]).toEqual(['Winner player (🔴)!'])
-  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.'])
+  expect(logOutput[1]).toEqual(['Winner player (🔴)!']);
+  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.']);
 });
 
 test('waitForMove method displays correct message for draw', () => {
