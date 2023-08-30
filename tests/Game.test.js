@@ -115,3 +115,56 @@ test('Move method makes a move and proceeds', () => {
   const logOutput = getConsoleLogOutput();
   expect(logOutput[0]).toEqual(['Making move in column', 0])
 });
+
+test('waitForMove method displays correct message when playing', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.waitForMove();
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(
+    [`⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
+  expect(logOutput[1]).toEqual(['Use "game.input(0-6)" player (🔴)\'s turn'])
+});
+
+test('waitForMove method displays correct message for win', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.board.gameState = Board.GameStates.Win;
+  game.board.winner = 0;
+  game.waitForMove();
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(
+    [`⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
+  expect(logOutput[1]).toEqual(['Winner player (🔴)!'])
+  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.'])
+});
+
+test('waitForMove method displays correct message for draw', () => {
+  const game = new Game();
+  resetConsoleLogOutput();
+  game.board.gameState = Board.GameStates.Draw;
+  game.waitForMove();
+  const logOutput = getConsoleLogOutput();
+  expect(logOutput[0]).toEqual(
+    [`⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+⚪⚪⚪⚪⚪⚪⚪
+0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
+  expect(logOutput[1]).toEqual(['Draw!'])
+  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.'])
+});
