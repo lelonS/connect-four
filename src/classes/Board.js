@@ -41,17 +41,17 @@ class Board {
 
   isValidMove(col) {
     if (this.gameState !== Board.GameStates.Playing) {
-      console.log("The game is over.");
+      // console.log("The game is over.");
       return false;
     }
 
     if (col < 0 || col >= this.colCount) {
-      console.log("Invalid column.");
+      // console.log("Invalid column.");
       return false;
     }
 
     if (this.board[col].length >= this.rowCount) {
-      console.log("Column is full.");
+      // console.log("Column is full.");
       return false;
     }
 

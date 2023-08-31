@@ -86,8 +86,9 @@ class Game {
 
   move(col) {
     // Check if input is a number.
-    if (typeof col !== 'number') { return; }
-    if (!Number.isInteger(col)) { return; }
+    if (typeof col !== 'number') { console.log('Move must be integer'); return; }
+    if (!Number.isInteger(col)) { console.log('Move must be integer'); return; }
+    if (!this.board.isValidMove(col)) { console.log('Move not allowed'); return; }
 
     const success = this.board.makeMove(col);
     if (success) {
