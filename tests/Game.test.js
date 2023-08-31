@@ -95,15 +95,15 @@ test('Move method handles out of bounds column', () => {
   resetConsoleLogOutput();
   game.move(10);
   const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Invalid column.']);
+  expect(logOutput[0]).toEqual(['Move not allowed']);
 });
 
-test('Move method hanldes string input', () => {
+test('Move method handles string input', () => {
   const game = new Game();
   resetConsoleLogOutput();
   game.move('27');
   const logOutput = getConsoleLogOutput();
-  expect(logOutput).toEqual([]);
+  expect(logOutput[0]).toEqual(['Move must be integer']);
 });
 
 test('Move method makes a move and proceeds', () => {
