@@ -20,8 +20,58 @@ class Game {
       this.players.push(player);
     }
 
-    console.log('Use "game.input(\'name\')" to set player names.');
-    console.log('Player 1:');
+    this.askForPlayerNames();
+  }
+
+  askForPlayerNames() {
+    // Get .game-info element
+    const gameInfo = document.querySelector('.game-info');
+    // Clear .game-info
+    gameInfo.innerHTML = /*html*/`
+      <h3>Enter player names</h3>
+      <p>Only alphabetical characters</p>
+      `;
+
+    // Create input elements
+    const nameInputElements = [];
+    for (let i = 0; i < this.playerCount; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Player ' + (i + 1);
+      nameInputElements.push(input);
+    }
+    // Create submit button
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Submit';
+
+    // Add elements to .game-info
+    nameInputElements.forEach(input => gameInfo.appendChild(input));
+    gameInfo.appendChild(submitButton);
+
+    // Add event listener to submit button
+    submitButton.addEventListener('click', () => {
+      // Get input values
+      const inputNames = nameInputElements.map(input => input.value);
+      // Check if input is valid
+      for (let i = 0; i < inputNames.length; i++) {
+        const name = inputNames[i];
+        if (!Player.isValidName(name)) {
+          nameInputElements[i].value = '';
+          console.log('Invalid name. Only alphabetical values');
+          return;
+        }
+      }
+      // Set player names
+      for (let i = 0; i < inputNames.length; i++) {
+        this.players[i].name = inputNames[i];
+        console.log('Player ' + this.players[this.expectedInput].toString() + ' added.');
+        this.expectedInput++;
+      }
+      this.waitForMove();
+      // Remove elements from .game-info
+      gameInfo.innerHTML = '';
+    });
+
   }
 
   renderBoard() {
@@ -46,24 +96,7 @@ class Game {
     console.log(output);
   }
 
-  inputName(name) {
-    if (!Player.isValidName(name)) {
-      console.log('Invalid name. Only alphabetical values');
-      return;
-    }
 
-    this.players[this.expectedInput].name = name
-    console.log('Player ' + this.players[this.expectedInput].toString() + ' added.');
-
-    this.expectedInput++;
-    if (this.expectedInput < this.playerCount) {
-      console.log('Player ' + (this.expectedInput + 1) + ':');
-    } else {
-      console.log('All players named.');
-      // console.log('Players:', this.players);
-      this.waitForMove();
-    }
-  }
 
   waitForMove() {
     this.renderBoard();
