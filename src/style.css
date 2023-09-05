@@ -13,18 +13,18 @@ body {
 .game-container {
   --board-width: 90vh;
   --board-height: calc(var(--board-width) * 6/7);
-  --game-info-width: calc(var(--board-width) * 3/7);
+  --game-sidebar-width: calc(var(--board-width) * 3/7);
 }
 
-.game-info {
+.game-sidebar {
   background-color: var(--secondary-background-color);
   float: left;
-  width: var(--game-info-width);
+  width: var(--game-sidebar-width);
   height: var(--board-height);
   text-align: center;
 }
 
-.game-info>* {
+.game-sidebar>* {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -35,7 +35,7 @@ body {
   background-color: var(--board-color);
   width: var(--board-width);
   height: var(--board-height);
-  margin-left: calc(50vw - (var(--board-width) + var(--game-info-width) + 10px) / 2);
+  margin-left: calc(50vw - (var(--board-width) + var(--game-sidebar-width) + 10px) / 2);
   display: flex;
   flex-direction: row;
 }
@@ -64,7 +64,7 @@ body {
     margin: auto;
   }
 
-  .game-info {
+  .game-sidebar {
     float: none;
     margin-top: 0;
     margin: auto;
@@ -86,7 +86,7 @@ body {
     margin: auto;
   }
 
-  .game-info {
+  .game-sidebar {
     float: none;
     margin-top: 0;
     margin: auto;
