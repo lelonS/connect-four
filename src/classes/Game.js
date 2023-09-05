@@ -52,26 +52,31 @@ class Game {
     submitButton.addEventListener('click', () => {
       // Get input values
       const inputNames = nameInputElements.map(input => input.value);
-      // Check if input is valid
-      for (let i = 0; i < inputNames.length; i++) {
-        const name = inputNames[i];
-        if (!Player.isValidName(name)) {
-          nameInputElements[i].value = ''; // Clear input if invalid
-          console.log('Invalid name. Only alphabetical values');
-          return;
-        }
-      }
-      // Set player names
-      for (let i = 0; i < inputNames.length; i++) {
-        this.players[i].name = inputNames[i];
-        console.log('Player ' + this.players[this.expectedInput].toString() + ' added.');
-        this.expectedInput++;
-      }
+      if (!this.#checkPlayerNames(inputNames)) { return; }
+
+      this.#setPlayerNames(inputNames);
+
+      this.expectedInput += inputNames.length;
       this.waitForMove();
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
     });
+  }
 
+  #checkPlayerNames(names) {
+    for (let i = 0; i < names.length; i++) {
+      const name = names[i];
+      if (!Player.isValidName(name)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  #setPlayerNames(names) {
+    for (let i = 0; i < names.length; i++) {
+      this.players[i].name = names[i];
+    }
   }
 
   renderBoard() {
