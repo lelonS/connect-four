@@ -56,7 +56,7 @@ class Game {
       for (let i = 0; i < inputNames.length; i++) {
         const name = inputNames[i];
         if (!Player.isValidName(name)) {
-          nameInputElements[i].value = '';
+          nameInputElements[i].value = ''; // Clear input if invalid
           console.log('Invalid name. Only alphabetical values');
           return;
         }
