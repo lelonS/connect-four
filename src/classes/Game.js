@@ -52,7 +52,7 @@ class Game {
     submitButton.addEventListener('click', () => {
       // Get input values
       const inputNames = nameInputElements.map(input => input.value);
-      if (!this.#checkPlayerNames(inputNames)) { return; }
+      if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 
       this.#setPlayerNames(inputNames);
 
@@ -63,14 +63,16 @@ class Game {
     });
   }
 
-  #checkPlayerNames(names) {
+  #checkPlayerNames(names, inputElements) {
+    let valid = true;
     for (let i = 0; i < names.length; i++) {
       const name = names[i];
       if (!Player.isValidName(name)) {
-        return false;
+        valid = false;
+        if (inputElements) { inputElements[i].value = ''; }
       }
     }
-    return true;
+    return valid;
   }
 
   #setPlayerNames(names) {
