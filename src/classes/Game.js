@@ -9,11 +9,12 @@ class Game {
     this.board = new Board();
     // Numbers below playerCount are used for naming player with that index.
     this.expectedInput = 0;
+    this.renderBoard();
     this.start();
   }
 
   start() {
-    const colors = ['🔴', '🔵']
+    const colors = ['red', 'yellow']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
       const player = new Player('player', colors[i]);
@@ -25,25 +26,31 @@ class Game {
   }
 
   renderBoard() {
-    const emptyCell = '⚪';
-    let output = '';
-    // Add board to output
-    for (let row = this.board.rowCount - 1; row >= 0; row--) {
-      for (let col = 0; col < this.board.colCount; col++) {
-        const playerIndex = this.board.getCell(col, row);
-        const cellColor = playerIndex === null ? emptyCell : this.players[playerIndex].color;
-        output += cellColor;
-      }
-      output += '\n';
-    }
+    // Get .board element
+    const boardElement = document.querySelector('.board');
+    // Clear board
+    boardElement.innerHTML = '';
 
-    // Add column numbers to output
-    const numbers = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣'];
+    //Create columns
     for (let col = 0; col < this.board.colCount; col++) {
-      output += numbers[col];
-    }
+      const colElement = document.createElement('div');
+      colElement.classList.add('column');
+      boardElement.appendChild(colElement);
 
-    console.log(output);
+      // Create cells
+      for (let row = 0; row < this.board.rowCount; row++) {
+        const cellElement = document.createElement('div');
+        cellElement.classList.add('cell');
+        colElement.appendChild(cellElement);
+
+        // Get cell value
+        const cellValue = this.board.getCell(col, row);
+        if (cellValue !== null) {
+          const player = this.players[cellValue];
+          cellElement.style.backgroundColor = player.color;
+        }
+      }
+    }
   }
 
   inputName(name) {
