@@ -2,6 +2,7 @@ class Game {
   get playerCount() { return this.board.playerCount; }
 
   constructor() {
+    this.addEventListeners();
     this.reset();
   }
 
@@ -10,7 +11,6 @@ class Game {
     // Numbers below playerCount are used for naming player with that index.
     this.expectedInput = 0;
     this.renderBoard();
-    this.addEventListeners();
     this.start();
   }
 
