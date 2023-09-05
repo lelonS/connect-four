@@ -1,0 +1,98 @@
+:root {
+  --background-color: #161616;
+  --secondary-background-color: #333;
+  --text-color: #fff;
+  --board-color: #1F51FF;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.game-container {
+  --board-width: 90vh;
+  --board-height: calc(var(--board-width) * 6/7);
+  --game-info-width: calc(var(--board-width) * 3/7);
+}
+
+.game-info {
+  background-color: var(--secondary-background-color);
+  float: left;
+  width: var(--game-info-width);
+  height: var(--board-height);
+  text-align: center;
+}
+
+.game-info>* {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.board {
+  float: left;
+  margin-right: 10px;
+  background-color: var(--board-color);
+  width: var(--board-width);
+  height: var(--board-height);
+  margin-left: calc(50vw - (var(--board-width) + var(--game-info-width) + 10px) / 2);
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  /* border: 1px solid black; */
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-around;
+}
+
+.cell {
+  background-color: var(--background-color);
+  margin: auto;
+  border-radius: 50%;
+  width: 90%;
+  aspect-ratio: 1/1;
+}
+
+@media (max-aspect-ratio: 1.5) {
+
+  .board {
+    float: none;
+    margin: auto;
+  }
+
+  .game-info {
+    float: none;
+    margin-top: 0;
+    margin: auto;
+    height: calc(95vh - var(--board-height));
+    width: var(--board-width);
+    max-width: none;
+  }
+}
+
+/* Potrait */
+@media (max-aspect-ratio: 7/6) {
+  .game-container {
+    --board-width: 80vw;
+  }
+
+  .board {
+    /* float: none; */
+    float: none;
+    margin: auto;
+  }
+
+  .game-info {
+    float: none;
+    margin-top: 0;
+    margin: auto;
+    height: calc(95vh - var(--board-height));
+    width: var(--board-width);
+    max-width: none;
+    /* float: none; */
+  }
+}
