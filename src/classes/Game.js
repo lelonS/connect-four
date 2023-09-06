@@ -129,10 +129,19 @@ class Game {
     }
   }
 
+  renderTurn() {
+    const gameInfo = document.querySelector('.game-info');
+    const player = this.players[this.board.turn];
+    gameInfo.innerHTML = /*html*/`
+      <h3>${player.name}'s turn</h3>
+      <div class="cell" style="background-color:${player.color}; width: calc(var(--board-width) / 7 * 0.6);"></div>`
+    // Draws a circle with the player's color thats a bit smaller than the cells
+  }
+
   waitForMove() {
     this.renderBoard();
     if (this.board.gameState === Board.GameStates.Playing) {
-      console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].toString()}\'s turn`);
+      this.renderTurn();
     } else {
       // Game is not playing
       console.log('Game over. Use "game.reset()" to start a new game.');
