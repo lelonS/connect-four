@@ -57,9 +57,12 @@ class Game {
       this.#setPlayerNames(inputNames);
 
       this.expectedInput += inputNames.length;
-      this.waitForMove();
+
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
+
+      this.waitForMove();
+
     });
   }
 
