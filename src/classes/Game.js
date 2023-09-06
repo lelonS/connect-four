@@ -117,7 +117,6 @@ class Game {
     const gameInfo = document.querySelector('.game-info');
     // Write result to sidebar
     if (this.board.gameState === Board.GameStates.Draw) {
-      const draw = this.board.checkDraw();
       gameInfo.innerHTML = /*html*/`
         <h3 class="game-result">It's a draw!</h3>`
     } else if (this.board.gameState === Board.GameStates.Win) {
