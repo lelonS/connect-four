@@ -5,15 +5,22 @@ class Game {
     this.reset();
   }
 
-  reset() {
+  reset(createPlayers = true) {
     this.board = new Board();
     // Numbers below playerCount are used for naming player with that index.
-    this.expectedInput = 0;
+
     this.renderBoard();
-    this.start();
+    if (createPlayers) {
+      this.expectedInput = 0;
+      this.createPlayers();
+    }
+    else {
+      this.expectedInput = this.playerCount;
+      this.waitForMove();
+    }
   }
 
-  start() {
+  createPlayers() {
     const colors = ['red', 'yellow']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
@@ -126,6 +133,24 @@ class Game {
         <h3 class="game-result">${winner.name} won!</h3>
         <div class="cell" style="background-color:${winner.color}"></div> `
     }
+
+    // Play again buttons
+    const newGameButton = document.createElement('button');
+    newGameButton.textContent = 'New game';
+    gameInfo.appendChild(newGameButton);
+    newGameButton.addEventListener('click', () => {
+      gameInfo.innerHTML = '';
+      this.reset();
+    });
+
+    const playAgainButton = document.createElement('button');
+    playAgainButton.textContent = 'Play again';
+    gameInfo.appendChild(playAgainButton);
+    playAgainButton.addEventListener('click', () => {
+      gameInfo.innerHTML = '';
+      this.reset(false);
+    });
+
   }
 
   waitForMove() {
