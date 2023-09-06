@@ -113,24 +113,30 @@ class Game {
     }
   }
 
-
+  renderResults() {
+    const gameInfo = document.querySelector('.game-info');
+    // Write result to sidebar
+    if (this.board.gameState === Board.GameStates.Draw) {
+      const draw = this.board.checkDraw();
+      gameInfo.innerHTML = /*html*/`
+        <h3 class="game-result">It's a draw!</h3>`
+    } else if (this.board.gameState === Board.GameStates.Win) {
+      const winnerIndex = this.board.winner;
+      const winner = this.players[winnerIndex];
+      gameInfo.innerHTML = /*html*/`
+        <h3 class="game-result">${winner.name} won!</h3>
+        <div class="cell" style="background-color:${winner.color}"></div> `
+    }
+  }
 
   waitForMove() {
     this.renderBoard();
-
-    // Write result to console
-    if (this.board.gameState === Board.GameStates.Draw) {
-      console.log('Draw!');
-    } else if (this.board.gameState === Board.GameStates.Win) {
-      const winnerIndex = this.board.winner;
-      console.log(`Winner ${this.players[winnerIndex].toString()}!`);
-    }
-
     if (this.board.gameState === Board.GameStates.Playing) {
       console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].toString()}\'s turn`);
     } else {
       // Game is not playing
       console.log('Game over. Use "game.reset()" to start a new game.');
+      this.renderResults();
     }
   }
 

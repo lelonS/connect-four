@@ -29,6 +29,13 @@ body {
   margin-right: 10px;
 }
 
+.game-result {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .board {
   float: left;
   margin-right: 10px;
@@ -53,7 +60,7 @@ body {
   background-color: var(--background-color);
   margin: auto;
   border-radius: 50%;
-  width: 90%;
+  width: calc(var(--board-width) / 7 * 0.9);
   aspect-ratio: 1/1;
 }
 
