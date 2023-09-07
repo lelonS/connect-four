@@ -2,6 +2,7 @@ class Game {
   get playerCount() { return this.board.playerCount; }
 
   constructor() {
+    this.addEventListeners();
     this.reset();
   }
 
@@ -117,7 +118,6 @@ class Game {
     const gameInfo = document.querySelector('.game-info');
     // Write result to sidebar
     if (this.board.gameState === Board.GameStates.Draw) {
-      const draw = this.board.checkDraw();
       gameInfo.innerHTML = /*html*/`
         <h3 class="game-result">It's a draw!</h3>`
     } else if (this.board.gameState === Board.GameStates.Win) {
@@ -168,5 +168,22 @@ class Game {
     } else {
       this.move(userInput);
     }
+  }
+
+  addEventListeners() {
+    // Get .board
+    const boardElement = document.querySelector('.board');
+    // Add event listener
+    boardElement.addEventListener('click', (event) => {
+      // Get clicked element
+      const target = event.target;
+      // Get column element
+      const columnElement = target.closest('.column');
+      // Get column index
+      const columnElements = [...boardElement.querySelectorAll('.column')];
+      const colIndex = columnElements.indexOf(columnElement);
+      // Make move
+      this.move(colIndex);
+    });
   }
 }
