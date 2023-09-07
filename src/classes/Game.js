@@ -22,8 +22,68 @@ class Game {
       this.players.push(player);
     }
 
-    console.log('Use "game.input(\'name\')" to set player names.');
-    console.log('Player 1:');
+    this.askForPlayerNames();
+  }
+
+  askForPlayerNames() {
+    // Get .game-info element
+    const gameInfo = document.querySelector('.game-info');
+    // Clear .game-info
+    gameInfo.innerHTML = /*html*/`
+      <h3>Enter player names</h3>
+      <p>Only alphabetical characters</p>
+      `;
+
+    // Create input elements
+    const nameInputElements = [];
+    for (let i = 0; i < this.playerCount; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Player ' + (i + 1);
+      nameInputElements.push(input);
+    }
+    // Create submit button
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Submit';
+
+    // Add elements to .game-info
+    nameInputElements.forEach(input => gameInfo.appendChild(input));
+    gameInfo.appendChild(submitButton);
+
+    // Add event listener to submit button
+    submitButton.addEventListener('click', () => {
+      // Get input values
+      const inputNames = nameInputElements.map(input => input.value);
+      if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
+
+      this.#setPlayerNames(inputNames);
+
+      this.expectedInput += inputNames.length;
+
+      // Remove elements from .game-info
+      gameInfo.innerHTML = '';
+
+      this.waitForMove();
+
+    });
+  }
+
+  #checkPlayerNames(names, inputElements) {
+    let valid = true;
+    for (let i = 0; i < names.length; i++) {
+      const name = names[i];
+      if (!Player.isValidName(name)) {
+        valid = false;
+        if (inputElements) { inputElements[i].value = ''; }
+      }
+    }
+    return valid;
+  }
+
+  #setPlayerNames(names) {
+    for (let i = 0; i < names.length; i++) {
+      this.players[i].name = names[i];
+    }
   }
 
   renderBoard() {
@@ -54,41 +114,29 @@ class Game {
     }
   }
 
-  inputName(name) {
-    if (!Player.isValidName(name)) {
-      console.log('Invalid name. Only alphabetical values');
-      return;
-    }
-
-    this.players[this.expectedInput].name = name
-    console.log('Player ' + this.players[this.expectedInput].toString() + ' added.');
-
-    this.expectedInput++;
-    if (this.expectedInput < this.playerCount) {
-      console.log('Player ' + (this.expectedInput + 1) + ':');
-    } else {
-      console.log('All players named.');
-      // console.log('Players:', this.players);
-      this.waitForMove();
+  renderResults() {
+    const gameInfo = document.querySelector('.game-info');
+    // Write result to sidebar
+    if (this.board.gameState === Board.GameStates.Draw) {
+      gameInfo.innerHTML = /*html*/`
+        <h3 class="game-result">It's a draw!</h3>`
+    } else if (this.board.gameState === Board.GameStates.Win) {
+      const winnerIndex = this.board.winner;
+      const winner = this.players[winnerIndex];
+      gameInfo.innerHTML = /*html*/`
+        <h3 class="game-result">${winner.name} won!</h3>
+        <div class="cell" style="background-color:${winner.color}"></div> `
     }
   }
 
   waitForMove() {
     this.renderBoard();
-
-    // Write result to console
-    if (this.board.gameState === Board.GameStates.Draw) {
-      console.log('Draw!');
-    } else if (this.board.gameState === Board.GameStates.Win) {
-      const winnerIndex = this.board.winner;
-      console.log(`Winner ${this.players[winnerIndex].toString()}!`);
-    }
-
     if (this.board.gameState === Board.GameStates.Playing) {
       console.log(`Use "game.input(0-6)" ${this.players[this.board.turn].toString()}\'s turn`);
     } else {
       // Game is not playing
       console.log('Game over. Use "game.reset()" to start a new game.');
+      this.renderResults();
     }
   }
 
