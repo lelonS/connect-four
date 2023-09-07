@@ -8,15 +8,13 @@ class Game {
 
   reset(createPlayers = true) {
     this.board = new Board();
-    // Numbers below playerCount are used for naming player with that index.
+    this.moveAllowed = false;
 
     this.renderBoard();
     if (createPlayers) {
-      this.expectedInput = 0;
       this.createPlayers();
     }
     else {
-      this.expectedInput = this.playerCount;
       this.waitForMove();
     }
   }
@@ -64,8 +62,6 @@ class Game {
       if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 
       this.#setPlayerNames(inputNames);
-
-      this.expectedInput += inputNames.length;
 
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
@@ -164,6 +160,7 @@ class Game {
   }
 
   waitForMove() {
+    this.moveAllowed = true;
     this.renderBoard();
     if (this.board.gameState === Board.GameStates.Playing) {
       this.renderTurn();
@@ -175,23 +172,19 @@ class Game {
   }
 
   move(col) {
-    // Check if input is a number.
-    if (typeof col !== 'number') { console.log('Move must be integer'); return; }
-    if (!Number.isInteger(col)) { console.log('Move must be integer'); return; }
+    if (!this.moveAllowed) {
+      const gameSidebar = document.querySelector('.game-sidebar');
+      if (!gameSidebar.classList.contains('error-animation')) {
+        gameSidebar.classList.add('error-animation');
+        setTimeout(() => { gameSidebar.classList.remove('error-animation'); }, 500);
+      }
+      return;
+    }
     if (!this.board.isValidMove(col)) { console.log('Move not allowed'); return; }
 
     const success = this.board.makeMove(col);
     if (success) {
-      console.log('Making move in column', col);
       this.waitForMove();
-    }
-  }
-
-  input(userInput) {
-    if (this.expectedInput < this.playerCount) {
-      this.inputName(userInput);
-    } else {
-      this.move(userInput);
     }
   }
 
