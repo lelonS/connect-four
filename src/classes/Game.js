@@ -171,7 +171,7 @@ class Game {
     }
   }
 
-  renderGameSidebarError() {
+  shakeGameSidebar() {
     const gameSidebar = document.querySelector('.game-sidebar');
     if (!gameSidebar.classList.contains('error-animation')) {
       gameSidebar.classList.add('error-animation');
@@ -181,7 +181,7 @@ class Game {
 
   move(col) {
     if (!this.moveAllowed) {
-      this.renderGameSidebarError();
+      this.shakeGameSidebar();
       return;
     }
     if (!this.board.isValidMove(col)) { console.log('Move not allowed'); return; }
