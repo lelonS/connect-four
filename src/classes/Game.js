@@ -171,13 +171,17 @@ class Game {
     }
   }
 
+  renderGameSidebarError() {
+    const gameSidebar = document.querySelector('.game-sidebar');
+    if (!gameSidebar.classList.contains('error-animation')) {
+      gameSidebar.classList.add('error-animation');
+      setTimeout(() => { gameSidebar.classList.remove('error-animation'); }, 500);
+    }
+  }
+
   move(col) {
     if (!this.moveAllowed) {
-      const gameSidebar = document.querySelector('.game-sidebar');
-      if (!gameSidebar.classList.contains('error-animation')) {
-        gameSidebar.classList.add('error-animation');
-        setTimeout(() => { gameSidebar.classList.remove('error-animation'); }, 500);
-      }
+      this.renderGameSidebarError();
       return;
     }
     if (!this.board.isValidMove(col)) { console.log('Move not allowed'); return; }
