@@ -23,6 +23,6 @@ class Player {
   }
 
   toString() {
-    return this.name + ' (' + this.color + ')';
+    return this.name + ' (' + this.plrNumber + ')';
   }
 }

@@ -1,9 +1,9 @@
 require('./load-all-classes.js');
 
-test('Initial board variables are correct', () => {
-  const player = new Player('test', 'blue');
+test('Initial Player variables are correct', () => {
+  const player = new Player('test', 1);
   expect(player.name).toBe('test');
-  expect(player.color).toBe('blue');
+  expect(player.plrNumber).toBe(1);
 });
 
 test('isValidName only returns true when name is string with alphabetical chararacters', () => {
@@ -16,9 +16,9 @@ test('isValidName only returns true when name is string with alphabetical charar
   expect(Player.isValidName(123)).toBe(false);
 });
 
-test('toString returns Player name and color', () => {
-  const player = new Player('test', 'blue');
-  expect(player.toString()).toBe('test (blue)');
+test('toString returns Player name and plrNumber', () => {
+  const player = new Player('test', 1);
+  expect(player.toString()).toBe('test (1)');
 });
 
 test('setName with valid name changes Player.name', () => {
