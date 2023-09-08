@@ -20,10 +20,9 @@ class Game {
   }
 
   createPlayers() {
-    const colors = ['red', 'yellow']
     this.players = [];
     for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('player', colors[i]);
+      const player = new Player('player', i + 1);
       this.players.push(player);
     }
 
@@ -111,7 +110,7 @@ class Game {
         const cellValue = this.board.getCell(col, row);
         if (cellValue !== null) {
           const player = this.players[cellValue];
-          cellElement.style.backgroundColor = player.color;
+          cellElement.classList.add(`player-${player.plrNumber}`);
         }
       }
     }
@@ -128,7 +127,7 @@ class Game {
       const winner = this.players[winnerIndex];
       gameInfo.innerHTML = /*html*/`
         <h3 class="game-result">${winner.name} won!</h3>
-        <div class="cell" style="background-color:${winner.color}"></div> `
+        <div class="cell player-${winner.plrNumber}"></div> `
     }
 
     // Play again buttons
@@ -155,7 +154,7 @@ class Game {
     const player = this.players[this.board.turn];
     gameInfo.innerHTML = /*html*/`
       <h3>${player.name}'s turn</h3>
-      <div class="cell" style="background-color:${player.color}; width: calc(var(--board-width) / 7 * 0.6);"></div>`
+      <div class="cell player-${player.plrNumber}" style="width: calc(var(--board-width) / 7 * 0.6);"></div>`
     // Draws a circle with the player's color thats a bit smaller than the cells
   }
 

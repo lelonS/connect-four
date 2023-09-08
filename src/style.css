@@ -90,6 +90,14 @@ body {
   aspect-ratio: 1/1;
 }
 
+.player-1 {
+  background-color: #FF0000;
+}
+
+.player-2 {
+  background-color: #FFFF00;
+}
+
 @media (max-aspect-ratio: 1.5) {
 
   .board {
