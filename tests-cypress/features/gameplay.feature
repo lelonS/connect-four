@@ -2,18 +2,15 @@ Feature: Game Play
 
     Scenario: Win and play again
         Given I am on the main page
-        Then I enter player names
-        When One player has four crossed cell in a column
-        Then The game end and a player wins
-        Then Ask for players to play again
-        When Player says yes to play again
-        Then Reset the board
+         And I enter player names
+         When the game is played to a win
+         And I click on the "Play Again" button
+        Then the board is reset
 
     Scenario: Draw and play again
         Given I am on the main page
-        Then I enter player names
-        When All the cells are filled and no player has won
-        Then The Game is a Draw
-        Then Ask for players to play again
-        When Player says yes to play again
-        Then Reset the board
+        And   I enter player names
+        When  The game is played to a draw
+        And  I click on the "New Game" button
+        Then  the board is reset 
+        And   I should be able to enter player names
