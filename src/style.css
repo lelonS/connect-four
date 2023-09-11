@@ -24,11 +24,16 @@ body {
   width: var(--game-sidebar-width);
   text-align: center;
   overflow: hidden;
+  text-shadow: #1F51FF 0px 0px 10px;
 }
 
 .game-sidebar>* {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.game-info {
+  margin: 0px;
 }
 
 .error-animation {
@@ -100,6 +105,36 @@ body {
   background-color: #FFFF00;
 }
 
+input[type="text"] {
+  width: 40%;
+  height: 30px;
+  border-radius: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: 5px 2px 2px 2px #111111;
+}
+
+button {
+  width: 50%;
+  height: 30px;
+  border-radius: 25px;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 5px;
+  box-sizing: border-box;
+  border: none;
+  text-shadow: #ffffff 0px 0px 10px;
+  box-shadow: 5px 2px 2px 2px #111111;
+  background-color: #1F51FF;
+  color: #fff;
+}
+
 @media (max-aspect-ratio: 1.5) {
 
   .game-container {
@@ -121,37 +156,8 @@ body {
   } */
 }
 
-input[type="text"] {
-  width: 50%;
-  height: 30px;
-  border-radius: 25px;
-  box-shadow: 5px 5px 2px 2px #272727;
-  padding: 5px;
-  font-size: 1rem;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-
-}
-
-button
-{
-  width: 50%;
-  height: 30px;
-  border-radius: 25px;
-  box-shadow: 5px 5px 2px 2px #272727;
-  padding: 5px;
-  font-size: 1rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  background-color: #1F51FF;
-  color: #fff;
-  border: none;
-}
-
-
 /* Potrait */
-@media (max-aspect-ratio: 1) {
+@media (max-aspect-ratio: 1.1) {
   .game-container {
     --board-width: 70vw;
   }
@@ -171,6 +177,30 @@ button
     max-width: none;
     /* float: none; */
   }
+
+  .game-sidebar>* {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .game-info>* {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .game-info>button {
+    width: 30%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .game-info>input[type="text"] {
+    width: 46%;
+
+  }
+
 }
 
 @media (max-aspect-ratio: 0.75) {
