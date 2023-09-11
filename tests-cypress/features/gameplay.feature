@@ -15,3 +15,11 @@ Feature: Game Play
         And I click on the "New Game" button
         Then the board is reset
         And I should be able to enter player names
+
+    Scenario: Trying to play before entering names
+        Given I am on the main page
+        And no names have been entered
+        When I click on a column
+        Then no move is made
+        And the "game-sidebar" div should have the "error-animation" class
+        And I should be able to enter player names
