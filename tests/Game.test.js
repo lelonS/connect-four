@@ -152,7 +152,7 @@ test('renderTurn() renders correct output', () => {
   expect(gameInfoTitle.textContent).toBe("Bob's turn");
 });
 
-// waitForMove() tests
+// waitForMove() test
 test('waitForMove() sets moveAllowed to true', () => {
   const game = new Game();
   game.moveAllowed = false;
@@ -160,7 +160,7 @@ test('waitForMove() sets moveAllowed to true', () => {
   expect(game.moveAllowed).toBe(true);
 });
 
-// Create test for shakeGameSidebar()
+// shakeGameSidebar() test
 test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
   const game = new Game();
   jest.useFakeTimers(); // Fake timer to make sure animation is removed
@@ -170,6 +170,35 @@ test('shakeGameSidebar() adds and removes error-animation class to game-sidebar'
   jest.runAllTimers(); // Run all timers to remove animation
   expect(gameSidebar.classList.contains('error-animation')).toBe(false);
 });
+
+// move() tests
+test('move() calls makeMove() on board when valid move', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(0);
+  expect(board.makeMove).toHaveBeenCalledWith(0);
+});
+
+test('move() does not call makeMove() on board when invalid move', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(-1);
+  expect(board.makeMove).not.toHaveBeenCalled();
+});
+
+test('move() does not call makeMove() on board when moveAllowed is false', () => {
+  const game = new Game();
+  game.moveAllowed = false;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(0);
+  expect(board.makeMove).not.toHaveBeenCalled();
+});
+
 
 
 
