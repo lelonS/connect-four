@@ -24,7 +24,6 @@ body {
   width: var(--game-sidebar-width);
   text-align: center;
   overflow: hidden;
-  text-shadow: #1F51FF 0px 0px 10px;
 }
 
 .game-sidebar>* {
@@ -129,7 +128,6 @@ button {
   margin-left: 5px;
   box-sizing: border-box;
   border: none;
-  text-shadow: #ffffff 0px 0px 10px;
   box-shadow: 5px 2px 2px 2px #111111;
   background-color: #1F51FF;
   color: #fff;
