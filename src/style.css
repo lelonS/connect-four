@@ -135,11 +135,15 @@ button {
 
 
 
-
-
 @media (max-aspect-ratio: 1.3) {
   .game-container {
-    --board-width: 65vw;
+    --board-width: 70vh;
+  }
+}
+
+@media (max-aspect-ratio: 0.9) {
+  .game-container {
+    --board-width: 90vw;
   }
 }
 
@@ -147,7 +151,6 @@ button {
 
 
 @media (max-width: 600px) or (max-aspect-ratio: 1.3) {
-
   .board {
     /* float: none; */
     float: none;
