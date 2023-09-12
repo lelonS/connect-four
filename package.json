@@ -34,6 +34,7 @@
     "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
     "@cypress/webpack-preprocessor": "^6.0.0",
     "cypress": "^13.1.0",
-    "jest": "^29.6.4"
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
