@@ -33,3 +33,22 @@ test('New game has correct initial DOM', () => {
   expect(submitButton).not.toBeNull();
 });
 
+// reset() tests
+test('reset() creates new board and players', () => {
+  const game = new Game();
+  const board = game.board;
+  const players = game.players;
+  game.reset();
+  expect(game.board).not.toBe(board);
+  expect(game.players).not.toBe(players);
+});
+
+test('reset(false) creates new board and keeps players', () => {
+  const game = new Game();
+  const board = game.board;
+  const players = game.players;
+  game.reset(false);
+  expect(game.board).not.toBe(board);
+  expect(game.players).toBe(players);
+});
+
