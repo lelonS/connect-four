@@ -18,9 +18,13 @@ class Game {
     const gameSidebar = document.createElement('div');
     gameSidebar.classList.add('game-sidebar');
 
+    const gameTitle = document.createElement('h2');
+    gameTitle.textContent = 'Connect 4';
+
     const gameInfo = document.createElement('div');
     gameInfo.classList.add('game-info');
 
+    gameSidebar.appendChild(gameTitle);
     gameSidebar.appendChild(gameInfo);
     gameContainer.appendChild(board);
     gameContainer.appendChild(gameSidebar);
