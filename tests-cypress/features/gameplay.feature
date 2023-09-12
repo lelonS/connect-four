@@ -8,7 +8,7 @@ Feature: Game Play
         Then the board is reset
         And the game should start
 
-    Scenario: Draw and play again
+    Scenario: Draw and start new game
         Given I am on the main page
         And I enter valid player names
         When The game is played to a draw
@@ -21,5 +21,5 @@ Feature: Game Play
         And no names have been entered
         When I click on a column
         Then no move is made
-        And the "game-sidebar" div should have the "error-animation" class
+        And the ".game-sidebar" div should have the "error-animation" class
         And I should be able to enter player names
