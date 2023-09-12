@@ -2,7 +2,7 @@ class Game {
   get playerCount() { return this.board.playerCount; }
 
   constructor() {
-    this.addEventListeners();
+    this.#addEventListeners();
     this.reset();
   }
 
@@ -191,7 +191,7 @@ class Game {
     }
   }
 
-  addEventListeners() {
+  #addEventListeners() {
     // Get .board
     const boardElement = document.querySelector('.board');
     // Add event listener
