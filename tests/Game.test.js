@@ -160,6 +160,17 @@ test('waitForMove() sets moveAllowed to true', () => {
   expect(game.moveAllowed).toBe(true);
 });
 
+// Create test for shakeGameSidebar()
+test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
+  const game = new Game();
+  jest.useFakeTimers(); // Fake timer to make sure animation is removed
+  game.shakeGameSidebar();
+  const gameSidebar = document.querySelector('.game-sidebar');
+  expect(gameSidebar.classList.contains('error-animation')).toBe(true);
+  jest.runAllTimers(); // Run all timers to remove animation
+  expect(gameSidebar.classList.contains('error-animation')).toBe(false);
+});
+
 
 
 
