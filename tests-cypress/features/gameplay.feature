@@ -11,7 +11,7 @@ Feature: Game Play
     Scenario: Draw and start new game
         Given I am on the main page
         And I enter valid player names
-        When The game is played to a draw
+        When the game is played to a draw
         And I click on the "New Game" button
         Then the board is reset
         And I should be able to enter player names

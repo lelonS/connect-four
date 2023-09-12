@@ -5,15 +5,15 @@ Given('I am on the main page', () => {
 });
 
 Given('I enter valid player names', () => {
-  cy.get('input').eq(0).type('Alice');
-  cy.get('input').eq(1).type('Bob');
+  cy.get('.game-info input').eq(0).type('Alice');
+  cy.get('.game-info input').eq(1).type('Bob');
   cy.get('button').click();
 });
 
 When('the game is played to a win', () => {
   const moves = [0, 1, 0, 1, 0, 1, 0];
   moves.forEach(move => {
-    cy.get('.column').eq(move).click();
+    cy.get('.board .column').eq(move).click();
   });
 });
 
@@ -31,27 +31,27 @@ Then('the game should start', () => {
   cy.get('.game-info h3').should('contain', 'turn');
 });
 
-When('The game is played to a draw', () => {
+When('the game is played to a draw', () => {
   const moves = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 4, 4, 4,
     4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 3, 3, 3, 3, 3, 3, 6, 6, 6, 6, 6];
   moves.forEach(move => {
-    cy.get('.column').eq(move).click();
+    cy.get('.board .column').eq(move).click();
   });
 });
 
 Then('I should be able to enter player names', () => {
   cy.get('.game-info h3').should('contain', 'Enter player names');
-  cy.get('input').eq(0).should('exist');
-  cy.get('input').eq(1).should('exist');
+  cy.get('.game-info input').eq(0).should('exist');
+  cy.get('.game-info input').eq(1).should('exist');
 });
 
 Given('no names have been entered', () => {
-  cy.get('input').eq(0).clear();
-  cy.get('input').eq(1).clear();
+  cy.get('.game-info input').eq(0).clear();
+  cy.get('.game-info input').eq(1).clear();
 });
 
 When('I click on a column', () => {
-  cy.get('.column').eq(0).click();
+  cy.get('.board .column').eq(0).click();
 });
 
 Then('no move is made', () => {
