@@ -32,25 +32,33 @@ Then('the game should start', () => {
 });
 
 When('The game is played to a draw', () => {
-  // TODO: implement step
+  const moves = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 4, 4, 4,
+    4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 3, 3, 3, 3, 3, 3, 6, 6, 6, 6, 6];
+  moves.forEach(move => {
+    cy.get('.column').eq(move).click();
+  });
 });
 
 Then('I should be able to enter player names', () => {
-  // TODO: implement step
+  cy.get('.game-info h3').should('contain', 'Enter player names');
+  cy.get('input').eq(0).should('exist');
+  cy.get('input').eq(1).should('exist');
 });
 
 Given('no names have been entered', () => {
-  // TODO: implement step
+  cy.get('input').eq(0).clear();
+  cy.get('input').eq(1).clear();
 });
 
 When('I click on a column', () => {
-  // TODO: implement step
+  cy.get('.column').eq(0).click();
 });
 
 Then('no move is made', () => {
-  // TODO: implement step
+  cy.get('.board .player-1').should('not.exist');
+  cy.get('.board .player-2').should('not.exist');
 });
 
 Then('the {string} div should have the {string} class', (divClass, otherDivClass) => {
-  // TODO: implement step
+  cy.get(divClass).should('have.class', otherDivClass)
 });
