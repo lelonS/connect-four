@@ -102,6 +102,35 @@ test('renderBoard() renders players', () => {
   expect(cells[1].classList.contains('player-2')).toBe(true);
 });
 
+// renderResults() tests
+test('renderResults() renders correct output for draw', () => {
+  const game = new Game();
+  game.board.gameState = Board.GameStates.Draw;
+  game.renderResults();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("It's a draw!");
+
+  // Check that buttons to restart exist
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
+});
+
+test('renderResults() renders correct output for win', () => {
+  const game = new Game();
+  game.board.gameState = Board.GameStates.Win;
+  game.board.winner = 0;
+  game.players[0].name = 'Alice';
+  game.renderResults();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Alice won!");
+
+  // Check that buttons to restart exist
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
+});
+
 
 
 
