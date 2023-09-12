@@ -62,3 +62,15 @@ test('createPlayers() creates players', () => {
   }
 });
 
+// askForPlayerNames() tests
+test('askForPlayerNames() creates 2 input elements and button', () => {
+  const game = new Game();
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForPlayerNames();
+  const inputElements = gameInfo.querySelectorAll('input');
+  expect(inputElements.length).toBe(2);
+  const submitButton = gameInfo.querySelector('button');
+  expect(submitButton).not.toBeNull();
+});
+
