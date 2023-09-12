@@ -11,7 +11,7 @@ body {
 }
 
 .game-container {
-  --board-width: 90vh;
+  --board-width: min(70svw, 100svh);
   --board-height: calc(var(--board-width) * 6/7);
   --game-sidebar-width: 20vw;
 }
@@ -133,24 +133,16 @@ button {
   color: #fff;
 }
 
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio#browser_compatibility */
 
 
-@media (max-aspect-ratio: 1.3) {
+
+@media (max-width: 600px),
+(orientation: portrait) {
   .game-container {
-    --board-width: 70vh;
+    --board-width: min(90svw, 80svh);
   }
-}
 
-@media (max-aspect-ratio: 0.9) {
-  .game-container {
-    --board-width: 90vw;
-  }
-}
-
-
-
-
-@media (max-width: 600px) or (max-aspect-ratio: 1.3) {
   .board {
     /* float: none; */
     float: none;
