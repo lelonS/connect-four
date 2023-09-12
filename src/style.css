@@ -120,7 +120,7 @@ input[type="text"] {
 
 button {
   width: 50%;
-  height: 30px;
+  min-height: 30px;
   border-radius: 25px;
   padding: 5px;
   font-size: 1rem;
