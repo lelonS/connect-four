@@ -52,3 +52,13 @@ test('reset(false) creates new board and keeps players', () => {
   expect(game.players).toBe(players);
 });
 
+// createPlayers() tests
+test('createPlayers() creates players', () => {
+  const game = new Game();
+  game.createPlayers();
+  expect(game.players.length).toBe(2);
+  for (const player of game.players) {
+    expect(player).toBeInstanceOf(Player);
+  }
+});
+
