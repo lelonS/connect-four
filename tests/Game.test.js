@@ -22,9 +22,16 @@ test('New game has correct initial variables', () => {
 });
 
 test('New game has correct initial DOM', () => {
-  const game = new Game();
   const board = document.querySelector('.board');
   expect(board).not.toBeNull();
+
+  board.addEventListener = jest.fn();
+
+  const game = new Game();
+  // Check that event listener was added to board
+  expect(board.addEventListener).toHaveBeenCalledTimes(1);
+
+  // Check other DOM elements exist
   const gameInfo = document.querySelector('.game-info');
   expect(gameInfo).not.toBeNull();
   const inputElements = gameInfo.querySelectorAll('input');
@@ -198,9 +205,3 @@ test('move() does not call makeMove() on board when moveAllowed is false', () =>
   game.move(0);
   expect(board.makeMove).not.toHaveBeenCalled();
 });
-
-
-
-
-
-
