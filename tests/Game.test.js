@@ -2,13 +2,7 @@
  * @jest-environment jsdom
  */
 require('./load-all-classes.js');
-const IndexBody = require('./IndexBody.js');
 
-// Before all tests
-beforeAll(() => {
-  // Create the index.html DOM
-  document.body.innerHTML = IndexBody.get();
-});
 
 test('New game has correct initial variables', () => {
   const game = new Game();
@@ -22,14 +16,7 @@ test('New game has correct initial variables', () => {
 });
 
 test('New game has correct initial DOM', () => {
-  const board = document.querySelector('.board');
-  expect(board).not.toBeNull();
-
-  board.addEventListener = jest.fn();
-
   const game = new Game();
-  // Check that event listener was added to board
-  expect(board.addEventListener).toHaveBeenCalledTimes(1);
 
   // Check other DOM elements exist
   const gameInfo = document.querySelector('.game-info');

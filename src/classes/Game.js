@@ -2,8 +2,29 @@ class Game {
   get playerCount() { return this.board.playerCount; }
 
   constructor() {
+    this.#createElements();
     this.#addEventListeners();
     this.reset();
+  }
+
+  #createElements() {
+    document.body.innerHTML = '';
+    const gameContainer = document.createElement('div');
+    gameContainer.classList.add('game-container');
+
+    const board = document.createElement('div');
+    board.classList.add('board');
+
+    const gameSidebar = document.createElement('div');
+    gameSidebar.classList.add('game-sidebar');
+
+    const gameInfo = document.createElement('div');
+    gameInfo.classList.add('game-info');
+
+    gameSidebar.appendChild(gameInfo);
+    gameContainer.appendChild(board);
+    gameContainer.appendChild(gameSidebar);
+    document.body.appendChild(gameContainer);
   }
 
   reset(createPlayers = true) {
