@@ -152,6 +152,14 @@ test('renderTurn() renders correct output', () => {
   expect(gameInfoTitle.textContent).toBe("Bob's turn");
 });
 
+// waitForMove() tests
+test('waitForMove() sets moveAllowed to true', () => {
+  const game = new Game();
+  game.moveAllowed = false;
+  game.waitForMove();
+  expect(game.moveAllowed).toBe(true);
+});
+
 
 
 
