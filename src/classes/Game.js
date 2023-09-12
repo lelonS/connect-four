@@ -73,7 +73,7 @@ class Game {
     }
     // Create submit button
     const submitButton = document.createElement('button');
-    submitButton.textContent = 'Submit';
+    submitButton.textContent = 'Start';
 
     // Add elements to .game-info
     nameInputElements.forEach(input => gameInfo.appendChild(input));
@@ -157,7 +157,7 @@ class Game {
 
     // Play again buttons
     const newGameButton = document.createElement('button');
-    newGameButton.textContent = 'New game';
+    newGameButton.textContent = 'New Game';
     gameInfo.appendChild(newGameButton);
     newGameButton.addEventListener('click', () => {
       gameInfo.innerHTML = '';
@@ -165,7 +165,7 @@ class Game {
     });
 
     const playAgainButton = document.createElement('button');
-    playAgainButton.textContent = 'Play again';
+    playAgainButton.textContent = 'Play Again';
     gameInfo.appendChild(playAgainButton);
     playAgainButton.addEventListener('click', () => {
       gameInfo.innerHTML = '';
