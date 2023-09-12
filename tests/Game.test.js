@@ -74,3 +74,34 @@ test('askForPlayerNames() creates 2 input elements and button', () => {
   expect(submitButton).not.toBeNull();
 });
 
+// renderBoard() tests
+test('renderBoard() creates 7 columns and 6 rows', () => {
+  const game = new Game();
+  game.renderBoard();
+  const board = document.querySelector('.board');
+  const columns = board.querySelectorAll('.column');
+  expect(columns.length).toBe(7);
+  // Check each column has 6 rows
+  for (const column of columns) {
+    const rows = column.querySelectorAll('.cell');
+    expect(rows.length).toBe(6);
+  }
+});
+
+test('renderBoard() renders players', () => {
+  const game = new Game();
+  // Make two moves in first column
+  game.board.board[0] = [0, 1];
+  game.renderBoard();
+  const board = document.querySelector('.board');
+  // Select first column
+  const column = board.querySelector('.column');
+  const cells = column.querySelectorAll('.cell');
+  // Check first 2 cells have player-n class
+  expect(cells[0].classList.contains('player-1')).toBe(true);
+  expect(cells[1].classList.contains('player-2')).toBe(true);
+});
+
+
+
+
