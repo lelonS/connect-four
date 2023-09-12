@@ -13,20 +13,26 @@ body {
 .game-container {
   --board-width: 90vh;
   --board-height: calc(var(--board-width) * 6/7);
-  --game-sidebar-width: calc(var(--board-width) * 3/7);
+  --game-sidebar-width: 20vw;
 }
 
 .game-sidebar {
   background-color: var(--secondary-background-color);
   float: left;
+  min-height: var(--board-height);
+  /* min-width: 200px;s */
   width: var(--game-sidebar-width);
-  height: var(--board-height);
   text-align: center;
+  overflow: hidden;
 }
 
 .game-sidebar>* {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.game-info {
+  margin: 0px;
 }
 
 .error-animation {
@@ -98,27 +104,60 @@ body {
   background-color: #FFFF00;
 }
 
+input[type="text"] {
+  width: 40%;
+  height: 30px;
+  border-radius: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: 5px 2px 2px 2px #111111;
+}
+
+button {
+  width: 50%;
+  min-height: 30px;
+  border-radius: 25px;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 5px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: 5px 2px 2px 2px #111111;
+  background-color: #1F51FF;
+  color: #fff;
+}
+
 @media (max-aspect-ratio: 1.5) {
 
-  .board {
-    float: none;
-    margin: auto;
+  .game-container {
+    --board-width: 69vw;
   }
 
-  .game-sidebar {
+  /* .board {
+    float: none;
+    margin: auto;
+  } */
+
+  /* .game-sidebar {
     float: none;
     margin-top: 0;
     margin: auto;
     height: calc(95vh - var(--board-height));
     width: var(--board-width);
     max-width: none;
-  }
+  } */
 }
 
 /* Potrait */
-@media (max-aspect-ratio: 7/6) {
+@media (max-aspect-ratio: 1.1) {
   .game-container {
-    --board-width: 80vw;
+    --board-width: 70vw;
   }
 
   .board {
@@ -129,11 +168,41 @@ body {
 
   .game-sidebar {
     float: none;
-    margin-top: 0;
     margin: auto;
-    height: calc(95vh - var(--board-height));
+    margin-top: 5px;
+    min-height: calc(95vh - var(--board-height));
     width: var(--board-width);
     max-width: none;
     /* float: none; */
+  }
+
+  .game-sidebar>* {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .game-info>* {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .game-info>button {
+    width: 30%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .game-info>input[type="text"] {
+    width: 46%;
+
+  }
+
+}
+
+@media (max-aspect-ratio: 0.75) {
+  .game-container {
+    --board-width: 85vw;
   }
 }
