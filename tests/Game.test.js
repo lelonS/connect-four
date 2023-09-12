@@ -131,6 +131,28 @@ test('renderResults() renders correct output for win', () => {
   expect(buttons.length).toBe(2);
 });
 
+// renderTurn() tests
+test('renderTurn() renders correct output', () => {
+  const game = new Game();
+  game.board.turn = 0;
+  game.players[0].name = 'Alice';
+  game.renderTurn();
+
+  let gameInfo = document.querySelector('.game-info');
+  let gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Alice's turn");
+
+  // Change turn and check output
+  game.board.turn = 1;
+  game.players[1].name = 'Bob';
+  game.renderTurn();
+
+  gameInfo = document.querySelector('.game-info');
+  gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Bob's turn");
+});
+
+
 
 
 
