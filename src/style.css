@@ -20,7 +20,7 @@ body {
   background-color: var(--secondary-background-color);
   float: left;
   min-height: var(--board-height);
-  /* min-width: 200px;s */
+  max-width: 600px;
   width: var(--game-sidebar-width);
   text-align: center;
   overflow: hidden;
