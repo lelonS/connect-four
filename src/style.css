@@ -179,6 +179,7 @@ button {
 
   .game-info>input[type="text"] {
     width: 46%;
-
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }
