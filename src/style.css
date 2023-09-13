@@ -13,14 +13,13 @@ body {
 .game-container {
   --board-width: min(70svw, 100svh);
   --board-height: calc(var(--board-width) * 6/7);
-  --game-sidebar-width: calc((100svw - var(--board-width)) * 0.7);
+  --game-sidebar-width: min(calc((100svw - var(--board-width)) * 0.7), 600px);
 }
 
 .game-sidebar {
   background-color: var(--secondary-background-color);
   float: left;
   min-height: var(--board-height);
-  max-width: 600px;
   width: var(--game-sidebar-width);
   text-align: center;
   overflow: hidden;
