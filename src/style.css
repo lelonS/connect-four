@@ -13,7 +13,7 @@ body {
 .game-container {
   --board-width: min(70svw, 100svh);
   --board-height: calc(var(--board-width) * 6/7);
-  --game-sidebar-width: 20vw;
+  --game-sidebar-width: 20svw;
 }
 
 .game-sidebar {
@@ -74,7 +74,7 @@ body {
   background-color: var(--board-color);
   width: var(--board-width);
   height: var(--board-height);
-  margin-left: calc(50vw - (var(--board-width) + var(--game-sidebar-width) + 10px) / 2);
+  margin-left: calc(50svw - (var(--board-width) + var(--game-sidebar-width) + 10px) / 2);
   display: flex;
   flex-direction: row;
 }
@@ -153,7 +153,7 @@ button {
     float: none;
     margin: auto;
     margin-top: 5px;
-    min-height: calc(95vh - var(--board-height));
+    min-height: calc(95svh - var(--board-height));
     width: var(--board-width);
     max-width: none;
     /* float: none; */
