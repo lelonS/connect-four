@@ -13,7 +13,7 @@ body {
 .game-container {
   --board-width: min(70svw, 100svh);
   --board-height: calc(var(--board-width) * 6/7);
-  --game-sidebar-width: 20svw;
+  --game-sidebar-width: calc((100svw - var(--board-width)) * 0.7);
 }
 
 .game-sidebar {
