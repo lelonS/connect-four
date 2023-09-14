@@ -8,13 +8,11 @@
   },
   "scripts": {
     "test-jest": "jest",
+    "test-cypress": "cypress run --browser chrome",
     "test-cypress-ui": "cypress open --browser chrome",
     "make-steps": "node tests-cypress/_auto-generate-step-definitions.js"
   },
   "cypress-cucumber-preprocessor": {
-    "json": {
-      "enabled": true
-    },
     "stepDefinitions": [
       "tests-cypress/step_definitions/**/*.js"
     ]
