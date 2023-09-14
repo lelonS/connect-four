@@ -190,7 +190,6 @@ class Game {
       this.renderTurn();
     } else {
       // Game is not playing
-      console.log('Game over. Use "game.reset()" to start a new game.');
       this.renderResults();
     }
   }
@@ -208,7 +207,7 @@ class Game {
       this.shakeGameSidebar();
       return;
     }
-    if (!this.board.isValidMove(col)) { console.log('Move not allowed'); return; }
+    if (!this.board.isValidMove(col)) { return; }
 
     const success = this.board.makeMove(col);
     if (success) {
