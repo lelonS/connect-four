@@ -7,7 +7,15 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest"
+    "test-jest": "jest",
+    "test-cypress": "cypress run --browser chrome",
+    "test-cypress-ui": "cypress open --browser chrome",
+    "make-steps": "node tests-cypress/_auto-generate-step-definitions.js"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": [
+      "tests-cypress/step_definitions/**/*.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -21,6 +29,10 @@
   },
   "homepage": "https://github.com/lelonS/connect-four#readme",
   "dependencies": {
-    "jest": "^29.6.4"
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
+    "@cypress/webpack-preprocessor": "^6.0.0",
+    "cypress": "^13.1.0",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }

@@ -1,182 +1,194 @@
+/**
+ * @jest-environment jsdom
+ */
 require('./load-all-classes.js');
-const { getConsoleLogOutput, resetConsoleLogOutput } = require('./capture-console-log.js');
+
 
 test('New game has correct initial variables', () => {
   const game = new Game();
   expect(game.board).toBeInstanceOf(Board);
-  expect(game.expectedInput).toBe(0);
   expect(game.playerCount).toBe(2);
   expect(game.players.length).toBe(2);
+  expect(game.moveAllowed).toBe(false);
   for (const player of game.players) {
     expect(player).toBeInstanceOf(Player);
   }
 });
 
-test('Reset method starts a new game', () => {
+test('New game has correct initial DOM', () => {
   const game = new Game();
-  // Setting incorrect variables
-  game.expectedInput = 1;
-  game.players = [];
-  game.board = null;
+
+  // Check other DOM elements exist
+  const gameInfo = document.querySelector('.game-info');
+  expect(gameInfo).not.toBeNull();
+  const inputElements = gameInfo.querySelectorAll('input');
+  expect(inputElements.length).toBe(2);
+  const submitButton = gameInfo.querySelector('button');
+  expect(submitButton).not.toBeNull();
+});
+
+// reset() tests
+test('reset() creates new board and players', () => {
+  const game = new Game();
+  const board = game.board;
+  const players = game.players;
   game.reset();
-  // Checking if game has reset with correct initial variables
-  expect(game.board).toBeInstanceOf(Board);
-  expect(game.expectedInput).toBe(0);
-  expect(game.playerCount).toBe(2);
+  expect(game.board).not.toBe(board);
+  expect(game.players).not.toBe(players);
+});
+
+test('reset(false) creates new board and keeps players', () => {
+  const game = new Game();
+  const board = game.board;
+  const players = game.players;
+  game.reset(false);
+  expect(game.board).not.toBe(board);
+  expect(game.players).toBe(players);
+});
+
+// createPlayers() tests
+test('createPlayers() creates players', () => {
+  const game = new Game();
+  game.createPlayers();
   expect(game.players.length).toBe(2);
   for (const player of game.players) {
     expect(player).toBeInstanceOf(Player);
   }
 });
 
-test('Start method initializes players', () => {
+// askForPlayerNames() tests
+test('askForPlayerNames() creates 2 input elements and button', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.start();
-  expect(game.players.length).toBe(game.playerCount);
-  expect(game.players[0]).toBeInstanceOf(Player);
-  expect(game.players[1]).toBeInstanceOf(Player);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput).toEqual([
-    ['Use "game.input(\'name\')" to set player names.'],
-    ['Player 1:']]);
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForPlayerNames();
+  const inputElements = gameInfo.querySelectorAll('input');
+  expect(inputElements.length).toBe(2);
+  const submitButton = gameInfo.querySelector('button');
+  expect(submitButton).not.toBeNull();
 });
 
-test('RenderBoard method outputs the board', () => {
+// renderBoard() tests
+test('renderBoard() creates 7 columns and 6 rows', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.board.board[0][0] = 0; // Set a sample value on the board
   game.renderBoard();
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput).toEqual(
-    [[`⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-🔴⚪⚪⚪⚪⚪⚪
-0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]]);
+  const board = document.querySelector('.board');
+  const columns = board.querySelectorAll('.column');
+  expect(columns.length).toBe(7);
+  // Check each column has 6 rows
+  for (const column of columns) {
+    const rows = column.querySelectorAll('.cell');
+    expect(rows.length).toBe(6);
+  }
 });
 
-test('inputName method handles invalid names', () => {
+test('renderBoard() renders players', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.inputName('27');
-  expect(game.players[0].name).not.toBe('27');
-  expect(game.expectedInput).toBe(0);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Invalid name. Only alphabetical values']);
+  // Make two moves in first column
+  game.board.board[0] = [0, 1];
+  game.renderBoard();
+  const board = document.querySelector('.board');
+  // Select first column
+  const column = board.querySelector('.column');
+  const cells = column.querySelectorAll('.cell');
+  // Check first 2 cells have player-n class
+  expect(cells[0].classList.contains('player-1')).toBe(true);
+  expect(cells[1].classList.contains('player-2')).toBe(true);
 });
 
-test('inputName method adds player', () => {
+// renderResults() tests
+test('renderResults() renders correct output for draw', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.inputName('Albin');
-  expect(game.players[0].name).toBe('Albin');
-  expect(game.expectedInput).toBe(1);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Player Albin (🔴) added.']);
+  game.board.gameState = Board.GameStates.Draw;
+  game.renderResults();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("It's a draw!");
+
+  // Check that buttons to restart exist
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
 });
 
-test('inputName method adds players and proceeds', () => {
+test('renderResults() renders correct output for win', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.inputName('Albin');
-  game.inputName('Leon');
-  expect(game.players[0].name).toBe('Albin');
-  expect(game.players[1].name).toBe('Leon');
-  expect(game.expectedInput).toBe(2);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[3]).toEqual(['All players named.']);
-});
-
-test('Move method handles out of bounds column', () => {
-  const game = new Game();
-  resetConsoleLogOutput();
-  game.move(10);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Move not allowed']);
-});
-
-test('Move method handles string input', () => {
-  const game = new Game();
-  resetConsoleLogOutput();
-  game.move('27');
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Move must be integer']);
-});
-
-test('Move method makes a move and proceeds', () => {
-  const game = new Game();
-  resetConsoleLogOutput();
-  game.move(0);
-  expect(game.board.board[0][0]).toBe(0);
-  expect(game.board.turn).toBe(1);
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(['Making move in column', 0]);
-});
-
-test('waitForMove method displays correct message when playing', () => {
-  const game = new Game();
-  resetConsoleLogOutput();
-  game.waitForMove();
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(
-    [`⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
-  expect(logOutput[1]).toEqual(['Use "game.input(0-6)" player (🔴)\'s turn']);
-});
-
-test('waitForMove method displays correct message for win', () => {
-  const game = new Game();
-  resetConsoleLogOutput();
   game.board.gameState = Board.GameStates.Win;
   game.board.winner = 0;
-  game.waitForMove();
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(
-    [`⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
-  expect(logOutput[1]).toEqual(['Winner player (🔴)!']);
-  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.']);
+  game.players[0].name = 'Alice';
+  game.renderResults();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Alice won!");
+
+  // Check that buttons to restart exist
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
 });
 
-test('waitForMove method displays correct message for draw', () => {
+// renderTurn() tests
+test('renderTurn() renders correct output', () => {
   const game = new Game();
-  resetConsoleLogOutput();
-  game.board.gameState = Board.GameStates.Draw;
-  game.waitForMove();
-  const logOutput = getConsoleLogOutput();
-  expect(logOutput[0]).toEqual(
-    [`⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-⚪⚪⚪⚪⚪⚪⚪
-0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣`]);
-  expect(logOutput[1]).toEqual(['Draw!'])
-  expect(logOutput[2]).toEqual(['Game over. Use "game.reset()" to start a new game.'])
+  game.board.turn = 0;
+  game.players[0].name = 'Alice';
+  game.renderTurn();
+
+  let gameInfo = document.querySelector('.game-info');
+  let gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Alice's turn");
+
+  // Change turn and check output
+  game.board.turn = 1;
+  game.players[1].name = 'Bob';
+  game.renderTurn();
+
+  gameInfo = document.querySelector('.game-info');
+  gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe("Bob's turn");
 });
 
-test('input method handles input correctly', () => {
+// waitForMove() test
+test('waitForMove() sets moveAllowed to true', () => {
   const game = new Game();
-  const spyName = jest.spyOn(game, 'inputName');
-  const spyMove = jest.spyOn(game, 'move');
-  game.input('Albin');
-  game.input('Leon');
-  expect(spyName).toHaveBeenCalledTimes(2);
-  expect(spyMove).not.toHaveBeenCalled();
-  game.input(2);
-  expect(spyMove).toHaveBeenCalled();
+  game.moveAllowed = false;
+  game.waitForMove();
+  expect(game.moveAllowed).toBe(true);
+});
+
+// shakeGameSidebar() test
+test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
+  const game = new Game();
+  jest.useFakeTimers(); // Fake timer to make sure animation is removed
+  game.shakeGameSidebar();
+  const gameSidebar = document.querySelector('.game-sidebar');
+  expect(gameSidebar.classList.contains('error-animation')).toBe(true);
+  jest.runAllTimers(); // Run all timers to remove animation
+  expect(gameSidebar.classList.contains('error-animation')).toBe(false);
+});
+
+// move() tests
+test('move() calls makeMove() on board when valid move', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(0);
+  expect(board.makeMove).toHaveBeenCalledWith(0);
+});
+
+test('move() does not call makeMove() on board when invalid move', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(-1);
+  expect(board.makeMove).not.toHaveBeenCalled();
+});
+
+test('move() does not call makeMove() on board when moveAllowed is false', () => {
+  const game = new Game();
+  game.moveAllowed = false;
+  const board = game.board;
+  board.makeMove = jest.fn();
+  game.move(0);
+  expect(board.makeMove).not.toHaveBeenCalled();
 });
