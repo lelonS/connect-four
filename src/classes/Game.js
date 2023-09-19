@@ -69,6 +69,7 @@ class Game {
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Player ' + (i + 1);
+      input.classList.add(`player-${i + 1}-border`);
       nameInputElements.push(input);
     }
 

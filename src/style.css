@@ -30,8 +30,9 @@ body {
   margin-right: 10px;
 }
 
-.game-info {
-  margin: 0px;
+.game-info>* {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .error-animation {
@@ -95,15 +96,28 @@ body {
   aspect-ratio: 1/1;
 }
 
+
 .player-1 {
   background-color: #FF0000;
+}
+
+.player-1-border {
+  border: 1px solid #000000 !important;
+  box-shadow: -5px 0px 0px 0px #ff0000 !important;
 }
 
 .player-2 {
   background-color: #FFFF00;
 }
 
-input[type="text"] {
+.player-2-border {
+  border: 1px solid #000000 !important;
+  box-shadow: -5px 0px 0px 0px #FFFF00 !important;
+}
+
+input[type="text"],
+select {
+  min-width: 100px;
   width: 40%;
   height: 30px;
   border-radius: 25px;
@@ -113,7 +127,8 @@ input[type="text"] {
   font-size: 1rem;
   box-sizing: border-box;
   border: none;
-  box-shadow: 5px 2px 2px 2px #111111;
+  color: black;
+  background-color: white;
 }
 
 button {
