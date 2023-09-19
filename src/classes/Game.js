@@ -203,11 +203,20 @@ class Game {
     // Draws a circle with the player's color thats a bit smaller than the cells
   }
 
+  #playBotMove() {
+    const bot = this.players[this.board.turn];
+    const col = bot.getMove(this.board);
+    this.move(col);
+  }
+
   waitForMove() {
     this.moveAllowed = true;
     this.renderBoard();
     if (this.board.gameState === Board.GameStates.Playing) {
       this.renderTurn();
+      if (this.players[this.board.turn] instanceof Bot) {
+        this.#playBotMove();
+      }
     } else {
       // Game is not playing
       this.renderResults();
