@@ -206,7 +206,12 @@ class Game {
   #playBotMove() {
     const bot = this.players[this.board.turn];
     const col = bot.getMove(this.board);
-    this.move(col);
+    const botTimerMs = 200 + Math.random() * 800;
+    this.moveAllowed = false;
+    setTimeout(() => {
+      this.moveAllowed = true;
+      this.move(col);
+    }, botTimerMs);
   }
 
   waitForMove() {
