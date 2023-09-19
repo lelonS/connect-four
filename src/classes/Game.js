@@ -71,12 +71,29 @@ class Game {
       input.placeholder = 'Player ' + (i + 1);
       nameInputElements.push(input);
     }
+
+    // Create dropdown elements
+    const dropdownElements = [];
+    for (let i = 0; i < this.playerCount; i++) {
+      const dropdown = document.createElement('select');
+      dropdown.innerHTML = /*html*/`
+        <option value="human">Human</option>
+        <option value="random-bot">Random Bot</option>
+        <option value="smart-bot">Smart Bot</option>
+        `;
+      dropdown.classList.add(`player-${i + 1}-border`);
+      dropdownElements.push(dropdown);
+    }
+
     // Create submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Start';
 
     // Add elements to .game-info
-    nameInputElements.forEach(input => gameInfo.appendChild(input));
+    for (let i = 0; i < this.playerCount; i++) {
+      gameInfo.appendChild(nameInputElements[i]);
+      gameInfo.appendChild(dropdownElements[i]);
+    }
     gameInfo.appendChild(submitButton);
 
     // Add event listener to submit button
