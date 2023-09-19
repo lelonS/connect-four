@@ -37,21 +37,11 @@ class Game {
 
     this.renderBoard();
     if (createPlayers) {
-      this.createPlayers();
+      this.askForPlayerNames();
     }
     else {
       this.waitForMove();
     }
-  }
-
-  createPlayers() {
-    this.players = [];
-    for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('player', i + 1);
-      this.players.push(player);
-    }
-
-    this.askForPlayerNames();
   }
 
   askForPlayerNames() {
@@ -100,9 +90,10 @@ class Game {
     submitButton.addEventListener('click', () => {
       // Get input values
       const inputNames = nameInputElements.map(input => input.value);
+      const inputTypes = dropdownElements.map(dropdown => dropdown.value);
       if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 
-      this.#setPlayerNames(inputNames);
+      this.#createPlayers(inputNames, inputTypes);
 
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
@@ -124,9 +115,20 @@ class Game {
     return valid;
   }
 
-  #setPlayerNames(names) {
+  #createPlayers(names, types) {
+    this.players = [];
     for (let i = 0; i < names.length; i++) {
-      this.players[i].name = names[i];
+      const name = names[i];
+      const type = types[i];
+      let player;
+      if (type === 'human') {
+        player = new Player(name, i + 1);
+      } else if (type === 'random-bot') {
+        player = new RandomBot(name, i + 1);
+      } else if (type === 'smart-bot') {
+        player = new SmartBot(name, i + 1);
+      }
+      this.players.push(player);
     }
   }
 
