@@ -196,8 +196,14 @@ class Game {
     const player = this.players[this.board.turn];
     gameInfo.innerHTML = /*html*/`
       <h3>${player.name}'s turn</h3>
-      <div class="cell player-${player.plrNumber}" style="width: calc(var(--board-width) / 7 * 0.6);"></div>`
-    // Draws a circle with the player's color thats a bit smaller than the cells
+      <!-- Draws a circle with the player's color thats a bit smaller than the cells -->
+      <div class="cell player-${player.plrNumber}" style="width: calc(var(--board-width) / 7 * 0.6);"></div>`;
+    let newGameButton = document.createElement('button');
+    newGameButton.innerText = 'New Game';
+    newGameButton.addEventListener('click', (e) => {
+        this.reset();
+    });
+    gameInfo.appendChild(newGameButton);
   }
 
   waitForMove() {
