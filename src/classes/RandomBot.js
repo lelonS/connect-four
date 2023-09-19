@@ -1,12 +1,5 @@
 class RandomBot extends Bot {
-  constructor() {
-      super();
-  }
-  /*
-   * @Override
-   * @param {Board} board
-   * @returns {number}
-  */
+
   getMove(board) {
       // empty cols where we can make a move
       const validCols = [];
@@ -16,7 +9,7 @@ class RandomBot extends Bot {
           }
       }
       if (validCols.length === 0) {
-          throw 'No valid move to make!';
+          throw new Error('no valid move');
       }
       // select a random col
       return validCols[Math.floor(Math.random() * (validCols.length))];
