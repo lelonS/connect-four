@@ -1,5 +1,4 @@
 class RandomBot extends Bot {
-
   getMove(board) {
     // non-full cols where we can make a move
     const validCols = [];
