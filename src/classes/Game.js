@@ -202,9 +202,11 @@ class Game {
       <!-- Draws a circle with the player's color thats a bit smaller than the cells -->
       <div class="cell player-${player.plrNumber}" style="width: calc(var(--board-width) / 7 * 0.6);"></div>`;
     let newGameButton = document.createElement('button');
-    newGameButton.innerText = 'New Game';
+    newGameButton.innerText = 'Reset Game';
+    newGameButton.classList.add('abort-button');
+
     newGameButton.addEventListener('click', (e) => {
-        this.reset();
+      this.reset();
     });
     gameInfo.appendChild(newGameButton);
   }

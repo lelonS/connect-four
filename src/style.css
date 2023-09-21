@@ -133,6 +133,7 @@ select {
 
 button {
   width: 50%;
+  min-width: 100px;
   min-height: 30px;
   border-radius: 25px;
   padding: 5px;
@@ -145,6 +146,22 @@ button {
   box-shadow: 5px 2px 2px 2px #111111;
   background-color: #1F51FF;
   color: #fff;
+}
+
+.game-info {
+  min-height: calc(var(--board-height) - 100px);
+  position: relative;
+}
+
+.abort-button {
+  background-color: #FF0000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto !important;
+  margin-right: auto !important;
+
 }
 
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio#browser_compatibility */
@@ -178,6 +195,10 @@ button {
     margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
+  }
+
+  .game-info {
+    min-height: calc((95svh - var(--board-height)) - 30px);
   }
 
   .game-info>* {
