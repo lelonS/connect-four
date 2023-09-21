@@ -37,21 +37,11 @@ class Game {
 
     this.renderBoard();
     if (createPlayers) {
-      this.createPlayers();
+      this.askForPlayerNames();
     }
     else {
       this.waitForMove();
     }
-  }
-
-  createPlayers() {
-    this.players = [];
-    for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player('player', i + 1);
-      this.players.push(player);
-    }
-
-    this.askForPlayerNames();
   }
 
   askForPlayerNames() {
@@ -69,6 +59,7 @@ class Game {
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Player ' + (i + 1);
+      input.classList.add(`player-${i + 1}-border`);
       nameInputElements.push(input);
     }
 
@@ -100,9 +91,10 @@ class Game {
     submitButton.addEventListener('click', () => {
       // Get input values
       const inputNames = nameInputElements.map(input => input.value);
+      const inputTypes = dropdownElements.map(dropdown => dropdown.value);
       if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 
-      this.#setPlayerNames(inputNames);
+      this.#createPlayers(inputNames, inputTypes);
 
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
@@ -124,9 +116,20 @@ class Game {
     return valid;
   }
 
-  #setPlayerNames(names) {
+  #createPlayers(names, types) {
+    this.players = [];
     for (let i = 0; i < names.length; i++) {
-      this.players[i].name = names[i];
+      const name = names[i];
+      const type = types[i];
+      let player;
+      if (type === 'human') {
+        player = new Player(name, i + 1);
+      } else if (type === 'random-bot') {
+        player = new RandomBot(name, i + 1);
+      } else if (type === 'smart-bot') {
+        player = new SmartBot(name, i + 1);
+      }
+      this.players.push(player);
     }
   }
 
@@ -206,11 +209,25 @@ class Game {
     gameInfo.appendChild(newGameButton);
   }
 
+  #playBotMove() {
+    const bot = this.players[this.board.turn];
+    const col = bot.getMove(this.board);
+    const botTimerMs = 200 + Math.random() * 800;
+    this.moveAllowed = false;
+    setTimeout(() => {
+      this.moveAllowed = true;
+      this.move(col);
+    }, botTimerMs);
+  }
+
   waitForMove() {
     this.moveAllowed = true;
     this.renderBoard();
     if (this.board.gameState === Board.GameStates.Playing) {
       this.renderTurn();
+      if (this.players[this.board.turn] instanceof Bot) {
+        this.#playBotMove();
+      }
     } else {
       // Game is not playing
       this.renderResults();
