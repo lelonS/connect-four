@@ -61,7 +61,7 @@ class Game {
       input.placeholder = 'Player' + (i + 1);
       input.maxLength = Player.nameMaxLength;
       input.minLength = Player.nameMinLength;
-      input.pattern = Player.nameRegex;
+      input.pattern = Player.nameRegex.source;
 
       input.classList.add(`player-${i + 1}-border`);
       nameInputElements.push(input);
