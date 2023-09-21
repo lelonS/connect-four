@@ -78,7 +78,6 @@ class SmartBot extends Bot {
 
     for (const move of legalMoves) {
 
-
       move.score = this.calcMoveScore(board, move.col);
 
       if (checkOppMove && move.score !== Infinity && legalMoves.length > 1) {
