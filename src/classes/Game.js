@@ -32,6 +32,7 @@ class Game {
   }
 
   reset(createPlayers = true) {
+    clearTimeout(this.botTimer); // Stop any pending bot move
     this.board = new Board();
     this.moveAllowed = false;
 
@@ -220,7 +221,7 @@ class Game {
     const col = bot.getMove(this.board);
     const botTimerMs = 200 + Math.random() * 800;
     this.moveAllowed = false;
-    setTimeout(() => {
+    this.botTimer = setTimeout(() => {
       this.moveAllowed = true;
       this.move(col);
     }, botTimerMs);
