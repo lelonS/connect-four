@@ -163,8 +163,6 @@ test('waitForMove() gets bot move', () => {
   expect(game.move).toHaveBeenCalled();
 });
 
-
-
 // shakeGameSidebar() test
 test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
   const game = new Game();
