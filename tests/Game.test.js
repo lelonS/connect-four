@@ -46,8 +46,9 @@ test('reset(false) creates new board and keeps players', () => {
 // createPlayers() tests
 test('createPlayers() creates players', () => {
   const game = new Game();
-  game.createPlayers();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   expect(game.players.length).toBe(2);
+  expect(game.players[1]).toBeInstanceOf(Bot);
   for (const player of game.players) {
     expect(player).toBeInstanceOf(Player);
   }
