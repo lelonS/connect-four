@@ -88,6 +88,18 @@ body {
   justify-content: space-around;
 }
 
+.column:hover {
+  background-color: #ffffff26;
+  cursor: pointer;
+}
+
+@media (hover: none) {
+  .column:hover {
+    background-color: inherit;
+    cursor: default;
+  }
+}
+
 .cell {
   background-color: var(--background-color);
   margin: auto;
