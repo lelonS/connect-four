@@ -115,4 +115,13 @@ class Board {
     }
     return false;
   }
+
+  copy() {
+    const copy = new Board();
+    copy.gameState = this.gameState;
+    copy.turn = this.turn;
+    copy.winner = this.winner;
+    copy.board = this.board.map(col => [...col]);
+    return copy;
+  }
 }
