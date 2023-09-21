@@ -111,9 +111,9 @@ test('renderResults() renders correct output for draw', () => {
 
 test('renderResults() renders correct output for win', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   game.board.gameState = Board.GameStates.Win;
   game.board.winner = 0;
-  game.players[0].name = 'Alice';
   game.renderResults();
   const gameInfo = document.querySelector('.game-info');
   const gameInfoTitle = gameInfo.querySelector('h3');
@@ -127,8 +127,8 @@ test('renderResults() renders correct output for win', () => {
 // renderTurn() tests
 test('renderTurn() renders correct output', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   game.board.turn = 0;
-  game.players[0].name = 'Alice';
   game.renderTurn();
 
   let gameInfo = document.querySelector('.game-info');
@@ -137,7 +137,6 @@ test('renderTurn() renders correct output', () => {
 
   // Change turn and check output
   game.board.turn = 1;
-  game.players[1].name = 'Bob';
   game.renderTurn();
 
   gameInfo = document.querySelector('.game-info');
