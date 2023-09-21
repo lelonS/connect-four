@@ -8,11 +8,7 @@ test('New game has correct initial variables', () => {
   const game = new Game();
   expect(game.board).toBeInstanceOf(Board);
   expect(game.playerCount).toBe(2);
-  expect(game.players.length).toBe(2);
   expect(game.moveAllowed).toBe(false);
-  for (const player of game.players) {
-    expect(player).toBeInstanceOf(Player);
-  }
 });
 
 test('New game has correct initial DOM', () => {
@@ -30,15 +26,16 @@ test('New game has correct initial DOM', () => {
 // reset() tests
 test('reset() creates new board and players', () => {
   const game = new Game();
+  game.askForPlayerNames = jest.fn();
   const board = game.board;
-  const players = game.players;
   game.reset();
   expect(game.board).not.toBe(board);
-  expect(game.players).not.toBe(players);
+  expect(game.askForPlayerNames).toHaveBeenCalled();
 });
 
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
   const players = game.players;
   game.reset(false);

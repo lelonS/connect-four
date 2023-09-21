@@ -99,7 +99,7 @@ class Game {
       const inputTypes = dropdownElements.map(dropdown => dropdown.value);
       if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 
-      this.#createPlayers(inputNames, inputTypes);
+      this.createPlayers(inputNames, inputTypes);
 
       // Remove elements from .game-info
       gameInfo.innerHTML = '';
@@ -121,7 +121,7 @@ class Game {
     return valid;
   }
 
-  #createPlayers(names, types) {
+  createPlayers(names, types) {
     this.players = [];
     for (let i = 0; i < names.length; i++) {
       const name = names[i];
