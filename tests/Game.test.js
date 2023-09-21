@@ -147,6 +147,7 @@ test('renderTurn() renders correct output', () => {
 // waitForMove() test
 test('waitForMove() sets moveAllowed to true', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
   game.moveAllowed = false;
   game.waitForMove();
   expect(game.moveAllowed).toBe(true);
