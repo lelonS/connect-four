@@ -42,7 +42,14 @@ class SmartBot extends Bot {
     return combo.map(([col, row]) => board.getCell(col, row)).filter(cell => cell === color).length;
   }
 
-  calcMoveScore(board, boardAfterMove, ownColor, opponentColor) {
+  calcMoveScore(board, move) {
+    // Make move on a copy of the board
+    const boardAfterMove = board.copy();
+    boardAfterMove.makeMove(move);
+
+    const ownColor = board.turn;
+    const opponentColor = boardAfterMove.turn;
+
     let score = 0
     for (const combo of this.winCombos) {
       let countBeforeMove = {
@@ -70,17 +77,15 @@ class SmartBot extends Bot {
     const legalMoves = this.getLegalMoves(board).map(col => ({ col }));
 
     for (const move of legalMoves) {
-      const boardAfterMove = board.copy();
-      boardAfterMove.makeMove(move.col);
 
-      const ownColor = board.turn;
-      const opponentColor = boardAfterMove.turn;
 
-      move.score = this.calcMoveScore(board, boardAfterMove, ownColor, opponentColor);
+      move.score = this.calcMoveScore(board, move.col);
 
       if (checkOppMove && move.score !== Infinity && legalMoves.length > 1) {
         // adjust based on opponents best move after my move
         // for now only adjust if the opponent can win in next move
+        const boardAfterMove = board.copy();
+        boardAfterMove.makeMove(move.col);
         let opMove = this.getMove(boardAfterMove, false);
         boardAfterMove.makeMove(opMove);
         if (boardAfterMove.gameState === Board.GameStates.Win) {
