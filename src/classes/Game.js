@@ -58,7 +58,11 @@ class Game {
     for (let i = 0; i < this.playerCount; i++) {
       const input = document.createElement('input');
       input.type = 'text';
-      input.placeholder = 'Player ' + (i + 1);
+      input.placeholder = 'Player' + (i + 1);
+      input.maxLength = Player.nameMaxLength;
+      input.minLength = Player.nameMinLength;
+      input.pattern = Player.nameRegex;
+
       input.classList.add(`player-${i + 1}-border`);
       nameInputElements.push(input);
     }
@@ -90,7 +94,7 @@ class Game {
     // Add event listener to submit button
     submitButton.addEventListener('click', () => {
       // Get input values
-      const inputNames = nameInputElements.map(input => input.value);
+      const inputNames = nameInputElements.map(input => input.value.trim() || input.placeholder);
       const inputTypes = dropdownElements.map(dropdown => dropdown.value);
       if (!this.#checkPlayerNames(inputNames, nameInputElements)) { return; }
 

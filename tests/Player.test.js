@@ -6,14 +6,16 @@ test('Initial Player variables are correct', () => {
   expect(player.plrNumber).toBe(1);
 });
 
-test('isValidName only returns true when name is string with alphabetical chararacters', () => {
-  expect(Player.isValidName('123test')).toBe(false);
-  expect(Player.isValidName('@@@#######test')).toBe(false);
+test('isValidName only returns true on valid names', () => {
+  expect(Player.isValidName('player')).toBe(true);
+  expect(Player.isValidName('Player1')).toBe(true);
+  expect(Player.isValidName('Player 1')).toBe(false);
+  expect(Player.isValidName('Player-1')).toBe(false);
+  expect(Player.isValidName('Player_1')).toBe(false);
   expect(Player.isValidName('')).toBe(false);
-  expect(Player.isValidName('test')).toBe(true);
-  expect(Player.isValidName('  testtt')).toBe(false);
-  expect(Player.isValidName(true)).toBe(false);
-  expect(Player.isValidName(123)).toBe(false);
+  expect(Player.isValidName('0123456789')).toBe(true);
+  expect(Player.isValidName('01234567890')).toBe(false);
+
 });
 
 test('toString returns Player name and plrNumber', () => {
@@ -23,8 +25,8 @@ test('toString returns Player name and plrNumber', () => {
 
 test('setName with valid name changes Player.name', () => {
   const player = new Player('test', 'blue');
-  player.name = 'someOtherName';
-  expect(player.name).toBe('someOtherName');
+  player.name = 'someName';
+  expect(player.name).toBe('someName');
 });
 
 test('Initial creation of player with invalid name throws error', () => {
