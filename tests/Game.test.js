@@ -82,6 +82,7 @@ test('renderBoard() creates 7 columns and 6 rows', () => {
 
 test('renderBoard() renders players', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   // Make two moves in first column
   game.board.board[0] = [0, 1];
   game.renderBoard();
