@@ -8,11 +8,7 @@ test('New game has correct initial variables', () => {
   const game = new Game();
   expect(game.board).toBeInstanceOf(Board);
   expect(game.playerCount).toBe(2);
-  expect(game.players.length).toBe(2);
   expect(game.moveAllowed).toBe(false);
-  for (const player of game.players) {
-    expect(player).toBeInstanceOf(Player);
-  }
 });
 
 test('New game has correct initial DOM', () => {
@@ -30,15 +26,16 @@ test('New game has correct initial DOM', () => {
 // reset() tests
 test('reset() creates new board and players', () => {
   const game = new Game();
+  game.askForPlayerNames = jest.fn();
   const board = game.board;
-  const players = game.players;
   game.reset();
   expect(game.board).not.toBe(board);
-  expect(game.players).not.toBe(players);
+  expect(game.askForPlayerNames).toHaveBeenCalled();
 });
 
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
   const players = game.players;
   game.reset(false);
@@ -49,8 +46,9 @@ test('reset(false) creates new board and keeps players', () => {
 // createPlayers() tests
 test('createPlayers() creates players', () => {
   const game = new Game();
-  game.createPlayers();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   expect(game.players.length).toBe(2);
+  expect(game.players[1]).toBeInstanceOf(Bot);
   for (const player of game.players) {
     expect(player).toBeInstanceOf(Player);
   }
@@ -84,6 +82,7 @@ test('renderBoard() creates 7 columns and 6 rows', () => {
 
 test('renderBoard() renders players', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   // Make two moves in first column
   game.board.board[0] = [0, 1];
   game.renderBoard();
@@ -112,9 +111,9 @@ test('renderResults() renders correct output for draw', () => {
 
 test('renderResults() renders correct output for win', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   game.board.gameState = Board.GameStates.Win;
   game.board.winner = 0;
-  game.players[0].name = 'Alice';
   game.renderResults();
   const gameInfo = document.querySelector('.game-info');
   const gameInfoTitle = gameInfo.querySelector('h3');
@@ -128,8 +127,8 @@ test('renderResults() renders correct output for win', () => {
 // renderTurn() tests
 test('renderTurn() renders correct output', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   game.board.turn = 0;
-  game.players[0].name = 'Alice';
   game.renderTurn();
 
   let gameInfo = document.querySelector('.game-info');
@@ -138,7 +137,6 @@ test('renderTurn() renders correct output', () => {
 
   // Change turn and check output
   game.board.turn = 1;
-  game.players[1].name = 'Bob';
   game.renderTurn();
 
   gameInfo = document.querySelector('.game-info');
@@ -146,13 +144,26 @@ test('renderTurn() renders correct output', () => {
   expect(gameInfoTitle.textContent).toBe("Bob's turn");
 });
 
-// waitForMove() test
+// waitForMove() tests
 test('waitForMove() sets moveAllowed to true', () => {
   const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
   game.moveAllowed = false;
   game.waitForMove();
   expect(game.moveAllowed).toBe(true);
 });
+
+test('waitForMove() gets bot move', () => {
+  const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.RandomBot, Player.PlayerTypes.Human]);
+  game.move = jest.fn();
+  jest.useFakeTimers();
+  game.waitForMove();
+  jest.runAllTimers(); // Run all timers to avoid the bot move delay
+  expect(game.move).toHaveBeenCalled();
+});
+
+
 
 // shakeGameSidebar() test
 test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
