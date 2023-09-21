@@ -68,13 +68,14 @@ class Game {
     }
 
     // Create dropdown elements
+    const playerTypes = Player.PlayerTypes;
     const dropdownElements = [];
     for (let i = 0; i < this.playerCount; i++) {
       const dropdown = document.createElement('select');
       dropdown.innerHTML = /*html*/`
-        <option value="human">Human</option>
-        <option value="random-bot">Random Bot</option>
-        <option value="smart-bot">Smart Bot</option>
+        <option value="${playerTypes.Human}">Human</option>
+        <option value="${playerTypes.RandomBot}">Random Bot</option>
+        <option value="${playerTypes.SmartBot}">Smart Bot</option>
         `;
       dropdown.classList.add(`player-${i + 1}-border`);
       dropdownElements.push(dropdown);
@@ -126,11 +127,11 @@ class Game {
       const name = names[i];
       const type = types[i];
       let player;
-      if (type === 'human') {
+      if (type === Player.PlayerTypes.Human) {
         player = new Player(name, i + 1);
-      } else if (type === 'random-bot') {
+      } else if (type === Player.PlayerTypes.RandomBot) {
         player = new RandomBot(name, i + 1);
-      } else if (type === 'smart-bot') {
+      } else if (type === Player.PlayerTypes.SmartBot) {
         player = new SmartBot(name, i + 1);
       }
       this.players.push(player);

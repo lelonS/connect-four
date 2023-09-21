@@ -1,5 +1,6 @@
 class Player {
 
+  static get PlayerTypes() { return { Human: 'human', RandomBot: 'random-bot', SmartBot: 'smart-bot' }; }
   static get nameMinLength() { return 1; }
   static get nameMaxLength() { return 10; }
   static get nameRegex() { return /^[a-zA-Z0-9]+$/; }  // Only allow letters and numbers
