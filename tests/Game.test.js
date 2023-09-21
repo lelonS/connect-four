@@ -144,7 +144,7 @@ test('renderTurn() renders correct output', () => {
   expect(gameInfoTitle.textContent).toBe("Bob's turn");
 });
 
-// waitForMove() test
+// waitForMove() tests
 test('waitForMove() sets moveAllowed to true', () => {
   const game = new Game();
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
@@ -152,6 +152,18 @@ test('waitForMove() sets moveAllowed to true', () => {
   game.waitForMove();
   expect(game.moveAllowed).toBe(true);
 });
+
+test('waitForMove() gets bot move', () => {
+  const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.RandomBot, Player.PlayerTypes.Human]);
+  game.move = jest.fn();
+  jest.useFakeTimers();
+  game.waitForMove();
+  jest.runAllTimers(); // Run all timers to avoid the bot move delay
+  expect(game.move).toHaveBeenCalled();
+});
+
+
 
 // shakeGameSidebar() test
 test('shakeGameSidebar() adds and removes error-animation class to game-sidebar', () => {
