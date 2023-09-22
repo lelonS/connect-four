@@ -51,7 +51,7 @@ class Game {
     // Clear .game-info
     gameInfo.innerHTML = /*html*/`
       <h3>Enter player names</h3>
-      <p>Only alphabetical characters</p>
+      <p>Only letters and numbers</p>
       `;
 
     // Create input elements
