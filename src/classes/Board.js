@@ -14,6 +14,7 @@ class Board {
     this.gameState = Board.GameStates.Playing;
     this.turn = 0;
     this.winner = null;
+    this.moveHistory = [];
 
     this.createEmptyBoard();
   }
@@ -33,6 +34,16 @@ class Board {
     const cell = this.board[col][row];
     // If cell is undefined (empty), return null. Otherwise return the cell (player index).
     return cell === undefined ? null : cell;
+  }
+
+  undoLastMove() {
+    if (this.moveHistory.length === 0) { return false; }
+    const lastMove = this.moveHistory.pop();
+    this.board[lastMove.col].pop();
+    this.gameState = Board.GameStates.Playing;
+    this.winner = null;
+    this.turn = lastMove.player;
+    return true;
   }
 
   nextTurn() {
@@ -63,8 +74,9 @@ class Board {
 
     this.board[col].push(this.turn);
 
-    // Check result
     const lastRow = this.board[col].length - 1;
+    this.moveHistory.push({ col: col, row: lastRow, player: this.turn });
+    // Check result
     if (this.checkWinAt(col, lastRow)) {
       this.gameState = Board.GameStates.Win;
       this.winner = this.turn;
@@ -122,6 +134,7 @@ class Board {
     copy.turn = this.turn;
     copy.winner = this.winner;
     copy.board = this.board.map(col => [...col]);
+    copy.moveHistory = [...this.moveHistory];
     return copy;
   }
 }
