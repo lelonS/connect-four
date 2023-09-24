@@ -222,8 +222,12 @@ class Game {
 
   async #playBotMove() {
     const bot = this.players[this.board.turn];
+
+    const timeBeforeBotMove = Date.now();
     const col = await bot.getMove(this.board);
-    const botTimerMs = 200 + Math.random() * 800;
+    const timeToGetMove = Date.now() - timeBeforeBotMove;
+
+    const botTimerMs = 200 + Math.random() * 800 - timeToGetMove;
     this.moveAllowed = false;
     this.botTimer = setTimeout(() => {
       this.moveAllowed = true;
