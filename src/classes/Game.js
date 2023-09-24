@@ -77,6 +77,7 @@ class Game {
         <option value="${playerTypes.Human}">Human</option>
         <option value="${playerTypes.RandomBot}">Random Bot</option>
         <option value="${playerTypes.SmartBot}">Smart Bot</option>
+        <option value="${playerTypes.PerfectBot}">Perfect Bot</option>
         `;
       dropdown.classList.add(`player-${i + 1}-border`);
       dropdownElements.push(dropdown);
@@ -134,6 +135,8 @@ class Game {
         player = new RandomBot(name, i + 1);
       } else if (type === Player.PlayerTypes.SmartBot) {
         player = new SmartBot(name, i + 1);
+      } else if (type === Player.PlayerTypes.PerfectBot) {
+        player = new PerfectBot(name, i + 1);
       }
       this.players.push(player);
     }
@@ -217,9 +220,9 @@ class Game {
     gameInfo.appendChild(newGameButton);
   }
 
-  #playBotMove() {
+  async #playBotMove() {
     const bot = this.players[this.board.turn];
-    const col = bot.getMove(this.board);
+    const col = await bot.getMove(this.board);
     const botTimerMs = 200 + Math.random() * 800;
     this.moveAllowed = false;
     this.botTimer = setTimeout(() => {
