@@ -12,6 +12,6 @@ Feature: Reset button
     When I pick "random-bot" in both dropdowns
     And I enter valid player names
     And I click on the "Reset Game" button
-    And I wait for "1000" miliseconds
+    And I wait for "2000" miliseconds
     Then the board is reset
     And I should be able to enter player names
