@@ -221,7 +221,6 @@ class Game {
   }
 
   async #playBotMove() {
-    this.moveAllowed = false;
     const bot = this.players[this.board.turn];
 
     const timeBeforeBotMove = Date.now();
