@@ -27,3 +27,12 @@ test('getMove throws error if no valid moves', () => {
   const t = () => bot.getMove(board);
   expect(t).toThrow(Error);
 });
+
+// Test calcAllWinCombos()
+test('calcAllWinCombos returns correct number of combos', () => {
+  const bot = new SmartBot('test', 1);
+  const combos = bot.calcAllWinCombos();
+  // There are 69 winning combinations in Connect-4
+  expect(combos.length).toBe(69);
+});
+
