@@ -266,7 +266,10 @@ class Game {
     const boardElement = document.querySelector('.board');
     // Add event listener
     boardElement.addEventListener('click', (event) => {
-      if (this.players[this.board.turn] instanceof Bot) { return; } // Don't allow human to move if bot is playing
+      // Don't allow human to move if bot is playing
+      if (this.players && this.players[this.board.turn] instanceof Bot) {
+        return;
+      }
       // Get clicked element
       const target = event.target;
       // Get column element
