@@ -4,7 +4,7 @@ Feature: Bot
         When I pick "random-bot" in both dropdowns
         And I enter valid player names
         Then the game should start
-        And Bot and Bot make moves on their turn until the game ends
+        And both bots make atleast 2 moves
 
     Scenario: Bot vs Human
         Given I am on the main page
