@@ -70,3 +70,11 @@ test('countColors returns correct number of colors', () => {
   expect(bot.countColors(board, [[1, 0], [2, 0], [3, 0], [4, 0]], 1)).toBe(3);
 });
 
+// Test calcMoveScore()
+test('calcMoveScore for winning move returns Infinity', () => {
+  const bot = new SmartBot('test', 1);
+  const board = new Board();
+  board.board = BoardPositions.lastMoveCol6Win.board;
+  board.turn = BoardPositions.lastMoveCol6Win.turn;
+  expect(bot.calcMoveScore(board, 6)).toBe(Infinity);
+});
