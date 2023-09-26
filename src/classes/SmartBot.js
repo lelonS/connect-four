@@ -76,6 +76,8 @@ class SmartBot extends Bot {
   getMove(board, checkOppMove = true) {
     const legalMoves = this.getLegalMoves(board).map(col => ({ col }));
 
+    if (legalMoves.length === 0) { throw new Error('no valid move'); }
+
     for (const move of legalMoves) {
 
       move.score = this.calcMoveScore(board, move.col);
