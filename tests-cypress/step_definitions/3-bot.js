@@ -4,10 +4,6 @@ When('I pick {string} in both dropdowns', (a) => {
   // TODO: implement step
 });
 
-When('I enter valid player names', () => {
-  // TODO: implement step
-});
-
 Then('the game starts', () => {
   // TODO: implement step
 });
