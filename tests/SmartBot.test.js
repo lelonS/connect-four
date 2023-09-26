@@ -36,3 +36,16 @@ test('calcAllWinCombos returns correct number of combos', () => {
   expect(combos.length).toBe(69);
 });
 
+// Test getLegalMoves()
+test('getLegalMoves returns correct number of moves', () => {
+  const bot = new SmartBot('test', 1);
+  const board = new Board();
+  let moves = bot.getLegalMoves(board);
+  expect(moves.length).toBe(7);
+
+  // Check that getLegalMoves returns the only valid move
+  board.board = BoardPositions.lastMoveCol6Win.board;
+  moves = bot.getLegalMoves(board);
+  expect(moves.length).toBe(1);
+});
+
