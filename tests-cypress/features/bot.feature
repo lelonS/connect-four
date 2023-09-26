@@ -11,5 +11,5 @@ Feature: Bot
         When I pick "Random Bot" in first dropdown
         And I enter valid player names
         Then The game starts
-        And Bot makes the first move
+        And a move has been made by "player-1"
         And I can make a move
