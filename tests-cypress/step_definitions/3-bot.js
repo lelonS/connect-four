@@ -1,7 +1,8 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 When('I pick {string} in both dropdowns', (a) => {
-  // TODO: implement step
+  cy.get('.game-info select').eq(0).select(a);
+  cy.get('.game-info select').eq(1).select(a);
 });
 
 Then('the game starts', () => {

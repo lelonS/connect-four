@@ -10,7 +10,7 @@ Feature: Reset button
 
   Scenario: Reset button for bot vs bot
     Given I am on the main page
-    When I pick "Random Bot" in both dropdowns
+    When I pick "random-bot" in both dropdowns
     And I enter valid player names
     And the game is in progress
     And I click on the "Reset Game" button
