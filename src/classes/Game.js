@@ -221,9 +221,7 @@ class Game {
     const bot = this.players[this.board.turn];
     const col = bot.getMove(this.board);
     const botTimerMs = 200 + Math.random() * 800;
-    this.moveAllowed = false;
     this.botTimer = setTimeout(() => {
-      this.moveAllowed = true;
       this.move(col);
     }, botTimerMs);
   }
@@ -268,6 +266,7 @@ class Game {
     const boardElement = document.querySelector('.board');
     // Add event listener
     boardElement.addEventListener('click', (event) => {
+      if (this.players[this.board.turn] instanceof Bot) { return; } // Don't allow human to move if bot is playing
       // Get clicked element
       const target = event.target;
       // Get column element
