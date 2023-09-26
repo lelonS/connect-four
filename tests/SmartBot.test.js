@@ -49,3 +49,24 @@ test('getLegalMoves returns correct number of moves', () => {
   expect(moves.length).toBe(1);
 });
 
+// Test countColors()
+test('countColors returns correct number of colors', () => {
+  const bot = new SmartBot('test', 1);
+  const board = new Board();
+  board.board = BoardPositions.fullDraw.board;
+
+  // Check that no combo count is 4
+  for (const combo of bot.winCombos) {
+    expect(bot.countColors(board, combo, 0)).toBeLessThan(4);
+    expect(bot.countColors(board, combo, 1)).toBeLessThan(4);
+    expect(bot.countColors(board, combo, null)).toBe(0);
+  }
+
+  // Check that countColors returns the correct number of colors
+  expect(bot.countColors(board, [[0, 0], [1, 0], [2, 0], [3, 0]], 0)).toBe(2);
+  expect(bot.countColors(board, [[0, 0], [1, 0], [2, 0], [3, 0]], 1)).toBe(2);
+
+  expect(bot.countColors(board, [[1, 0], [2, 0], [3, 0], [4, 0]], 0)).toBe(1);
+  expect(bot.countColors(board, [[1, 0], [2, 0], [3, 0], [4, 0]], 1)).toBe(3);
+});
+
