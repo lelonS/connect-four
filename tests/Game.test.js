@@ -14,12 +14,20 @@ test('New game has correct initial variables', () => {
 test('New game has correct initial DOM', () => {
   const game = new Game();
 
-  // Check other DOM elements exist
+  // Check DOM elements exist
+  const board = document.querySelector('.board');
+  const gameSidebar = document.querySelector('.game-sidebar');
   const gameInfo = document.querySelector('.game-info');
-  expect(gameInfo).not.toBeNull();
+  // Ask for player names
   const inputElements = gameInfo.querySelectorAll('input');
-  expect(inputElements.length).toBe(2);
+  const selectElements = gameInfo.querySelectorAll('select');
   const submitButton = gameInfo.querySelector('button');
+
+  expect(board).not.toBeNull();
+  expect(gameSidebar).not.toBeNull();
+  expect(gameInfo).not.toBeNull();
+  expect(inputElements.length).toBe(2);
+  expect(selectElements.length).toBe(2);
   expect(submitButton).not.toBeNull();
 });
 
@@ -55,14 +63,17 @@ test('createPlayers() creates players', () => {
 });
 
 // askForPlayerNames() tests
-test('askForPlayerNames() creates 2 input elements and button', () => {
+test('askForPlayerNames() creates 2 plr inputs and a submit button', () => {
   const game = new Game();
   const gameInfo = document.querySelector('.game-info');
   gameInfo.innerHTML = '';
   game.askForPlayerNames();
-  const inputElements = gameInfo.querySelectorAll('input');
+  const inputElements = gameInfo.querySelectorAll('input'); // Player name inputs
+  const selectElements = gameInfo.querySelectorAll('select'); // Player type selects
+  const submitButton = gameInfo.querySelector('button'); // Submit button
+
   expect(inputElements.length).toBe(2);
-  const submitButton = gameInfo.querySelector('button');
+  expect(selectElements.length).toBe(2);
   expect(submitButton).not.toBeNull();
 });
 
@@ -142,6 +153,10 @@ test('renderTurn() renders correct output', () => {
   gameInfo = document.querySelector('.game-info');
   gameInfoTitle = gameInfo.querySelector('h3');
   expect(gameInfoTitle.textContent).toBe("Bob's turn");
+
+  // Check that button (to restart) exist
+  const button = gameInfo.querySelector('button');
+  expect(button).not.toBeNull();
 });
 
 // waitForMove() tests
