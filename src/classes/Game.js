@@ -167,7 +167,9 @@ class Game {
     }
   }
 
-  renderMove(player, col) {
+  renderMove(turn, col) {
+    if (!this.players) { return; }
+    const player = this.players[turn];
     const boardElement = document.querySelector('.board');
     const columnElements = boardElement.querySelectorAll('.column');
     const columnElement = columnElements[col];
@@ -264,10 +266,10 @@ class Game {
     }
     if (!this.board.isValidMove(col)) { return; }
 
-    const plr = this.players[this.board.turn];
+    const turn = this.board.turn;
     const success = this.board.makeMove(col);
     if (success) {
-      this.renderMove(plr, col);
+      this.renderMove(turn, col);
       this.waitForMove();
     }
   }
