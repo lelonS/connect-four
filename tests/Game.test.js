@@ -106,6 +106,17 @@ test('renderBoard() renders players', () => {
   expect(cells[1].classList.contains('player-2')).toBe(true);
 });
 
+// renderMove() tests
+test('renderMove() renders correct player', () => {
+  const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
+  game.renderMove(0, 0, 0);
+  const board = document.querySelector('.board');
+  const column = board.querySelector('.column');
+  const cell = column.querySelector('.cell'); // First cell
+  expect(cell.classList.contains('player-1')).toBe(true);
+});
+
 // renderResults() tests
 test('renderResults() renders correct output for draw', () => {
   const game = new Game();

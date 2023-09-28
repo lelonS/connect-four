@@ -13,6 +13,7 @@ test('Initial board variables are correct', () => {
   expect(board.gameState).toBe(Board.GameStates.Playing);
   expect(board.turn).toBe(0);
   expect(board.winner).toBe(null);
+  expect(board.moveHistory).toEqual([]);
   // Check board array
   expect(board.board).toEqual(BoardPositions.empty.board);
 });
@@ -23,6 +24,15 @@ test('createEmptyBoard() creates an empty board', () => {
   board.board = BoardPositions.fullDraw.board;
   board.createEmptyBoard();
   expect(board.board).toEqual(BoardPositions.empty.board);
+});
+
+// Test getLastMove()
+test('getLastMove() returns last move player, col and row', () => {
+  const board = new Board();
+  board.makeMove(0);
+  expect(board.getLastMove()).toEqual({ player: 0, col: 0, row: 0 });
+  board.makeMove(3);
+  expect(board.getLastMove()).toEqual({ player: 1, col: 3, row: 0 });
 });
 
 // Test getCell()

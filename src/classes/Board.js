@@ -14,6 +14,7 @@ class Board {
     this.gameState = Board.GameStates.Playing;
     this.turn = 0;
     this.winner = null;
+    this.moveHistory = [];
 
     this.createEmptyBoard();
   }
@@ -23,6 +24,10 @@ class Board {
     for (let i = 0; i < this.colCount; i++) {
       this.board.push([]);
     }
+  }
+
+  getLastMove() {
+    return this.moveHistory[this.moveHistory.length - 1];
   }
 
   getCell(col, row) {
@@ -63,8 +68,10 @@ class Board {
 
     this.board[col].push(this.turn);
 
-    // Check result
     const lastRow = this.board[col].length - 1;
+    this.moveHistory.push({ col, row: lastRow, player: this.turn });
+
+    // Check result
     if (this.checkWinAt(col, lastRow)) {
       this.gameState = Board.GameStates.Win;
       this.winner = this.turn;

@@ -167,6 +167,15 @@ class Game {
     }
   }
 
+  renderMove(turn, col, row) {
+    if (!this.players) { return; }
+    const player = this.players[turn];
+    const boardElement = document.querySelector('.board');
+    const columnElement = boardElement.querySelectorAll('.column')[col];
+    const cell = columnElement.querySelectorAll('.cell')[row];
+    cell.classList.add(`player-${player.plrNumber}`);
+  }
+
   renderResults() {
     const gameInfo = document.querySelector('.game-info');
     // Write result to sidebar
@@ -228,7 +237,7 @@ class Game {
 
   waitForMove() {
     this.moveAllowed = true;
-    this.renderBoard();
+    // this.renderBoard();
     if (this.board.gameState === Board.GameStates.Playing) {
       this.renderTurn();
       if (this.players[this.board.turn] instanceof Bot) {
@@ -257,6 +266,8 @@ class Game {
 
     const success = this.board.makeMove(col);
     if (success) {
+      const { player, col, row } = this.board.getLastMove();
+      this.renderMove(player, col, row);
       this.waitForMove();
     }
   }
