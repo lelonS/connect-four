@@ -167,14 +167,12 @@ class Game {
     }
   }
 
-  renderMove(turn, col) {
+  renderMove(turn, col, row) {
     if (!this.players) { return; }
     const player = this.players[turn];
     const boardElement = document.querySelector('.board');
-    const columnElements = boardElement.querySelectorAll('.column');
-    const columnElement = columnElements[col];
-    // Get last empty cell
-    const cell = columnElement.querySelector('.cell:not(.player-1):not(.player-2)');
+    const columnElement = boardElement.querySelectorAll('.column')[col];
+    const cell = columnElement.querySelectorAll('.cell')[row];
     cell.classList.add(`player-${player.plrNumber}`);
   }
 
@@ -266,10 +264,10 @@ class Game {
     }
     if (!this.board.isValidMove(col)) { return; }
 
-    const turn = this.board.turn;
     const success = this.board.makeMove(col);
     if (success) {
-      this.renderMove(turn, col);
+      const { player, col, row } = this.board.getLastMove();
+      this.renderMove(player, col, row);
       this.waitForMove();
     }
   }

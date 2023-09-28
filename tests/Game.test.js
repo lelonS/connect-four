@@ -110,7 +110,7 @@ test('renderBoard() renders players', () => {
 test('renderMove() renders correct player', () => {
   const game = new Game();
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
-  game.renderMove(0, 0);
+  game.renderMove(0, 0, 0);
   const board = document.querySelector('.board');
   const column = board.querySelector('.column');
   const cell = column.querySelector('.cell'); // First cell
