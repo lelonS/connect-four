@@ -42,6 +42,16 @@ class SmartBot extends Bot {
     return combo.map(([col, row]) => board.getCell(col, row)).filter(cell => cell === color).length;
   }
 
+  #getScore(countBeforeMove, countAfterMove) {
+    return (countAfterMove.own === 4 && Infinity) ||
+      (countBeforeMove.opponent === 3 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 6) ||
+      (countBeforeMove.opponent === 2 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 5) ||
+      (countBeforeMove.opponent === 1 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 3.05) ||
+      (countAfterMove.own === 3 && countBeforeMove.own === 2 && countBeforeMove.opponent === 0 && 69 ** 3) ||
+      (countAfterMove.own === 2 && countBeforeMove.own === 1 && countBeforeMove.opponent === 0 && 69 ** 3) ||
+      (countAfterMove.own === 1 && countBeforeMove.own === 0 && countBeforeMove.opponent === 0 && 69 ** 3) || 0;
+  }
+
   calcMoveScore(board, move) {
     // Make move on a copy of the board
     const boardAfterMove = board.copy();
@@ -59,22 +69,22 @@ class SmartBot extends Bot {
       let countAfterMove = {
         own: this.countColors(boardAfterMove, combo, ownColor),
       };
-      score +=
-        (countAfterMove.own === 4 && Infinity) ||
-        (countBeforeMove.opponent === 3 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 6) ||
-        (countBeforeMove.opponent === 2 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 5) ||
-        (countBeforeMove.opponent === 1 && countBeforeMove.own === 0 && countAfterMove.own === 1 && 69 ** 3.05) ||
-        (countAfterMove.own === 3 && countBeforeMove.own === 2 && countBeforeMove.opponent === 0 && 69 ** 3) ||
-        (countAfterMove.own === 2 && countBeforeMove.own === 1 && countBeforeMove.opponent === 0 && 69 ** 3) ||
-        (countAfterMove.own === 1 && countBeforeMove.own === 0 && countBeforeMove.opponent === 0 && 69 ** 3) || 0;
+      score += this.#getScore(countBeforeMove, countAfterMove);
+
     };
     return score;
-
   }
 
+  #moveSorter(x, y) {
+    if (x.score === y.score) {
+      if (x.row > y.row) { return -1; } // higher row prio
+      return [-1, 1][Math.floor(Math.random() * 2)];
+    }
+    return x.score > y.score ? -1 : 1;
+  }
 
   getMove(board, checkOppMove = true) {
-    const legalMoves = this.getLegalMoves(board).map(col => ({ col }));
+    const legalMoves = this.getLegalMoves(board).map(col => ({ col, row: board.board[col].length }));
 
     if (legalMoves.length === 0) { throw new Error('no valid move'); }
 
@@ -95,13 +105,7 @@ class SmartBot extends Bot {
       }
     }
 
-    legalMoves.sort((x, y) => {
-      if (x.score === y.score) {
-        if (x[0] > y[0]) { return -1; } // higher row prio
-        return [-1, 1][Math.floor(Math.random() * 2)];
-      }
-      return x.score > y.score ? -1 : 1;
-    });
+    legalMoves.sort(this.#moveSorter);
 
     return legalMoves[0].col;
   }
