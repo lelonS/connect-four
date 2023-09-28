@@ -10,7 +10,8 @@
     "test-jest": "jest",
     "test-cypress": "cypress run --browser chrome",
     "test-cypress-ui": "cypress open --browser chrome",
-    "make-steps": "node tests-cypress/_auto-generate-step-definitions.js"
+    "make-steps": "node tests-cypress/_auto-generate-step-definitions.js",
+    "complexity": "ccts-ui src/classes"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
@@ -31,6 +32,7 @@
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
     "@cypress/webpack-preprocessor": "^6.0.0",
+    "cognitive-complexity-ts": "^0.6.5",
     "cypress": "^13.1.0",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.7.0"
