@@ -125,16 +125,7 @@ class Game {
   createPlayers(names, types) {
     this.players = [];
     for (let i = 0; i < names.length; i++) {
-      const name = names[i];
-      const type = types[i];
-      let player;
-      if (type === Player.PlayerTypes.Human) {
-        player = new Player(name, i + 1);
-      } else if (type === Player.PlayerTypes.RandomBot) {
-        player = new RandomBot(name, i + 1);
-      } else if (type === Player.PlayerTypes.SmartBot) {
-        player = new SmartBot(name, i + 1);
-      }
+      let player = Player.create(names[i], i + 1, types[i]);
       this.players.push(player);
     }
   }
