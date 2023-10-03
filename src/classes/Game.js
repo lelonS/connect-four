@@ -20,11 +20,31 @@ class Game {
 
     this.renderBoard();
     if (createPlayers) {
+      this.askForGamemode();
+    }
+    else if (this.players) {
       this.askForPlayerNames();
     }
     else {
       this.waitForMove();
     }
+  }
+
+  askForGamemode() {
+    const onlineButton = document.createElement('button');
+    const localButton = document.createElement('button');
+    const buttons = document.querySelector('.game-info');
+    onlineButton.textContent = 'Online';
+    localButton.textContent = 'Local';
+    buttons.innerHTML = Elements.gamemodeHtml();
+    buttons.appendChild(onlineButton);
+    buttons.appendChild(localButton);
+    localButton.addEventListener('click', () => {
+      this.askForPlayerNames();
+    });
+    onlineButton.addEventListener('click', () => {
+      this.askForPlayerNames();
+    });
   }
 
   askForPlayerNames() {

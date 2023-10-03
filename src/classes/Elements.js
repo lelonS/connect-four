@@ -126,4 +126,9 @@ class Elements {
     `;
   }
 
+  static gamemodeHtml() {
+    return /*html*/`
+    <h3>Select a gamemode</h3>
+    `;
+  }
 }
