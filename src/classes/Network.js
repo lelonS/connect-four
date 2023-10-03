@@ -1,5 +1,6 @@
 class Network {
-  static user = null;
+  static userName = null;
+  static userType = 'human'
   static channel = null;
   static token = null;
   static latest = 0;
@@ -8,13 +9,13 @@ class Network {
   static game = null;
   static eventSource = null;
 
-  static startConnection(_user, _channel, _game) {
-
-    Network.user = _user
+  static startConnection(_user, _userType, _channel, _game) {
+    Network.userType = _userType;
+    Network.userName = _user
     Network.channel = _channel;
     Network.game = _game;
 
-    Network.eventSource = new EventSource(Network.urlPrefix + `/api/listen/${Network.channel}/${Network.user}/${Network.latest}`);
+    Network.eventSource = new EventSource(Network.urlPrefix + `/api/listen/${Network.channel}/${Network.userName}/${Network.latest}`);
 
     Network.eventSource.addEventListener('token', event => {
       Network.token = JSON.parse(event.data);
@@ -25,13 +26,15 @@ class Network {
     }
 
     Network.eventSource.onerror = error => {
-      Network.eventSource.close();
-      setTimeout(startConnection, 1000)
+      // TODO: Handle error good
+      Network.closeConnection();
+      console.log('EventSource onerror:');
+      console.log(error);
     }
   }
 
   static closeConnection() {
-    Network.user = null;
+    Network.userName = null;
     Network.channel = null;
     Network.token = null;
     Network.latest = 0;
@@ -53,6 +56,26 @@ class Network {
 
   static messageListener({ timestamp, user, data }) {
     console.log(timestamp, user, data);
+    if (Network.game === null) { Network.closeConnection(); return; }
+    // New player joined (can be self)
+    if (user === 'system' && data.includes(`joined channel`)) {
+      Network.createPlayer(data);
+      if (Network.game.players.length === Network.game.playerCount) {
+        // Second player joined, start game
+        Network.game.waitForMove();
+      }
+    }
+
+    // Player left (can be self) 
+    if (user === 'system' && data.includes(`left channel`)) {
+      Network.removePlayer(data);
+      if (Network.game.players.length < Network.game.playerCount) {
+        // Less than two players left do something
+        Network.closeConnection();
+      }
+    }
+
+
   }
 
   static sendMoveFromLocalPlayer(player, move) {
@@ -64,12 +87,27 @@ class Network {
   }
 
   static createPlayer(data) {
-    // Create player from system join message
     console.log(data);
+    // data format: "User {name} joined channel '{channel}'."
+
+    // Get name (between 'User ' and ' joined channel')
+    const name = data.substring(5, data.indexOf(' joined channel'));
+    const plrNumber = Network.game.players.length + 1
+    let player = Player.create(name, plrNumber, 'human');
+    const isLocalPlayer = name === Network.userName;
+    if (isLocalPlayer) {
+      player = Player.create(name, plrNumber, Network.userType);
+    }
+    player.isLocal = isLocalPlayer;
+    Network.game.players.push(player);
+
+    console.log(Network.game.players);
   }
 
   static removePlayer(data) {
-    // Remove player from system leave message
-    console.log(data);
+    // data format: "User '{name}' left channel '{channel}'."
+    const name = data.substring(6, data.indexOf('\' left channel'));
+    // Filter out player with name
+    Network.game.players = Network.game.players.filter(player => player.name !== name);
   }
 }

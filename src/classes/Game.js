@@ -20,6 +20,7 @@ class Game {
 
     this.renderBoard();
     if (createPlayers) {
+      this.players = [];
       this.askForPlayerNames();
     }
     else {
