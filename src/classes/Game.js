@@ -187,8 +187,8 @@ class Game {
     const boardElement = document.querySelector('.board');
     // Add event listener
     boardElement.addEventListener('click', (event) => {
-      // Don't allow human to move if bot is playing
-      if (this.players && this.players[this.board.turn] instanceof Bot) {
+      // Don't allow human to move if bot is playing or if current player is a remote player (for online games)
+      if (this.players && (this.players[this.board.turn] instanceof Bot || !this.players[this.board.turn].isLocal)) {
         return;
       }
       // Get clicked element

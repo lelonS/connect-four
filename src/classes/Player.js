@@ -30,6 +30,7 @@ class Player {
   constructor(name, plrNumber) {
     this.name = name;
     this.plrNumber = plrNumber;
+    this.isLocal = true;
   }
 
   get name() { return this.#name; }
