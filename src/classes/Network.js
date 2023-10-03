@@ -72,7 +72,7 @@ class Network {
     if (user === 'system' && data.includes(`left channel`)) {
       Network.removePlayer(data);
       if (Network.game.players.length < Network.game.playerCount) {
-        // Less than two players left do something
+        // Less than two players left do something (make a game started variable and stuff)
         Network.closeConnection();
       }
     }
