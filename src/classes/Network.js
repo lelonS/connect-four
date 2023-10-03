@@ -57,6 +57,8 @@ class Network {
   static messageListener({ timestamp, user, data }) {
     console.log(timestamp, user, data);
     if (Network.game === null) { Network.closeConnection(); return; }
+    if (user === Network.userName) { return; } // Ignore own messages
+
     // New player joined (can be self)
     if (user === 'system' && data.includes(`joined channel`)) {
       Network.createPlayer(data);
@@ -75,7 +77,10 @@ class Network {
       }
     }
 
-
+    // Move made
+    if (user !== 'system') {
+      Network.makeMoveFromRemote(data, user);
+    }
   }
 
   static sendMoveFromLocalPlayer(player, move) {
@@ -84,7 +89,17 @@ class Network {
   }
 
   static makeMoveFromRemote(move, user) {
-    console.log(move, user);
+    // Get player from Network.game.players (if is player1 or player2)
+    let player;
+    for (let i = 0; i < Network.game.playerCount; i++) {
+      if (Network.game.players[i].name === user) {
+        player = Network.game.players[i];
+        break;
+      }
+    }
+    if (player === undefined || player.isLocal) { return; }
+    // Make move
+    Network.game.move(move);
   }
 
   static createPlayer(data) {
