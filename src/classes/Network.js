@@ -10,10 +10,15 @@ class Network {
   static eventSource = null;
 
   static startConnection(_user, _userType, _channel, _game) {
+    Network.closeConnection();
+
     Network.userType = _userType;
     Network.userName = _user
     Network.channel = _channel;
     Network.game = _game;
+
+    _game.reset();
+    _game.players = [];
 
     Network.eventSource = new EventSource(Network.urlPrefix + `/api/listen/${Network.channel}/${Network.userName}/${Network.latest}`);
 
@@ -68,7 +73,7 @@ class Network {
       }
     }
 
-    // Player left (can be self) 
+    // Player left
     if (user === 'system' && data.includes(`left channel`)) {
       Network.removePlayer(data);
       if (Network.game.players.length < Network.game.playerCount) {
@@ -103,7 +108,7 @@ class Network {
   }
 
   static createPlayer(data) {
-    console.log(data);
+    if (Network.game.players.length >= Network.game.playerCount) { return; } // Already two players
     // data format: "User {name} joined channel '{channel}'."
 
     // Get name (between 'User ' and ' joined channel')
