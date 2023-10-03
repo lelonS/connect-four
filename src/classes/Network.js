@@ -79,7 +79,8 @@ class Network {
   }
 
   static sendMoveFromLocalPlayer(player, move) {
-    if (!player.isLocal) { return; }
+    if (!player.isLocal || Network.eventSource === null) { return; }
+    Network.send(move);
   }
 
   static makeMoveFromRemote(move, user) {

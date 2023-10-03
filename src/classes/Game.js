@@ -179,6 +179,7 @@ class Game {
     if (success) {
       const { player, col, row } = this.board.getLastMove();
       this.renderMove(player, col, row);
+      Network.sendMoveFromLocalPlayer(this.players[player], col);
       this.waitForMove();
     }
   }
