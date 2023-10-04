@@ -18,7 +18,6 @@ class Network {
     Network.channel = _channel;
     Network.game = _game;
 
-    _game.reset();
     _game.players = [];
 
     Network.eventSource = new EventSource(Network.urlPrefix + `/api/listen/${Network.channel}/${Network.userName}/${Network.latest}`);

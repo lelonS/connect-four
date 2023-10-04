@@ -26,10 +26,13 @@ class Game {
     if (!createPlayers) {
       this.waitForMove();
     } else if (this.gamemode === Game.Gamemodes.Local) {
+      Network.closeConnection();
       this.askForPlayerNames();
     } else if (this.gamemode === Game.Gamemodes.Online) {
+      Network.closeConnection();
       this.askForOnlineParameters();
     } else {
+      Network.closeConnection();
       this.askForGamemode();
     }
   }
