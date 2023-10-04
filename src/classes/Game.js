@@ -1,9 +1,12 @@
 class Game {
   get playerCount() { return this.board.playerCount; }
 
+  static Gamemodes = { Menu: undefined, Local: 'local', Online: 'online' };
+
   constructor() {
     this.#createElements();
     this.#addEventListeners();
+    this.gamemode = Game.Gamemodes.Menu;
     this.reset();
   }
 
@@ -19,12 +22,40 @@ class Game {
     this.moveAllowed = false;
 
     this.renderBoard();
-    if (createPlayers) {
-      this.askForPlayerNames();
-    }
-    else {
+
+    if (!createPlayers) {
       this.waitForMove();
+    } else if (this.gamemode === Game.Gamemodes.Local) {
+      this.askForPlayerNames();
+    } else if (this.gamemode === Game.Gamemodes.Online) {
+      // Ask for user name / channel
+    } else {
+      this.askForGamemode();
     }
+  }
+
+  askForGamemode() {
+    const gameInfo = document.querySelector('.game-info');
+    gameInfo.innerHTML = Elements.gamemodeHtml();
+
+    const onlineButton = document.createElement('button');
+    onlineButton.textContent = 'Online';
+
+    const localButton = document.createElement('button');
+    localButton.textContent = 'Local';
+
+    localButton.addEventListener('click', () => {
+      this.gamemode = Game.Gamemodes.Local;
+      this.askForPlayerNames();
+    });
+
+    onlineButton.addEventListener('click', () => {
+      this.gamemode = Game.Gamemodes.Online;
+      this.askForPlayerNames();
+    });
+
+    gameInfo.appendChild(onlineButton);
+    gameInfo.appendChild(localButton);
   }
 
   askForPlayerNames() {
@@ -52,8 +83,10 @@ class Game {
     // Create submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Start';
-
     gameInfo.appendChild(submitButton);
+
+    const mainMenuButton = Elements.mainMenuButton(this);
+    gameInfo.appendChild(mainMenuButton);
 
     // Add event listener to submit button
     submitButton.addEventListener('click', () => {
@@ -119,12 +152,11 @@ class Game {
     gameInfo.innerHTML = Elements.resultHtml(this);
 
     // Play again buttons
-    const newGameButton = Elements.newGameButton(this);
-    gameInfo.appendChild(newGameButton);
-
     const playAgainButton = Elements.playAgainButton(this);
     gameInfo.appendChild(playAgainButton);
 
+    const newGameButton = Elements.newGameButton(this);
+    gameInfo.appendChild(newGameButton);
   }
 
   renderTurn() {
