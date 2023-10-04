@@ -68,7 +68,7 @@ class Game {
     const playerTypeDropdown = Elements.playerTypeDropdownElement();
     gameInfo.appendChild(playerTypeDropdown);
 
-    const channelInput = Elements.nameInputElement('Channel');
+    const channelInput = Elements.channelInputElement();
     gameInfo.appendChild(channelInput);
 
     const submitButton = document.createElement('button');

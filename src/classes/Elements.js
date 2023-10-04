@@ -34,6 +34,17 @@ class Elements {
     return input;
   }
 
+  static channelInputElement() {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Channel';
+    input.maxLength = 20;
+    input.minLength = 1;
+    input.classList.add('channel');
+
+    return input;
+  }
+
   static playerTypeDropdownElement() {
     const playerTypes = Player.PlayerTypes;
     const dropdown = document.createElement('select');

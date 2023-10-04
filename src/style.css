@@ -162,6 +162,10 @@ select {
   background-color: white;
 }
 
+input.channel {
+  width: 84%;
+}
+
 button {
   width: 50%;
   min-width: 100px;
@@ -243,9 +247,14 @@ button {
     margin-right: 5px;
   }
 
-  .game-info>input[type="text"] {
+  .game-info>input[type="text"],
+  .game-info>select {
     width: 46%;
     margin-left: 3px;
     margin-right: 3px;
+  }
+
+  .game-info>input.channel {
+    width: calc(92% + 6px);
   }
 }
