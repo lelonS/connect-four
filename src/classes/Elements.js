@@ -91,6 +91,16 @@ class Elements {
     return resetButton;
   }
 
+  static mainMenuButton(game) {
+    const mainMenuButton = document.createElement('button');
+    mainMenuButton.textContent = 'Main Menu';
+    mainMenuButton.addEventListener('click', () => {
+      game.gamemode = Game.Gamemodes.Menu;
+      game.reset();
+    });
+    return mainMenuButton;
+  }
+
   static drawResultHtml() {
     return /*html*/`
     <h3 class="game-result">It's a draw!</h3>`;

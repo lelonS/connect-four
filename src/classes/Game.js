@@ -1,11 +1,12 @@
 class Game {
   get playerCount() { return this.board.playerCount; }
 
-  static gamemodes = { Local: 'local', Online: 'online' };
+  static Gamemodes = { Menu: undefined, Local: 'local', Online: 'online' };
 
   constructor() {
     this.#createElements();
     this.#addEventListeners();
+    this.gamemode = Game.Gamemodes.Menu;
     this.reset();
   }
 
@@ -24,9 +25,9 @@ class Game {
 
     if (!createPlayers) {
       this.waitForMove();
-    } else if (this.gamemode === Game.gamemodes.Local) {
+    } else if (this.gamemode === Game.Gamemodes.Local) {
       this.askForPlayerNames();
-    } else if (this.gamemode === Game.gamemodes.Online) {
+    } else if (this.gamemode === Game.Gamemodes.Online) {
       // Ask for user name / channel
     } else {
       this.askForGamemode();
@@ -44,12 +45,12 @@ class Game {
     localButton.textContent = 'Local';
 
     localButton.addEventListener('click', () => {
-      this.gamemode = Game.gamemodes.Local;
+      this.gamemode = Game.Gamemodes.Local;
       this.askForPlayerNames();
     });
 
     onlineButton.addEventListener('click', () => {
-      this.gamemode = Game.gamemodes.Online;
+      this.gamemode = Game.Gamemodes.Online;
       this.askForPlayerNames();
     });
 
@@ -82,8 +83,10 @@ class Game {
     // Create submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Start';
-
     gameInfo.appendChild(submitButton);
+
+    const mainMenuButton = Elements.mainMenuButton(this);
+    gameInfo.appendChild(mainMenuButton);
 
     // Add event listener to submit button
     submitButton.addEventListener('click', () => {
@@ -149,12 +152,11 @@ class Game {
     gameInfo.innerHTML = Elements.resultHtml(this);
 
     // Play again buttons
-    const newGameButton = Elements.newGameButton(this);
-    gameInfo.appendChild(newGameButton);
-
     const playAgainButton = Elements.playAgainButton(this);
     gameInfo.appendChild(playAgainButton);
 
+    const newGameButton = Elements.newGameButton(this);
+    gameInfo.appendChild(newGameButton);
   }
 
   renderTurn() {
