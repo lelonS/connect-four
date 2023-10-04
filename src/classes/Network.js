@@ -7,6 +7,7 @@ class Network {
   static urlPrefix = 'https://sse.nodehill.com';
 
   static game = null;
+  static gameStarted = false;
   static eventSource = null;
 
   static startConnection(_user, _userType, _channel, _game) {
@@ -32,6 +33,7 @@ class Network {
 
     Network.eventSource.onerror = error => {
       // TODO: Handle error good
+      game.reset();
       Network.closeConnection();
       console.log('EventSource onerror:');
       console.log(error);
@@ -44,6 +46,7 @@ class Network {
     Network.token = null;
     Network.latest = 0;
     Network.game = null;
+    Network.gameStarted = false;
     if (Network.eventSource) {
       Network.eventSource.close();
       Network.eventSource = null;
@@ -70,15 +73,18 @@ class Network {
       if (Network.game.players.length === Network.game.playerCount) {
         // Second player joined, start game
         Network.game.waitForMove();
+        Network.gameStarted = true;
       }
     }
 
     // Player left
     if (user === 'system' && data.includes(`left channel`)) {
       Network.removePlayer(data);
-      if (Network.game.players.length < Network.game.playerCount) {
-        // Less than two players left do something (make a game started variable and stuff)
+      if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
+        // Less than two players left do something
         Network.closeConnection();
+        game.reset();
+        console.log('Disconnected due to player leaving')
       }
     }
 

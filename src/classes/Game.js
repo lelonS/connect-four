@@ -87,6 +87,7 @@ class Game {
       const playerType = playerTypeDropdown.value;
 
       Network.startConnection(name, playerType, channel, this);
+      this.renderWaitingForOpponent();
     });
   }
 
