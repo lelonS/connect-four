@@ -34,6 +34,17 @@ class Elements {
     return input;
   }
 
+  static channelInputElement() {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Channel';
+    input.maxLength = 20;
+    input.minLength = 1;
+    input.classList.add('channel');
+
+    return input;
+  }
+
   static playerTypeDropdownElement() {
     const playerTypes = Player.PlayerTypes;
     const dropdown = document.createElement('select');
@@ -91,6 +102,16 @@ class Elements {
     return resetButton;
   }
 
+  static mainMenuButton(game) {
+    const mainMenuButton = document.createElement('button');
+    mainMenuButton.textContent = 'Main Menu';
+    mainMenuButton.addEventListener('click', () => {
+      game.gamemode = Game.Gamemodes.Menu;
+      game.reset();
+    });
+    return mainMenuButton;
+  }
+
   static drawResultHtml() {
     return /*html*/`
     <h3 class="game-result">It's a draw!</h3>`;
@@ -126,4 +147,16 @@ class Elements {
     `;
   }
 
+  static onlineParametersHtml() {
+    return /*html*/`
+    <h3>Enter name and channel</h3>
+    <p>Only letters and numbers</p>
+    `;
+  }
+
+  static gamemodeHtml() {
+    return /*html*/`
+    <h3>Select a gamemode</h3>
+    `;
+  }
 }
