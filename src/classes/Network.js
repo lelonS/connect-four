@@ -79,7 +79,8 @@ class Network {
 
     // Player left
     if (user === 'system' && data.includes(`left channel`)) {
-      Network.removePlayer(data);
+      const leavingUser = Network.removePlayer(data);
+      if (!Network.game.players.includes(leavingUser)) { return; } // Non playing user left
       if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
         // Less than two players left do something
         Network.closeConnection();
@@ -136,5 +137,6 @@ class Network {
     const name = data.substring(6, data.indexOf('\' left channel'));
     // Filter out player with name
     Network.game.players = Network.game.players.filter(player => player.name !== name);
+    return name;
   }
 }
