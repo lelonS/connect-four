@@ -1,6 +1,8 @@
 class Game {
   get playerCount() { return this.board.playerCount; }
 
+  static gamemodes = { Local: 'local', Online: 'online' };
+
   constructor() {
     this.#createElements();
     this.#addEventListeners();
@@ -19,32 +21,40 @@ class Game {
     this.moveAllowed = false;
 
     this.renderBoard();
-    if (createPlayers) {
-      this.askForGamemode();
-    }
-    else if (this.players) {
-      this.askForPlayerNames();
-    }
-    else {
+
+    if (!createPlayers) {
       this.waitForMove();
+    } else if (this.gamemode === Game.gamemodes.Local) {
+      this.askForPlayerNames();
+    } else if (this.gamemode === Game.gamemodes.Online) {
+      // Ask for user name / channel
+    } else {
+      this.askForGamemode();
     }
   }
 
   askForGamemode() {
+    const gameInfo = document.querySelector('.game-info');
+    gameInfo.innerHTML = Elements.gamemodeHtml();
+
     const onlineButton = document.createElement('button');
-    const localButton = document.createElement('button');
-    const buttons = document.querySelector('.game-info');
     onlineButton.textContent = 'Online';
+
+    const localButton = document.createElement('button');
     localButton.textContent = 'Local';
-    buttons.innerHTML = Elements.gamemodeHtml();
-    buttons.appendChild(onlineButton);
-    buttons.appendChild(localButton);
+
     localButton.addEventListener('click', () => {
+      this.gamemode = Game.gamemodes.Local;
       this.askForPlayerNames();
     });
+
     onlineButton.addEventListener('click', () => {
+      this.gamemode = Game.gamemodes.Online;
       this.askForPlayerNames();
     });
+
+    gameInfo.appendChild(onlineButton);
+    gameInfo.appendChild(localButton);
   }
 
   askForPlayerNames() {
