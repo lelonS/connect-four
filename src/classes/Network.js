@@ -33,7 +33,7 @@ class Network {
 
     Network.eventSource.onerror = error => {
       // TODO: Handle error good
-      game.reset();
+      if (Network.game !== null) { Network.game.reset(); }
       Network.closeConnection();
       console.log('EventSource onerror:');
       console.log(error);
