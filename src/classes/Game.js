@@ -28,7 +28,7 @@ class Game {
     } else if (this.gamemode === Game.Gamemodes.Local) {
       this.askForPlayerNames();
     } else if (this.gamemode === Game.Gamemodes.Online) {
-      // Ask for user name / channel
+      this.askForOnlineParameters();
     } else {
       this.askForGamemode();
     }
@@ -51,11 +51,32 @@ class Game {
 
     onlineButton.addEventListener('click', () => {
       this.gamemode = Game.Gamemodes.Online;
-      this.askForPlayerNames();
+      this.askForOnlineParameters();
     });
 
     gameInfo.appendChild(onlineButton);
     gameInfo.appendChild(localButton);
+  }
+
+  askForOnlineParameters() {
+    const gameInfo = document.querySelector('.game-info');
+    gameInfo.innerHTML = Elements.onlineParametersHtml();
+    
+    const nameInput = Elements.nameInputElement('Player');
+    gameInfo.appendChild(nameInput);
+
+    const playerTypeDropdown = Elements.playerTypeDropdownElement();
+    gameInfo.appendChild(playerTypeDropdown);
+
+    const channelInput = Elements.nameInputElement('Channel');
+    gameInfo.appendChild(channelInput);
+
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Connect';
+    gameInfo.appendChild(submitButton);
+
+    const mainMenuButton = Elements.mainMenuButton(this);
+    gameInfo.appendChild(mainMenuButton);
   }
 
   askForPlayerNames() {

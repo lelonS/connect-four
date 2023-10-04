@@ -136,6 +136,13 @@ class Elements {
     `;
   }
 
+  static onlineParametersHtml() {
+    return /*html*/`
+    <h3>Enter name and channel</h3>
+    <p>Only letters and numbers</p>
+    `;
+  }
+
   static gamemodeHtml() {
     return /*html*/`
     <h3>Select a gamemode</h3>
