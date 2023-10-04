@@ -141,4 +141,12 @@ class Elements {
     <h3>Select a gamemode</h3>
     `;
   }
+
+  static waitingForOpponentHtml() {
+    return /*html*/`
+    <h3>Waiting for opponent</h3>
+    <p>Share this channel:</p>
+    <h3>${Network.channel}</h3>
+    `;
+  }
 }

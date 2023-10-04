@@ -146,6 +146,12 @@ class Game {
     cell.classList.add(`player-${turn + 1}`);
   }
 
+  renderWaitingForOpponent() {
+    const gameInfo = document.querySelector('.game-info');
+    gameInfo.innerHTML = Elements.waitingForOpponentHtml();
+    gameInfo.appendChild(Elements.resetButton(this));
+  }
+
   renderResults() {
     const gameInfo = document.querySelector('.game-info');
     // Write result to sidebar
