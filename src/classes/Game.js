@@ -77,6 +77,17 @@ class Game {
 
     const mainMenuButton = Elements.mainMenuButton(this);
     gameInfo.appendChild(mainMenuButton);
+
+    submitButton.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const channel = channelInput.value.trim();
+      if (!this.#checkPlayerNames([name], [nameInput])) { return; }
+      if (channel.length < 1) { return; }
+
+      const playerType = playerTypeDropdown.value;
+
+      Network.startConnection(name, playerType, channel, this);
+    });
   }
 
   askForPlayerNames() {
