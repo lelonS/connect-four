@@ -61,7 +61,7 @@ class Game {
   askForOnlineParameters() {
     const gameInfo = document.querySelector('.game-info');
     gameInfo.innerHTML = Elements.onlineParametersHtml();
-    
+
     const nameInput = Elements.nameInputElement('Player');
     gameInfo.appendChild(nameInput);
 
