@@ -32,12 +32,16 @@ class Network {
     }
 
     Network.eventSource.onerror = error => {
-      const _game = Network.game;
-      Network.closeConnection('Error: Try a different name or channel');
-      _game.reset();
+      Network.closeConnectionAndReset('Error: Try a different name or channel');
       // console.log('EventSource onerror:');
       // console.log(error);
     }
+  }
+
+  static closeConnectionAndReset(reason = '') {
+    const _game = Network.game;
+    Network.closeConnection(reason);
+    _game.reset();
   }
 
   static closeConnection(reason = '') {
@@ -72,6 +76,12 @@ class Network {
     if (user === 'system' && data.includes(`joined channel`)) {
       Network.createPlayer(data);
       if (Network.game.players.length === Network.game.playerCount) {
+        // If no local player, close connection (Game was already full)
+        if (Network.game.players.every(player => !player.isLocal)) {
+          Network.closeConnectionAndReset('Game full. Try a different channel');
+          return;
+        }
+
         // Second player joined, start game
         Network.game.waitForMove();
         Network.gameStarted = true;
@@ -83,9 +93,7 @@ class Network {
       Network.removePlayer(data);
       if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
         // Less than two players left do something
-        const _game = Network.game;
-        Network.closeConnection('Opponent left the game. Try a different channel');
-        _game.reset();
+        Network.closeConnectionAndReset('Opponent left the game. Try a different channel');
       }
     }
 
