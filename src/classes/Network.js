@@ -87,10 +87,15 @@ class Network {
       }
     }
 
-    // Move made
-    if (user !== 'system') {
-      Network.makeMoveFromRemote(data, user);
+    // Incoming message
+    if (user !== 'system' && user !== Network.userName) {
+      Network.processMessageFromRemote(data, user);
     }
+  }
+
+  static sendBoardReset() {
+    if (Network.game === null || Network.game.board.moveHistory.length === 0) { return; } // Board already reset
+    Network.send('resetBoard');
   }
 
   static sendMoveFromLocalPlayer(player, move) {
@@ -98,7 +103,7 @@ class Network {
     Network.send(move);
   }
 
-  static makeMoveFromRemote(move, user) {
+  static processMessageFromRemote(data, user) {
     // Get player from Network.game.players (if is player1 or player2)
     let player;
     for (let i = 0; i < Network.game.playerCount; i++) {
@@ -108,8 +113,17 @@ class Network {
       }
     }
     if (player === undefined || player.isLocal) { return; }
-    // Make move
-    Network.game.move(move);
+
+    // Reset board
+    if (data === 'resetBoard') {
+      Network.game.reset(false);
+      return;
+    }
+
+    // Move
+    if (Number.isInteger(data)) {
+      Network.game.move(data);
+    }
   }
 
   static createPlayer(data) {

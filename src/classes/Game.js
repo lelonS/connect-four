@@ -18,6 +18,7 @@ class Game {
 
   reset(createPlayers = true) {
     clearTimeout(this.botTimer); // Stop any pending bot move
+    Network.sendBoardReset();
     this.board = new Board();
     this.moveAllowed = false;
 
