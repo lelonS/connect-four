@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-require('./load-all-classes.js');
+require('./helpers/load-all-classes.js');
 
 
 test('New game has correct initial variables', () => {
@@ -18,37 +18,46 @@ test('New game has correct initial DOM', () => {
   const board = document.querySelector('.board');
   const gameSidebar = document.querySelector('.game-sidebar');
   const gameInfo = document.querySelector('.game-info');
-  // Ask for player names
-  const inputElements = gameInfo.querySelectorAll('input');
-  const selectElements = gameInfo.querySelectorAll('select');
-  const submitButton = gameInfo.querySelector('button');
+  // Ask for onine / local gamemode
+  const buttons = gameInfo.querySelectorAll('button');
 
   expect(board).not.toBeNull();
   expect(gameSidebar).not.toBeNull();
   expect(gameInfo).not.toBeNull();
-  expect(inputElements.length).toBe(2);
-  expect(selectElements.length).toBe(2);
-  expect(submitButton).not.toBeNull();
+  expect(buttons.length).toBe(2);
 });
 
 // reset() tests
-test('reset() creates new board and players', () => {
+test('reset() creates new board and goes to the correct menu', () => {
   const game = new Game();
+  game.askForGamemode = jest.fn();
   game.askForPlayerNames = jest.fn();
-  const board = game.board;
-  game.reset();
-  expect(game.board).not.toBe(board);
-  expect(game.askForPlayerNames).toHaveBeenCalled();
+  game.askForOnlineParameters = jest.fn();
+
+  const gamemodes = [{ mode: Game.Gamemodes.Menu, func: game.askForGamemode },
+  { mode: Game.Gamemodes.Local, func: game.askForPlayerNames },
+  { mode: Game.Gamemodes.Online, func: game.askForOnlineParameters }];
+
+  for (const gamemode of gamemodes) {
+    game.gamemode = gamemode.mode;
+    const board = game.board;
+    game.reset();
+    expect(game.board).not.toBe(board);
+    expect(gamemode.func).toHaveBeenCalled();
+  }
 });
 
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
+  game.waitForMove = jest.fn();
+
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
   const players = game.players;
   game.reset(false);
   expect(game.board).not.toBe(board);
   expect(game.players).toBe(players);
+  expect(game.waitForMove).toHaveBeenCalled();
 });
 
 // createPlayers() tests

@@ -1,5 +1,5 @@
-require('./load-all-classes.js');
-const BoardPositions = require('./BoardPositions.js');
+require('./helpers/load-all-classes.js');
+const BoardPositions = require('./helpers/BoardPositions.js');
 
 // Test initial board state
 test('Initial board variables are correct', () => {
