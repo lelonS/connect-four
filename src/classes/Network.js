@@ -74,15 +74,16 @@ class Network {
 
     // New player joined (can be self)
     if (user === 'system' && data.includes(`joined channel`)) {
-      Network.createPlayer(data);
-      if (Network.game.players.length === Network.game.playerCount) {
-        // If no local player, close connection (Game was already full)
+      const plrWasCreated = Network.createPlayer(data);
+      if (plrWasCreated && Network.game.players.length === Network.game.playerCount) {
+        // Second player joined, start game
+
+        // If no local player, close connection (Game was already full when joining)
         if (Network.game.players.every(player => !player.isLocal)) {
           Network.closeConnectionAndReset('Game full. Try a different channel');
           return;
         }
 
-        // Second player joined, start game
         Network.game.waitForMove();
         Network.gameStarted = true;
       }
@@ -137,7 +138,7 @@ class Network {
   }
 
   static createPlayer(data) {
-    if (Network.game.players.length >= Network.game.playerCount) { return; } // Already two players
+    if (Network.game.players.length >= Network.game.playerCount) { return false; } // Already two players, no plr created
     // data format: "User {name} joined channel '{channel}'."
 
     // Get name (between 'User ' and ' joined channel')
@@ -152,6 +153,7 @@ class Network {
     Network.game.players.push(player);
 
     console.log(Network.game.players);
+    return true; // Player created
   }
 
   static removePlayer(data) {
