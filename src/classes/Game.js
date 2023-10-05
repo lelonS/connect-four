@@ -24,16 +24,16 @@ class Game {
 
     this.renderBoard();
 
+    // Creating new players, close connection to old players
+    if (createPlayers) { Network.closeConnection(); }
+
     if (!createPlayers) {
       this.waitForMove();
     } else if (this.gamemode === Game.Gamemodes.Local) {
-      Network.closeConnection();
       this.askForPlayerNames();
     } else if (this.gamemode === Game.Gamemodes.Online) {
-      Network.closeConnection();
       this.askForOnlineParameters();
     } else {
-      Network.closeConnection();
       this.askForGamemode();
     }
   }
