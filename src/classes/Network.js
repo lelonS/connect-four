@@ -106,7 +106,7 @@ class Network {
   static processMessageFromRemote(data, user) {
     // Get player from Network.game.players (if is player1 or player2)
     let player;
-    for (let i = 0; i < Network.game.playerCount; i++) {
+    for (let i = 0; i < Network.game.players.length; i++) {
       if (Network.game.players[i].name === user) {
         player = Network.game.players[i];
         break;
