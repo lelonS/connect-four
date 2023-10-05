@@ -97,7 +97,7 @@ class Elements {
 
   static resetButton(game) {
     const resetButton = Elements.newGameButton(game);
-    resetButton.textContent = 'Reset Game';
+    resetButton.textContent = Network.eventSource === null ? 'Reset Game' : 'Disconnect';
     resetButton.classList.add('abort-button');
     return resetButton;
   }
