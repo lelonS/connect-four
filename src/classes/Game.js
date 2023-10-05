@@ -184,6 +184,7 @@ class Game {
   }
 
   renderWaitingForOpponent() {
+    this.moveAllowed = false;
     const gameInfo = document.querySelector('.game-info');
     gameInfo.innerHTML = Elements.waitingForOpponentHtml();
     gameInfo.appendChild(Elements.resetButton(this));
