@@ -147,11 +147,16 @@ class Elements {
     `;
   }
 
-  static onlineParametersHtml() {
-    return /*html*/`
+  static onlineParametersHtml(infoText = '') {
+    let html = /*html*/`
     <h3>Enter name and channel</h3>
     <p>Only letters and numbers</p>
     `;
+
+    if (infoText.length > 0) {
+      html += `<p class=info-text>${infoText}</p>`;
+    }
+    return html;
   }
 
   static gamemodeHtml() {

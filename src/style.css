@@ -199,6 +199,12 @@ button {
 
 }
 
+.info-text {
+  border: 1px solid #ffdd1f;
+  border-radius: 25px;
+  padding: 5px;
+}
+
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio#browser_compatibility */
 
 

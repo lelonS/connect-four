@@ -7,6 +7,7 @@ class Network {
   static urlPrefix = 'https://sse.nodehill.com';
 
   static game = null;
+  static closeInfo = '';
   static gameStarted = false;
   static eventSource = null;
 
@@ -31,15 +32,16 @@ class Network {
     }
 
     Network.eventSource.onerror = error => {
-      // TODO: Handle error good
-      if (Network.game !== null) { Network.game.reset(); }
-      Network.closeConnection();
-      console.log('EventSource onerror:');
-      console.log(error);
+      const _game = Network.game;
+      Network.closeConnection('Error: Try a different name or channel');
+      _game.reset();
+      // console.log('EventSource onerror:');
+      // console.log(error);
     }
   }
 
-  static closeConnection() {
+  static closeConnection(reason = '') {
+    Network.closeInfo = reason;
     Network.userName = null;
     Network.channel = null;
     Network.token = null;
@@ -81,9 +83,9 @@ class Network {
       Network.removePlayer(data);
       if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
         // Less than two players left do something
-        Network.closeConnection();
-        game.reset();
-        console.log('Disconnected due to player leaving')
+        const _game = Network.game;
+        Network.closeConnection('Opponent left the game. Try a different channel');
+        _game.reset();
       }
     }
 

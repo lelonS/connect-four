@@ -25,7 +25,7 @@ class Game {
     this.renderBoard();
 
     // Creating new players, close connection to old players
-    if (createPlayers) { Network.closeConnection(); }
+    if (createPlayers) { Network.closeConnection(Network.closeInfo); }
 
     if (!createPlayers) {
       this.waitForMove();
@@ -64,7 +64,8 @@ class Game {
 
   askForOnlineParameters() {
     const gameInfo = document.querySelector('.game-info');
-    gameInfo.innerHTML = Elements.onlineParametersHtml();
+    gameInfo.innerHTML = Elements.onlineParametersHtml(Network.closeInfo);
+    Network.closeInfo = '';
 
     const nameInput = Elements.nameInputElement('Player');
     gameInfo.appendChild(nameInput);
