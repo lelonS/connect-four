@@ -2,6 +2,7 @@ Feature: Reset button
 
   Scenario: Reset button resets the board
     Given I am on the main page
+    And I click on the "Local" button
     When I enter valid player names
     And I click on the "Reset Game" button
     Then the board is reset
@@ -9,6 +10,7 @@ Feature: Reset button
 
   Scenario: Reset button for bot vs bot
     Given I am on the main page
+    And I click on the "Local" button
     When I pick "random-bot" in both dropdowns
     And I enter valid player names
     And I click on the "Reset Game" button
