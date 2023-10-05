@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-require('./load-all-classes.js');
+require('./helpers/load-all-classes.js');
 
 
 test('New game has correct initial variables', () => {

@@ -1,5 +1,5 @@
-require('./load-all-classes.js');
-const BoardPositions = require('./BoardPositions.js');
+require('./helpers/load-all-classes.js');
+const BoardPositions = require('./helpers/BoardPositions.js');
 
 test('Initial SmartBot variables are correct', () => {
   const bot = new SmartBot('test', 1);

@@ -1,4 +1,4 @@
-require('./load-all-classes.js');
+require('./helpers/load-all-classes.js');
 
 test('Initial Player variables are correct', () => {
   const player = new Player('test', 1);
