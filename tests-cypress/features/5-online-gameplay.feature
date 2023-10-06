@@ -30,3 +30,10 @@ Feature: Online Game Play
     And "Player1" is waiting for opponent
     When "Player1" click on the a column
     Then no move is made in the online game
+
+  Scenario: Trying to play when not your turn
+    Given 2 players connect to a unique channel
+    And the online game starts
+    And it is "Player1" turn in the online game
+    When "Player2" click on the a column
+    Then no move is made in the online game

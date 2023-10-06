@@ -63,5 +63,12 @@ When('{string} click on the a column', (player) => {
 
 Then('no move is made in the online game', () => {
   cy.getIframeBody('Player1').find('.board .player-1').should('not.exist');
+  cy.getIframeBody('Player1').find('.board .player-2').should('not.exist');
   cy.getIframeBody('Player2').find('.board .player-1').should('not.exist');
+  cy.getIframeBody('Player2').find('.board .player-2').should('not.exist');
+});
+
+Given('it is {string} turn in the online game', (playerName) => {
+  cy.getIframeBody('Player1').find('h3').should('contain', playerName + '\'s turn');
+  cy.getIframeBody('Player2').find('h3').should('contain', playerName + '\'s turn');
 });
