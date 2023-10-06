@@ -10,14 +10,14 @@ Feature: Online Game Play
     And "Player3" click on the "Online" button
 
   Scenario: Win and play again
-    Given 2 players connect to the channel "test1"
+    Given 2 players connect to a unique channel
     And the online game starts
     When the online game is played to a win
     And "Player1" click on the "Play Again" button
     Then the online game starts
 
   Scenario: Win and start new game
-    Given 2 players connect to the channel "test2"
+    Given 2 players connect to a unique channel
     And the online game starts
     When the online game is played to a win
     And "Player2" click on the "New Game" button
@@ -30,4 +30,3 @@ Feature: Online Game Play
     And "Player1" is waiting for opponent
     When "Player1" click on the a column
     Then no move is made in the online game
-
