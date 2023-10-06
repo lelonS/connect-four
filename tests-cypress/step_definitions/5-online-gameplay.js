@@ -1,9 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-
-function getUniqueChannel() {
-  // 10 characters channel name
-  return Math.random().toString(36).substring(2, 12);
-}
+import { getUniqueChannel } from "../support/channel-gen";
 
 Given('I am on the online test page', () => {
   cy.visit('/../tests-cypress/test-online.html');
