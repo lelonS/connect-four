@@ -29,5 +29,5 @@ Feature: Online Game Play
     Given "Player1" connect to the channel "test3"
     And "Player1" is waiting for opponent
     When "Player1" click on the a column
-    Then no move is made
+    Then no move is made in the online game
 
