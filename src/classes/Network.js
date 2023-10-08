@@ -70,40 +70,30 @@ class Network {
   }
 
   static messageListener({ timestamp, user, data }) {
-    console.log(timestamp, user, data);
     if (Network.game === null) { Network.closeConnection(); return; }
     if (user === Network.userName) { return; } // Ignore own messages
 
-    // New player joined (can be self)
-    if (user === 'system' && data.includes(`joined channel`)) {
-      const plrWasCreated = Network.createPlayer(data);
-      if (plrWasCreated && Network.game.players.length === Network.game.playerCount) {
-        // Second player joined, start game
-
-        // If no local player, close connection (Game was already full when joining)
-        if (Network.game.players.every(player => !player.isLocal)) {
-          Network.closeConnectionAndReset('Game full. Try a different channel');
-          return;
-        }
-
-        Network.game.waitForMove();
-        Network.gameStarted = true;
-      }
-    }
-
-    // Player left
-    if (user === 'system' && data.includes(`left channel`)) {
-      Network.removePlayer(data);
-      if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
-        // Less than two players left do something
-        Network.closeConnectionAndReset('Opponent left the game. Try a different channel');
-      }
+    // Server message
+    if (user === 'system') {
+      Network.processMessageFromServer(data);
+      return;
     }
 
     // Incoming message
     if (user !== 'system' && user !== Network.userName) {
       Network.processMessageFromRemote(data, user);
     }
+  }
+
+  static #startGame() {
+    // If no local player, close connection (Game was already full when joining)
+    if (Network.game.players.every(player => !player.isLocal)) {
+      Network.closeConnectionAndReset('Game full. Try a different channel');
+      return;
+    }
+
+    Network.game.waitForMove();
+    Network.gameStarted = true;
   }
 
   static sendBoardReset() {
@@ -114,6 +104,22 @@ class Network {
   static sendMoveFromLocalPlayer(player, move) {
     if (!player.isLocal || Network.eventSource === null) { return; }
     Network.send(move);
+  }
+
+  static processMessageFromServer(data) {
+    // New player joined (can be self)
+    if (data.includes(`joined channel`)) {
+      const plrWasCreated = Network.#createPlayer(data);
+      // If player was created, and player count is 2, start game
+      if (plrWasCreated && Network.game.players.length === Network.game.playerCount) {
+        Network.#startGame();
+      }
+    }
+
+    // Player left
+    if (data.includes(`left channel`)) {
+      Network.#removePlayer(data);
+    }
   }
 
   static processMessageFromRemote(data, user) {
@@ -139,31 +145,39 @@ class Network {
     }
   }
 
-  static createPlayer(data) {
+  static #createPlayer(data) {
     if (Network.game.players.length >= Network.game.playerCount) { return false; } // Already two players, no plr created
     // data format: "User {name} joined channel '{channel}'."
 
-    // Get name (between 'User ' and ' joined channel')
     const userName = data.substring(5, data.indexOf(' joined channel'));
     const name = Network.plrNameFromUser(userName);
     const plrNumber = Network.game.players.length + 1
-    let player = Player.create(name, plrNumber, 'human');
     const isLocalPlayer = name === Network.userName;
+
+    let player = Player.create(name, plrNumber, 'human');
+    // If local player, create player with correct playerType
     if (isLocalPlayer) {
       player = Player.create(name, plrNumber, Network.userType);
     }
     player.isLocal = isLocalPlayer;
+
     Network.game.players.push(player);
     Network.playerUsers[userName] = plrNumber - 1;
     return true; // Player created
   }
 
-  static removePlayer(data) {
+  static #removePlayer(data) {
     // data format: "User '{name}' left channel '{channel}'."
     const userName = data.substring(6, data.indexOf('\' left channel'));
+
     // Remove player from Network.game.players
     const playerIndex = Network.playerUsers[userName];
     Network.game.players.splice(playerIndex, 1);
+
+    // Check player count, if less than 2, close connection
+    if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
+      Network.closeConnectionAndReset('Opponent left the game. Try a different channel');
+    }
   }
 
   static plrNameFromUser(user) {
