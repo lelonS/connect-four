@@ -63,7 +63,7 @@ test('reset(false) creates new board and keeps players', () => {
   expect(Network.closeConnection).not.toHaveBeenCalled();
 });
 
-test('reset() calls Network.sendBoardReset() and Network.closeConnection', () => {
+test('reset() calls Network.sendBoardReset() and Network.closeConnection()', () => {
   const game = new Game();
   Network.sendBoardReset = jest.fn();
   Network.closeConnection = jest.fn();
