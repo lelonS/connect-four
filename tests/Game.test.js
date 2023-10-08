@@ -12,6 +12,7 @@ test('New game has correct initial variables', () => {
 });
 
 test('New game has correct initial DOM', () => {
+  // Create new game as DOM elements are created in constructor
   const game = new Game();
 
   // Check DOM elements exist
@@ -50,6 +51,7 @@ test('reset() creates new board and goes to the correct menu', () => {
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
   game.waitForMove = jest.fn();
+  Network.closeConnection = jest.fn();
 
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
@@ -58,6 +60,16 @@ test('reset(false) creates new board and keeps players', () => {
   expect(game.board).not.toBe(board);
   expect(game.players).toBe(players);
   expect(game.waitForMove).toHaveBeenCalled();
+  expect(Network.closeConnection).not.toHaveBeenCalled();
+});
+
+test('reset() calls Network.sendBoardReset() and Network.closeConnection', () => {
+  const game = new Game();
+  Network.sendBoardReset = jest.fn();
+  Network.closeConnection = jest.fn();
+  game.reset();
+  expect(Network.sendBoardReset).toHaveBeenCalled();
+  expect(Network.closeConnection).toHaveBeenCalled();
 });
 
 // createPlayers() tests
