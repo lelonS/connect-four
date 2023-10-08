@@ -9,7 +9,6 @@ class Network {
   static game = null;
   static playerUsers = {}; // user: playerIndex
   static closeInfo = '';
-  static gameStarted = false;
   static eventSource = null;
 
   static startConnection(_user, _userType, _channel, _game) {
@@ -52,7 +51,6 @@ class Network {
     Network.token = null;
     Network.latest = 0;
     Network.game = null;
-    Network.gameStarted = false;
     Network.playerUsers = {};
     if (Network.eventSource) {
       Network.eventSource.close();
@@ -93,7 +91,6 @@ class Network {
     }
 
     Network.game.waitForMove();
-    Network.gameStarted = true;
   }
 
   static sendBoardReset() {
@@ -169,13 +166,15 @@ class Network {
   static #removePlayer(data) {
     // data format: "User '{name}' left channel '{channel}'."
     const userName = data.substring(6, data.indexOf('\' left channel'));
+    if (!(userName in Network.playerUsers)) { return; } // Player not playing
 
     // Remove player from Network.game.players
     const playerIndex = Network.playerUsers[userName];
     Network.game.players.splice(playerIndex, 1);
+    delete Network.playerUsers[userName];
 
     // Check player count, if less than 2, close connection
-    if (Network.game.players.length < Network.game.playerCount && Network.gameStarted) {
+    if (Network.game.players.length < Network.game.playerCount) {
       Network.closeConnectionAndReset('Opponent left the game. Try a different channel');
     }
   }
