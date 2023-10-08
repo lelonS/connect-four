@@ -280,3 +280,20 @@ test('move() does not call makeMove() on board when moveAllowed is false', () =>
   game.move(0);
   expect(board.makeMove).not.toHaveBeenCalled();
 });
+
+test('move() calls Network.sendMoveFromLocalPlayer() when move is valid', () => {
+  const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
+  game.moveAllowed = true;
+  Network.sendMoveFromLocalPlayer = jest.fn();
+  game.move(0);
+  expect(Network.sendMoveFromLocalPlayer).toHaveBeenCalled();
+});
+
+test('move() does not call Network.sendMoveFromLocalPlayer() when move is invalid', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  Network.sendMoveFromLocalPlayer = jest.fn();
+  game.move(-1);
+  expect(Network.sendMoveFromLocalPlayer).not.toHaveBeenCalled();
+});
