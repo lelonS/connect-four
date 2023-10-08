@@ -7,6 +7,7 @@ class Network {
   static urlPrefix = 'https://sse.nodehill.com';
 
   static game = null;
+  static playerUsers = {}; // user: playerIndex
   static closeInfo = '';
   static gameStarted = false;
   static eventSource = null;
@@ -52,6 +53,7 @@ class Network {
     Network.latest = 0;
     Network.game = null;
     Network.gameStarted = false;
+    Network.playerUsers = {};
     if (Network.eventSource) {
       Network.eventSource.close();
       Network.eventSource = null;
@@ -116,15 +118,13 @@ class Network {
 
   static processMessageFromRemote(data, user) {
     // Get player from Network.game.players (if is player1 or player2)
-    let player;
-    let playerIndex;
-    for (let i = 0; i < Network.game.players.length; i++) {
-      if (Network.game.players[i].name === user) {
-        player = Network.game.players[i];
-        playerIndex = i;
-        break;
-      }
+    let player, playerIndex;
+    if (user in Network.playerUsers) {
+      playerIndex = Network.playerUsers[user];
+      player = Network.game.players[playerIndex];
     }
+
+    // If player is not found, or is local player, ignore message
     if (player === undefined || player.isLocal) { return; }
 
     // Reset board
@@ -144,7 +144,8 @@ class Network {
     // data format: "User {name} joined channel '{channel}'."
 
     // Get name (between 'User ' and ' joined channel')
-    const name = data.substring(5, data.indexOf(' joined channel'));
+    const userName = data.substring(5, data.indexOf(' joined channel'));
+    const name = Network.plrNameFromUser(userName);
     const plrNumber = Network.game.players.length + 1
     let player = Player.create(name, plrNumber, 'human');
     const isLocalPlayer = name === Network.userName;
@@ -153,15 +154,22 @@ class Network {
     }
     player.isLocal = isLocalPlayer;
     Network.game.players.push(player);
-
-    console.log(Network.game.players);
+    Network.playerUsers[userName] = plrNumber - 1;
     return true; // Player created
   }
 
   static removePlayer(data) {
     // data format: "User '{name}' left channel '{channel}'."
-    const name = data.substring(6, data.indexOf('\' left channel'));
-    // Filter out player with name
-    Network.game.players = Network.game.players.filter(player => player.name !== name);
+    const userName = data.substring(6, data.indexOf('\' left channel'));
+    // Remove player from Network.game.players
+    const playerIndex = Network.playerUsers[userName];
+    Network.game.players.splice(playerIndex, 1);
+  }
+
+  static plrNameFromUser(user) {
+    if (Player.isValidName(user)) { return user; }
+
+    // If name is invalid, return a valid name (different from Network.userName)
+    return Network.userName === 'OnlinePlr' ? 'OnlinePlr2' : 'OnlinePlr';
   }
 }
