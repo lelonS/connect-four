@@ -83,6 +83,29 @@ test('createPlayers() creates players', () => {
   }
 });
 
+// askForGamemode() tests
+test('askForGamemode() creates 2 buttons', () => {
+  const game = new Game();
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForGamemode();
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
+});
+
+// askForOnlineParameters() tests
+test('askForOnlineParameters() creates 2 inputs and a submit button', () => {
+  const game = new Game();
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForOnlineParameters();
+  const inputElements = gameInfo.querySelectorAll('input'); // Player name and channel input
+  const buttonElements = gameInfo.querySelectorAll('button'); // Submit button and menu button
+
+  expect(inputElements.length).toBe(2);
+  expect(buttonElements.length).toBe(2);
+});
+
 // askForPlayerNames() tests
 test('askForPlayerNames() creates 2 plr inputs and a submit button', () => {
   const game = new Game();
@@ -91,11 +114,11 @@ test('askForPlayerNames() creates 2 plr inputs and a submit button', () => {
   game.askForPlayerNames();
   const inputElements = gameInfo.querySelectorAll('input'); // Player name inputs
   const selectElements = gameInfo.querySelectorAll('select'); // Player type selects
-  const submitButton = gameInfo.querySelector('button'); // Submit button
+  const buttonElements = gameInfo.querySelectorAll('button'); // Submit button and menu button
 
   expect(inputElements.length).toBe(2);
   expect(selectElements.length).toBe(2);
-  expect(submitButton).not.toBeNull();
+  expect(buttonElements.length).toBe(2);
 });
 
 // renderBoard() tests
