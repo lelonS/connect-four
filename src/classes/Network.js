@@ -117,9 +117,11 @@ class Network {
   static processMessageFromRemote(data, user) {
     // Get player from Network.game.players (if is player1 or player2)
     let player;
+    let playerIndex;
     for (let i = 0; i < Network.game.players.length; i++) {
       if (Network.game.players[i].name === user) {
         player = Network.game.players[i];
+        playerIndex = i;
         break;
       }
     }
@@ -132,7 +134,7 @@ class Network {
     }
 
     // Move
-    if (Number.isInteger(data)) {
+    if (Number.isInteger(data) && playerIndex === Network.game.board.turn) {
       Network.game.move(data);
     }
   }
