@@ -106,11 +106,7 @@ class Network {
   static processMessageFromServer(data) {
     // New player joined (can be self)
     if (data.includes(`joined channel`)) {
-      const plrWasCreated = Network.#createPlayer(data);
-      // If player was created, and player count is 2, start game
-      if (plrWasCreated && Network.game.players.length === Network.game.playerCount) {
-        Network.#startGame();
-      }
+      Network.#createPlayer(data);
     }
 
     // Player left
@@ -143,7 +139,7 @@ class Network {
   }
 
   static #createPlayer(data) {
-    if (Network.game.players.length >= Network.game.playerCount) { return false; } // Already two players, no plr created
+    if (Network.game.players.length >= Network.game.playerCount) { return } // Already two players, no plr created
     // data format: "User {name} joined channel '{channel}'."
 
     const userName = data.substring(5, data.indexOf(' joined channel'));
@@ -160,7 +156,11 @@ class Network {
 
     Network.game.players.push(player);
     Network.playerUsers[userName] = plrNumber - 1;
-    return true; // Player created
+
+    // If two players, start game
+    if (Network.game.players.length === Network.game.playerCount) {
+      Network.#startGame();
+    }
   }
 
   static #removePlayer(data) {
