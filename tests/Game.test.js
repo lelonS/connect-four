@@ -161,6 +161,15 @@ test('renderMove() renders correct player', () => {
   expect(cell.classList.contains('player-1')).toBe(true);
 });
 
+// renderWaitingForOpponent() tests
+test('renderWaitingForOpponent() renders "Waiting for opponent"', () => {
+  const game = new Game();
+  game.renderWaitingForOpponent();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe('Waiting for opponent');
+});
+
 // renderResults() tests
 test('renderResults() renders correct output for draw', () => {
   const game = new Game();
