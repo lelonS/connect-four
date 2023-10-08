@@ -152,7 +152,7 @@ class Network {
     const userName = data.substring(5, data.indexOf(' joined channel'));
     const name = Network.plrNameFromUser(userName);
     const plrNumber = Network.game.players.length + 1
-    const isLocalPlayer = name === Network.userName;
+    const isLocalPlayer = userName === Network.userName;
 
     let player = Player.create(name, plrNumber, 'human');
     // If local player, create player with correct playerType
