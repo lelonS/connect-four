@@ -7,6 +7,7 @@ class Game {
     this.#createElements();
     this.#addEventListeners();
     this.gamemode = Game.Gamemodes.Menu;
+    this.network = new Network(this);
     this.reset();
   }
 
@@ -18,14 +19,14 @@ class Game {
 
   reset(createPlayers = true) {
     clearTimeout(this.botTimer); // Stop any pending bot move
-    Network.sendBoardReset();
+    this.network.sendBoardReset();
     this.board = new Board();
     this.moveAllowed = false;
 
     this.renderBoard();
 
     // Creating new players, close connection to old players
-    if (createPlayers) { Network.closeConnection(Network.closeInfo); }
+    if (createPlayers) { this.network.closeConnection(this.network.closeInfo); }
 
     if (!createPlayers) {
       this.waitForMove();
@@ -64,8 +65,8 @@ class Game {
 
   askForOnlineParameters() {
     const gameInfo = document.querySelector('.game-info');
-    gameInfo.innerHTML = Elements.onlineParametersHtml(Network.closeInfo);
-    Network.closeInfo = '';
+    gameInfo.innerHTML = Elements.onlineParametersHtml(this.network.closeInfo);
+    this.network.closeInfo = '';
 
     const nameInput = Elements.nameInputElement('Player');
     gameInfo.appendChild(nameInput);
@@ -91,7 +92,7 @@ class Game {
 
       const playerType = playerTypeDropdown.value;
 
-      Network.startConnection(name, playerType, channel, this);
+      this.network.startConnection(name, playerType, channel);
       this.renderWaitingForOpponent();
     });
   }
@@ -187,7 +188,7 @@ class Game {
   renderWaitingForOpponent() {
     this.moveAllowed = false;
     const gameInfo = document.querySelector('.game-info');
-    gameInfo.innerHTML = Elements.waitingForOpponentHtml();
+    gameInfo.innerHTML = Elements.waitingForOpponentHtml(this.network.channel);
     gameInfo.appendChild(Elements.resetButton(this));
   }
 
@@ -255,7 +256,7 @@ class Game {
     if (success) {
       const { player, col, row } = this.board.getLastMove();
       this.renderMove(player, col, row);
-      Network.sendMoveFromLocalPlayer(this.players[player], col);
+      this.network.sendMoveFromLocalPlayer(this.players[player], col);
       this.waitForMove();
     }
   }

@@ -51,7 +51,7 @@ test('reset() creates new board and goes to the correct menu', () => {
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
   game.waitForMove = jest.fn();
-  Network.closeConnection = jest.fn();
+  game.network.closeConnection = jest.fn();
 
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
@@ -60,16 +60,16 @@ test('reset(false) creates new board and keeps players', () => {
   expect(game.board).not.toBe(board);
   expect(game.players).toBe(players);
   expect(game.waitForMove).toHaveBeenCalled();
-  expect(Network.closeConnection).not.toHaveBeenCalled();
+  expect(game.network.closeConnection).not.toHaveBeenCalled();
 });
 
 test('reset() calls Network.sendBoardReset() and Network.closeConnection()', () => {
   const game = new Game();
-  Network.sendBoardReset = jest.fn();
-  Network.closeConnection = jest.fn();
+  game.network.sendBoardReset = jest.fn();
+  game.network.closeConnection = jest.fn();
   game.reset();
-  expect(Network.sendBoardReset).toHaveBeenCalled();
-  expect(Network.closeConnection).toHaveBeenCalled();
+  expect(game.network.sendBoardReset).toHaveBeenCalled();
+  expect(game.network.closeConnection).toHaveBeenCalled();
 });
 
 // createPlayers() tests
@@ -285,15 +285,15 @@ test('move() calls Network.sendMoveFromLocalPlayer() when move is valid', () => 
   const game = new Game();
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
   game.moveAllowed = true;
-  Network.sendMoveFromLocalPlayer = jest.fn();
+  game.network.sendMoveFromLocalPlayer = jest.fn();
   game.move(0);
-  expect(Network.sendMoveFromLocalPlayer).toHaveBeenCalled();
+  expect(game.network.sendMoveFromLocalPlayer).toHaveBeenCalled();
 });
 
 test('move() does not call Network.sendMoveFromLocalPlayer() when move is invalid', () => {
   const game = new Game();
   game.moveAllowed = true;
-  Network.sendMoveFromLocalPlayer = jest.fn();
+  game.network.sendMoveFromLocalPlayer = jest.fn();
   game.move(-1);
-  expect(Network.sendMoveFromLocalPlayer).not.toHaveBeenCalled();
+  expect(game.network.sendMoveFromLocalPlayer).not.toHaveBeenCalled();
 });

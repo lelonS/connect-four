@@ -97,7 +97,7 @@ class Elements {
 
   static resetButton(game) {
     const resetButton = Elements.newGameButton(game);
-    resetButton.textContent = Network.eventSource === null ? 'Reset Game' : 'Disconnect';
+    resetButton.textContent = game.network.isConnected ? 'Disconnect' : 'Reset Game';
     resetButton.classList.add('abort-button');
     return resetButton;
   }
@@ -165,11 +165,11 @@ class Elements {
     `;
   }
 
-  static waitingForOpponentHtml() {
+  static waitingForOpponentHtml(channel) {
     return /*html*/`
     <h3>Waiting for opponent</h3>
     <p>Share this channel:</p>
-    <h3>${Network.channel}</h3>
+    <h3>${channel}</h3>
     `;
   }
 }
