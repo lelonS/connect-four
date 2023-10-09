@@ -24,16 +24,28 @@ Feature: Online Game Play
     Then "Player2" should be on the online connect page
     And "Player1" should be on the online connect page
     And "Player1" should see the other player disconnected message
+    And the boards should be reset
 
   Scenario: Trying to play before second player is entered
     Given "Player1" connect to the channel "test3"
     And "Player1" is waiting for opponent
-    When "Player1" click on the a column
+    When "Player1" click on a column
     Then no move is made in the online game
 
   Scenario: Trying to play when not your turn
     Given 2 players connect to a unique channel
     And the online game starts
     And it is "Player1" turn in the online game
-    When "Player2" click on the a column
+    When "Player2" click on a column
     Then no move is made in the online game
+
+  Scenario: Disconnecting before game is over
+    Given 2 players connect to a unique channel
+    And the online game starts
+    And it is "Player1" turn in the online game
+    When "Player1" click on a column
+    And "Player2" click on the "Disconnect" button
+    Then "Player2" should be on the online connect page
+    And "Player1" should be on the online connect page
+    And "Player1" should see the other player disconnected message
+    And the boards should be reset

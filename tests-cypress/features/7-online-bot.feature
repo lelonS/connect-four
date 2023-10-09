@@ -1,4 +1,6 @@
 Feature: Online bot games
+  To test this we use a page with 3 iframes. The first one is Player1, the second is Player2, and the third one is to test what happens when a third player joins.
+  Player1 and Player2 will be the players playing
 
   Background: Setup online test
     Given I am on the online test page

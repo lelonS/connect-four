@@ -57,7 +57,7 @@ Given('{string} is waiting for opponent', (player) => {
   cy.getIframeBody(player).find('h3').should('contain', 'Waiting for opponent');
 });
 
-When('{string} click on the a column', (player) => {
+When('{string} click on a column', (player) => {
   cy.getIframeBody(player).find('.column').eq(0).click();
 });
 
@@ -71,4 +71,15 @@ Then('no move is made in the online game', () => {
 Given('it is {string} turn in the online game', (playerName) => {
   cy.getIframeBody('Player1').find('h3').should('contain', playerName + '\'s turn');
   cy.getIframeBody('Player2').find('h3').should('contain', playerName + '\'s turn');
+});
+
+Then('the boards should be reset', () => {
+  cy.getIframeBody('Player1').find('.board .player-1').should('not.exist');
+  cy.getIframeBody('Player1').find('.board .player-2').should('not.exist');
+
+  cy.getIframeBody('Player2').find('.board .player-1').should('not.exist');
+  cy.getIframeBody('Player2').find('.board .player-2').should('not.exist');
+
+  cy.getIframeBody('Player3').find('.board .player-1').should('not.exist');
+  cy.getIframeBody('Player3').find('.board .player-2').should('not.exist');
 });
