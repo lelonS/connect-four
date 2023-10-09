@@ -9,6 +9,8 @@ test('New game has correct initial variables', () => {
   expect(game.board).toBeInstanceOf(Board);
   expect(game.playerCount).toBe(2);
   expect(game.moveAllowed).toBe(false);
+  expect(game.network).toBeInstanceOf(Network);
+  expect(game.gamemode).toBe(Game.Gamemodes.Menu);
 });
 
 test('New game has correct initial DOM', () => {
