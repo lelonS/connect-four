@@ -54,6 +54,7 @@ test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
   game.waitForMove = jest.fn();
   game.network.closeConnection = jest.fn();
+  game.network.sendBoardReset = jest.fn();
 
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
@@ -63,6 +64,7 @@ test('reset(false) creates new board and keeps players', () => {
   expect(game.players).toBe(players);
   expect(game.waitForMove).toHaveBeenCalled();
   expect(game.network.closeConnection).not.toHaveBeenCalled();
+  expect(game.network.sendBoardReset).toHaveBeenCalled();
 });
 
 test('reset() calls Network.sendBoardReset() and Network.closeConnection()', () => {
