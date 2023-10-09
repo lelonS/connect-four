@@ -211,4 +211,26 @@ test('processMessageFromRemote() does not throw error if invalid data is receive
   expect(game.move).toBeCalledTimes(0);
 });
 
+// plrNameFromUser() tests
+test('plrNameFromUser() returns same name if valid', () => {
+  const network = new Network(new Game());
+  expect(network.plrNameFromUser('user')).toBe('user');
+  expect(network.plrNameFromUser('user2')).toBe('user2');
+});
+
+test('plrNameFromUser() returns a valid name if invalid', () => {
+  const network = new Network(new Game());
+  const validName = network.plrNameFromUser('invalid name');
+  expect(Player.isValidName(validName)).toBe(true);
+
+  // Join the generated name
+  network.startConnection(validName, Player.PlayerTypes.RandomBot, 'channel');
+  network.messageListener(joinMessage(validName, 'channel'));
+
+  // Join another user with invalid name
+  const validName2 = network.plrNameFromUser('invalid name!');
+  expect(Player.isValidName(validName2)).toBe(true);
+  expect(validName2).not.toBe(validName);
+});
+
 
