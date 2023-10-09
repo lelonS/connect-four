@@ -27,7 +27,7 @@ Feature: Online Game Play
     And the boards should be reset
 
   Scenario: Trying to play before second player is entered
-    Given "Player1" connect to the channel "test3"
+    Given "Player1" connect to a unique channel
     And "Player1" is waiting for opponent
     When "Player1" click on a column
     Then no move is made in the online game

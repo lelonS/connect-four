@@ -47,7 +47,8 @@ Then('{string} should see the other player disconnected message', (player) => {
   cy.getIframeBody(player).find('.info-text').should('contain', 'Opponent left the game. Try a different channel');
 });
 
-Given('{string} connect to the channel {string}', (player, channel) => {
+Given('{string} connect to a unique channel', (player) => {
+  const channel = getUniqueChannel();
   cy.getIframeBody(player).find('input[placeholder="Player"]').type(player);
   cy.getIframeBody(player).find('input[placeholder="Channel"]').type(channel);
   cy.getIframeBody(player).find('button').contains('Connect').click();
