@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-require('./load-all-classes.js');
+require('./helpers/load-all-classes.js');
 
 
 test('New game has correct initial variables', () => {
@@ -9,46 +9,71 @@ test('New game has correct initial variables', () => {
   expect(game.board).toBeInstanceOf(Board);
   expect(game.playerCount).toBe(2);
   expect(game.moveAllowed).toBe(false);
+  expect(game.network).toBeInstanceOf(Network);
+  expect(game.gamemode).toBe(Game.Gamemodes.Menu);
 });
 
 test('New game has correct initial DOM', () => {
+  // Create new game as DOM elements are created in constructor
   const game = new Game();
 
   // Check DOM elements exist
   const board = document.querySelector('.board');
   const gameSidebar = document.querySelector('.game-sidebar');
   const gameInfo = document.querySelector('.game-info');
-  // Ask for player names
-  const inputElements = gameInfo.querySelectorAll('input');
-  const selectElements = gameInfo.querySelectorAll('select');
-  const submitButton = gameInfo.querySelector('button');
+  // Ask for onine / local gamemode
+  const buttons = gameInfo.querySelectorAll('button');
 
   expect(board).not.toBeNull();
   expect(gameSidebar).not.toBeNull();
   expect(gameInfo).not.toBeNull();
-  expect(inputElements.length).toBe(2);
-  expect(selectElements.length).toBe(2);
-  expect(submitButton).not.toBeNull();
+  expect(buttons.length).toBe(2);
 });
 
 // reset() tests
-test('reset() creates new board and players', () => {
+test('reset() creates new board and goes to the correct menu', () => {
   const game = new Game();
+  game.askForGamemode = jest.fn();
   game.askForPlayerNames = jest.fn();
-  const board = game.board;
-  game.reset();
-  expect(game.board).not.toBe(board);
-  expect(game.askForPlayerNames).toHaveBeenCalled();
+  game.askForOnlineParameters = jest.fn();
+
+  const gamemodes = [{ mode: Game.Gamemodes.Menu, func: game.askForGamemode },
+  { mode: Game.Gamemodes.Local, func: game.askForPlayerNames },
+  { mode: Game.Gamemodes.Online, func: game.askForOnlineParameters }];
+
+  for (const gamemode of gamemodes) {
+    game.gamemode = gamemode.mode;
+    const board = game.board;
+    game.reset();
+    expect(game.board).not.toBe(board);
+    expect(gamemode.func).toHaveBeenCalled();
+  }
 });
 
 test('reset(false) creates new board and keeps players', () => {
   const game = new Game();
+  game.waitForMove = jest.fn();
+  game.network.closeConnection = jest.fn();
+  game.network.sendBoardReset = jest.fn();
+
   game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.RandomBot]);
   const board = game.board;
   const players = game.players;
   game.reset(false);
   expect(game.board).not.toBe(board);
   expect(game.players).toBe(players);
+  expect(game.waitForMove).toHaveBeenCalled();
+  expect(game.network.closeConnection).not.toHaveBeenCalled();
+  expect(game.network.sendBoardReset).toHaveBeenCalled();
+});
+
+test('reset() calls Network.sendBoardReset() and Network.closeConnection()', () => {
+  const game = new Game();
+  game.network.sendBoardReset = jest.fn();
+  game.network.closeConnection = jest.fn();
+  game.reset();
+  expect(game.network.sendBoardReset).toHaveBeenCalled();
+  expect(game.network.closeConnection).toHaveBeenCalled();
 });
 
 // createPlayers() tests
@@ -62,6 +87,29 @@ test('createPlayers() creates players', () => {
   }
 });
 
+// askForGamemode() tests
+test('askForGamemode() creates 2 buttons', () => {
+  const game = new Game();
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForGamemode();
+  const buttons = gameInfo.querySelectorAll('button');
+  expect(buttons.length).toBe(2);
+});
+
+// askForOnlineParameters() tests
+test('askForOnlineParameters() creates 2 inputs and a submit button', () => {
+  const game = new Game();
+  const gameInfo = document.querySelector('.game-info');
+  gameInfo.innerHTML = '';
+  game.askForOnlineParameters();
+  const inputElements = gameInfo.querySelectorAll('input'); // Player name and channel input
+  const buttonElements = gameInfo.querySelectorAll('button'); // Submit button and menu button
+
+  expect(inputElements.length).toBe(2);
+  expect(buttonElements.length).toBe(2);
+});
+
 // askForPlayerNames() tests
 test('askForPlayerNames() creates 2 plr inputs and a submit button', () => {
   const game = new Game();
@@ -70,11 +118,11 @@ test('askForPlayerNames() creates 2 plr inputs and a submit button', () => {
   game.askForPlayerNames();
   const inputElements = gameInfo.querySelectorAll('input'); // Player name inputs
   const selectElements = gameInfo.querySelectorAll('select'); // Player type selects
-  const submitButton = gameInfo.querySelector('button'); // Submit button
+  const buttonElements = gameInfo.querySelectorAll('button'); // Submit button and menu button
 
   expect(inputElements.length).toBe(2);
   expect(selectElements.length).toBe(2);
-  expect(submitButton).not.toBeNull();
+  expect(buttonElements.length).toBe(2);
 });
 
 // renderBoard() tests
@@ -115,6 +163,15 @@ test('renderMove() renders correct player', () => {
   const column = board.querySelector('.column');
   const cell = column.querySelector('.cell'); // First cell
   expect(cell.classList.contains('player-1')).toBe(true);
+});
+
+// renderWaitingForOpponent() tests
+test('renderWaitingForOpponent() renders "Waiting for opponent"', () => {
+  const game = new Game();
+  game.renderWaitingForOpponent();
+  const gameInfo = document.querySelector('.game-info');
+  const gameInfoTitle = gameInfo.querySelector('h3');
+  expect(gameInfoTitle.textContent).toBe('Waiting for opponent');
 });
 
 // renderResults() tests
@@ -226,4 +283,21 @@ test('move() does not call makeMove() on board when moveAllowed is false', () =>
   board.makeMove = jest.fn();
   game.move(0);
   expect(board.makeMove).not.toHaveBeenCalled();
+});
+
+test('move() calls Network.sendMoveFromLocalPlayer() when move is valid', () => {
+  const game = new Game();
+  game.createPlayers(['Alice', 'Bob'], [Player.PlayerTypes.Human, Player.PlayerTypes.Human]);
+  game.moveAllowed = true;
+  game.network.sendMoveFromLocalPlayer = jest.fn();
+  game.move(0);
+  expect(game.network.sendMoveFromLocalPlayer).toHaveBeenCalled();
+});
+
+test('move() does not call Network.sendMoveFromLocalPlayer() when move is invalid', () => {
+  const game = new Game();
+  game.moveAllowed = true;
+  game.network.sendMoveFromLocalPlayer = jest.fn();
+  game.move(-1);
+  expect(game.network.sendMoveFromLocalPlayer).not.toHaveBeenCalled();
 });

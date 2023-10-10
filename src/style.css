@@ -162,6 +162,10 @@ select {
   background-color: white;
 }
 
+input.channel {
+  width: 84%;
+}
+
 button {
   width: 50%;
   min-width: 100px;
@@ -179,6 +183,15 @@ button {
   color: #fff;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  box-shadow: 2px 1px 1px 1px #111111;
+  transform: translateY(2px);
+}
+
 .game-info {
   min-height: calc(var(--board-height) - 100px);
   position: relative;
@@ -193,6 +206,12 @@ button {
   margin-left: auto !important;
   margin-right: auto !important;
 
+}
+
+.info-text {
+  border: 1px solid #ffdd1f;
+  border-radius: 25px;
+  padding: 5px;
 }
 
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio#browser_compatibility */
@@ -243,9 +262,14 @@ button {
     margin-right: 5px;
   }
 
-  .game-info>input[type="text"] {
+  .game-info>input[type="text"],
+  .game-info>select {
     width: 46%;
     margin-left: 3px;
     margin-right: 3px;
+  }
+
+  .game-info>input.channel {
+    width: calc(92% + 6px);
   }
 }

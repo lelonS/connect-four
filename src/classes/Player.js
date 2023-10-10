@@ -5,6 +5,19 @@ class Player {
   static get nameMaxLength() { return 10; }
   static get nameRegex() { return RegExp('^[a-zA-Z0-9]+$'); }  // Only allow letters and numbers
 
+  static create(name, plrNumber, playerType) {
+    switch (playerType) {
+      case Player.PlayerTypes.Human:
+        return new Player(name, plrNumber);
+      case Player.PlayerTypes.RandomBot:
+        return new RandomBot(name, plrNumber);
+      case Player.PlayerTypes.SmartBot:
+        return new SmartBot(name, plrNumber);
+      default:
+        throw new Error('Invalid player type: ' + playerType);
+    }
+  }
+
   static isValidName(name) {
     if (typeof name !== 'string') { return false; }
 
@@ -17,6 +30,7 @@ class Player {
   constructor(name, plrNumber) {
     this.name = name;
     this.plrNumber = plrNumber;
+    this.isLocal = true;
   }
 
   get name() { return this.#name; }

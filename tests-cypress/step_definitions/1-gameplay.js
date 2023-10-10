@@ -7,7 +7,7 @@ Given('I am on the main page', () => {
 Given('I enter valid player names', () => {
   cy.get('.game-info input').eq(0).type('Alice');
   cy.get('.game-info input').eq(1).type('Bob');
-  cy.get('button').click();
+  cy.get('button').contains('Start').click();
 });
 
 When('the game is played to a win', () => {

@@ -1,9 +1,32 @@
-require('./load-all-classes.js');
+require('./helpers/load-all-classes.js');
 
 test('Initial Player variables are correct', () => {
   const player = new Player('test', 1);
   expect(player.name).toBe('test');
   expect(player.plrNumber).toBe(1);
+});
+
+test('create returns correct Player of correct type', () => {
+  const player = Player.create('test', 1, Player.PlayerTypes.Human);
+  expect(player instanceof Player).toBe(true);
+  expect(player instanceof Bot).toBe(false);
+
+  const randomBot = Player.create('test', 1, Player.PlayerTypes.RandomBot);
+  expect(randomBot instanceof Player).toBe(true);
+  expect(randomBot instanceof Bot).toBe(true);
+  expect(randomBot instanceof RandomBot).toBe(true);
+  expect(randomBot instanceof SmartBot).toBe(false);
+
+  const smartBot = Player.create('test', 1, Player.PlayerTypes.SmartBot);
+  expect(smartBot instanceof Player).toBe(true);
+  expect(smartBot instanceof Bot).toBe(true);
+  expect(smartBot instanceof SmartBot).toBe(true);
+  expect(smartBot instanceof RandomBot).toBe(false);
+});
+
+test('create throws error on invalid player type', () => {
+  const t = () => Player.create('test', 1, 'invalid');
+  expect(t).toThrow(new Error('Invalid player type: invalid'));
 });
 
 test('isValidName only returns true on valid names', () => {
