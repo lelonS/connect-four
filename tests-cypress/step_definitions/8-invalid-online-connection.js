@@ -22,7 +22,7 @@ Given('{string} connect to a unique channel with name {string}', (player, name) 
   cy.getIframeBody(player).find('button').contains('Connect').click();
 });
 
-When('{string} connect to the same channel with name {string}', (player, name) => {
+When('{string} connect to the last unique channel with name {string}', (player, name) => {
   cy.getIframeBody(player).find('input[placeholder="Player"]').type(name);
   cy.getIframeBody(player).find('input[placeholder="Channel"]').type(getLastUniqueChannel());
   cy.getIframeBody(player).find('button').contains('Connect').click();

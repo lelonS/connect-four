@@ -15,7 +15,7 @@ Feature: Connecting with invalid parameters
 
   Scenario: Connecting to channel with duplicate name
     Given "Player1" connect to a unique channel with name "Player1"
-    When "Player2" connect to the same channel with name "Player1"
+    When "Player2" connect to the last unique channel with name "Player1"
     Then "Player2" should be on the online connect page
     And "Player2" should see an error message
     And "Player1" is waiting for opponent
