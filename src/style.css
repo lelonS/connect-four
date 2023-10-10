@@ -183,6 +183,15 @@ button {
   color: #fff;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  box-shadow: 2px 1px 1px 1px #111111;
+  transform: translateY(2px);
+}
+
 .game-info {
   min-height: calc(var(--board-height) - 100px);
   position: relative;
