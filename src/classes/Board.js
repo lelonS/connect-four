@@ -128,6 +128,7 @@ class Board {
     copy.gameState = this.gameState;
     copy.turn = this.turn;
     copy.winner = this.winner;
+    copy.moveHistory = this.moveHistory.map(move => ({ ...move }));
     copy.board = this.board.map(col => [...col]);
     return copy;
   }
