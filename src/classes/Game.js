@@ -177,8 +177,6 @@ class Game {
   }
 
   renderMove(turn, col, row) {
-    if (!this.players) { return; }
-    const player = this.players[turn];
     const boardElement = document.querySelector('.board');
     const columnElement = boardElement.querySelectorAll('.column')[col];
     const cell = columnElement.querySelectorAll('.cell')[row];
