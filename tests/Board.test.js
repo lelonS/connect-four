@@ -206,3 +206,20 @@ test('checkWinAt() returns false if no win', () => {
     }
   }
 });
+
+// Test copy() 
+test('copy() returns a copy of the board', () => {
+  const board = new Board();
+  board.makeMove(0);
+
+  const copy = board.copy();
+
+  // Make sure copy is not the same object
+  expect(copy).not.toBe(board);
+  // Make sure copy has the same values
+  expect(copy).toEqual(board);
+  // Make sure copy is a deep copy
+  expect(copy.board).not.toBe(board.board);
+  expect(copy.board[0]).not.toBe(board.board[0]);
+  expect(copy.moveHistory).not.toBe(board.moveHistory);
+}); 
